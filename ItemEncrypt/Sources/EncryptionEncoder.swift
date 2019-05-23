@@ -1,5 +1,5 @@
 //
-//  EncryptingEncoder.swift
+//  EncryptionEncoder.swift
 //  ItemEncrypt
 //
 //  Created by James Robinson on 5/15/19.
@@ -15,8 +15,8 @@ import Foundation
 //===----------------------------------------------------------------------===//
 
 
-/// `EncryptingEncoder` facilitates the encoding of `Encodable` values into a secure form.
-public final class EncryptingEncoder {
+/// `EncryptionEncoder` facilitates the encoding of `Encodable` values into a secure form.
+public final class EncryptionEncoder {
     // MARK: Options
     
     /// The strategy to use for encoding `Date` values.
@@ -76,11 +76,7 @@ public final class EncryptingEncoder {
     public var nonConformingFloatEncodingStrategy: NonConformingFloatEncodingStrategy = .throw
     
     /// The encryption configuration to use when encoding input data.
-    private let configuration: EncryptionSerialization.Configuration
-    
-    /// The key used to encrypt input data. Defaults to `nil`, and remains so until
-    ///   the user calls `encode(_:withPassword:)` on the receiver.
-    private var passwordKey: [UInt8]?
+    private let configuration: EncryptionSerialization.Specification
     
     /// Contextual user-provided information for use during encoding.
     public var userInfo: [CodingUserInfoKey: Any] = [:]
@@ -90,8 +86,7 @@ public final class EncryptingEncoder {
         let dateEncodingStrategy: DateEncodingStrategy
         let dataEncodingStrategy: DataEncodingStrategy
         let nonConformingFloatEncodingStrategy: NonConformingFloatEncodingStrategy
-        let passwordKey: [UInt8]?
-        let configuration: EncryptionSerialization.Configuration
+        let configuration: EncryptionSerialization.Specification
         let userInfo: [CodingUserInfoKey: Any]
     }
     
@@ -114,14 +109,13 @@ public final class EncryptingEncoder {
         return _Options(dateEncodingStrategy: dateEncodingStrategy,
                         dataEncodingStrategy: dataEncodingStratety,
                         nonConformingFloatEncodingStrategy: nonConformingFloatEncodingStrategy,
-                        passwordKey: passwordKey,
                         configuration: configuration,
                         userInfo: userInfo)
     }
     
-    // MARK: - Constructing an Encryping Encoder
+    // MARK: - Constructing an Encryption Encoder
     
-    public init(configuration: EncryptionSerialization.Configuration = .default) {
+    public init(configuration: EncryptionSerialization.Specification = .default) {
         self.configuration = configuration
     }
     
@@ -130,39 +124,39 @@ public final class EncryptingEncoder {
     /// Encodes the given top-level value and returns its encrypted representation.
     ///
     /// - parameter value: The value to encode.
+    /// - parameter password: The password with which to encrypt `value`. This password is not retained past the lifetime of the function call.
     /// - returns: A new `Data` value containing the encoded data.
     /// - throws: An error if any value throws an error during encoding.
     public func encode<T: Encodable>(_ value: T, withPassword password: String) throws -> EncryptedItem {
         let saltSize = configuration.saltSize
         let iterationCount = configuration.iterations
         let (passwordKey, salt) = EncryptionSerialization.keyFromPassword(password, saltSize: saltSize, iterations: iterationCount)
-        self.passwordKey = passwordKey
         
-        defer { self.passwordKey = nil }
-        
-        let encoder = _EncryptedEncoder(options: self.options)
+        let encoder = _EncryptionEncoder(options: self.options)
         
         guard let topLevel = try encoder.box_(value) else {
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) did not encode any values."))
         }
         
         let data = NSKeyedArchiver.archivedData(withRootObject: topLevel)
-        let encryptor = EncryptionSerialization(configuration: configuration)
-        return encryptor.encryptedItem(from: data, passwordKey: passwordKey, salt: salt)
+        return EncryptionSerialization.encryptedItem(with: data,
+                                                     passwordKey: passwordKey,
+                                                     salt: salt,
+                                                     options: configuration)
     }
     
 }
 
-// MARK: - _EncryptedEncoder
+// MARK: - _EncryptionEncoder
 
-fileprivate class _EncryptedEncoder: Encoder {
+fileprivate class _EncryptionEncoder: Encoder {
     // MARK: Properties
     
     /// The encoder's storage
     fileprivate var storage: _EncryptionEncodingStorage
     
     /// Options set on the top-level encoder.
-    fileprivate let options: EncryptingEncoder._Options
+    fileprivate let options: EncryptionEncoder._Options
     
     /// The path to the current point in encoding.
     var codingPath: [CodingKey]
@@ -175,7 +169,7 @@ fileprivate class _EncryptedEncoder: Encoder {
     // MARK: - Initialization
     
     /// Initializes `self` with the given top-level encoder options.
-    fileprivate init(options: EncryptingEncoder._Options, codingPath: [CodingKey] = []) {
+    fileprivate init(options: EncryptionEncoder._Options, codingPath: [CodingKey] = []) {
         self.options = options
         self.storage = _EncryptionEncodingStorage()
         self.codingPath = codingPath
@@ -215,7 +209,7 @@ fileprivate class _EncryptedEncoder: Encoder {
             topContainer = container
         }
         
-        let container = _EncryptingKeyedEncodingContainer<Key>(referencing: self, codingPath: self.codingPath, wrapping: topContainer)
+        let container = _EncryptionKeyedEncodingContainer<Key>(referencing: self, codingPath: self.codingPath, wrapping: topContainer)
         return KeyedEncodingContainer(container)
     }
     
@@ -233,7 +227,7 @@ fileprivate class _EncryptedEncoder: Encoder {
             topContainer = container
         }
         
-        return _EncryptingUnkeyedEncodingContainer(referencing: self, codingPath: self.codingPath, wrapping: topContainer)
+        return _EncryptionUnkeyedEncodingContainer(referencing: self, codingPath: self.codingPath, wrapping: topContainer)
     }
     
     func singleValueContainer() -> SingleValueEncodingContainer {
@@ -286,13 +280,13 @@ fileprivate struct _EncryptionEncodingStorage {
 
 // MARK: - Encoding Containers
 
-fileprivate struct _EncryptingKeyedEncodingContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
+fileprivate struct _EncryptionKeyedEncodingContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
     typealias Key = K
     
     // MARK: Properties
     
     /// A reference to the encoder we're writing to.
-    private let encoder: _EncryptedEncoder
+    private let encoder: _EncryptionEncoder
     
     /// A reference to the container we're writing to.
     private var container: NSMutableDictionary
@@ -303,7 +297,7 @@ fileprivate struct _EncryptingKeyedEncodingContainer<K: CodingKey>: KeyedEncodin
     // MARK: - Initialization
     
     /// Initializes `self` with the given references.
-    fileprivate init(referencing encoder: _EncryptedEncoder, codingPath: [CodingKey], wrapping container: NSMutableDictionary) {
+    fileprivate init(referencing encoder: _EncryptionEncoder, codingPath: [CodingKey], wrapping container: NSMutableDictionary) {
         self.encoder = encoder
         self.codingPath = codingPath
         self.container = container
@@ -378,7 +372,7 @@ fileprivate struct _EncryptingKeyedEncodingContainer<K: CodingKey>: KeyedEncodin
         self.codingPath.append(key)
         defer { self.codingPath.removeLast() }
         
-        let container = _EncryptingKeyedEncodingContainer<NestedKey>(referencing: self.encoder, codingPath: self.codingPath, wrapping: dictionary)
+        let container = _EncryptionKeyedEncodingContainer<NestedKey>(referencing: self.encoder, codingPath: self.codingPath, wrapping: dictionary)
         return KeyedEncodingContainer(container)
     }
     
@@ -389,23 +383,23 @@ fileprivate struct _EncryptingKeyedEncodingContainer<K: CodingKey>: KeyedEncodin
         self.codingPath.append(key)
         defer { self.codingPath.removeLast() }
         
-        return _EncryptingUnkeyedEncodingContainer(referencing: self.encoder, codingPath: self.codingPath, wrapping: array)
+        return _EncryptionUnkeyedEncodingContainer(referencing: self.encoder, codingPath: self.codingPath, wrapping: array)
     }
     
     mutating func superEncoder() -> Encoder {
-        return _EncryptingReferencingEncoder(referencing: self.encoder, key: _EncryptedKey.super, wrapping: self.container)
+        return _EncryptionReferencingEncoder(referencing: self.encoder, key: _EncryptionKey.super, wrapping: self.container)
     }
     
     mutating func superEncoder(forKey key: K) -> Encoder {
-        return _EncryptingReferencingEncoder(referencing: self.encoder, key: key, wrapping: self.container)
+        return _EncryptionReferencingEncoder(referencing: self.encoder, key: key, wrapping: self.container)
     }
 }
 
-fileprivate struct _EncryptingUnkeyedEncodingContainer: UnkeyedEncodingContainer {
+fileprivate struct _EncryptionUnkeyedEncodingContainer: UnkeyedEncodingContainer {
     // MARK: Properties
     
     /// A reference to the encoder we're writing to.
-    private let encoder: _EncryptedEncoder
+    private let encoder: _EncryptionEncoder
     
     /// A reference to the container we're writing to.
     private let container: NSMutableArray
@@ -421,7 +415,7 @@ fileprivate struct _EncryptingUnkeyedEncodingContainer: UnkeyedEncodingContainer
     // MARK: - Initialization
     
     /// Initializes `self` with the given references.
-    fileprivate init(referencing encoder: _EncryptedEncoder, codingPath: [CodingKey], wrapping container: NSMutableArray) {
+    fileprivate init(referencing encoder: _EncryptionEncoder, codingPath: [CodingKey], wrapping container: NSMutableArray) {
         self.encoder = encoder
         self.codingPath = codingPath
         self.container = container
@@ -445,50 +439,50 @@ fileprivate struct _EncryptingUnkeyedEncodingContainer: UnkeyedEncodingContainer
     
     mutating func encode(_ value: Float)  throws {
         // Since the float may be invalid and throw, the coding path needs to contain this key.
-        self.encoder.codingPath.append(_EncryptedKey(index: self.count))
+        self.encoder.codingPath.append(_EncryptionKey(index: self.count))
         defer { self.encoder.codingPath.removeLast() }
         self.container.add(try self.encoder.box(value))
     }
     
     mutating func encode(_ value: Double) throws {
         // Since the double may be invalid and throw, the coding path needs to contain this key.
-        self.encoder.codingPath.append(_EncryptedKey(index: self.count))
+        self.encoder.codingPath.append(_EncryptionKey(index: self.count))
         defer { self.encoder.codingPath.removeLast() }
         self.container.add(try self.encoder.box(value))
     }
     
     mutating func encode<T: Encodable>(_ value: T) throws {
-        self.encoder.codingPath.append(_EncryptedKey(index: self.count))
+        self.encoder.codingPath.append(_EncryptionKey(index: self.count))
         defer { self.encoder.codingPath.removeLast() }
         self.container.add(try self.encoder.box(value))
     }
     
     mutating func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> {
-        self.codingPath.append(_EncryptedKey(index: self.count))
+        self.codingPath.append(_EncryptionKey(index: self.count))
         defer { self.codingPath.removeLast() }
         
         let dictionary = NSMutableDictionary()
         self.container.add(dictionary)
         
-        let container = _EncryptingKeyedEncodingContainer<NestedKey>(referencing: self.encoder, codingPath: self.codingPath, wrapping: dictionary)
+        let container = _EncryptionKeyedEncodingContainer<NestedKey>(referencing: self.encoder, codingPath: self.codingPath, wrapping: dictionary)
         return KeyedEncodingContainer(container)
     }
     
     mutating func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
-        self.codingPath.append(_EncryptedKey(index: self.count))
+        self.codingPath.append(_EncryptionKey(index: self.count))
         defer { self.codingPath.removeLast() }
         
         let array = NSMutableArray()
         self.container.add(array)
-        return _EncryptingUnkeyedEncodingContainer(referencing: self.encoder, codingPath: self.codingPath, wrapping: array)
+        return _EncryptionUnkeyedEncodingContainer(referencing: self.encoder, codingPath: self.codingPath, wrapping: array)
     }
     
     mutating func superEncoder() -> Encoder {
-        return _EncryptingReferencingEncoder(referencing: self.encoder, at: self.container.count, wrapping: self.container)
+        return _EncryptionReferencingEncoder(referencing: self.encoder, at: self.container.count, wrapping: self.container)
     }
 }
 
-extension _EncryptedEncoder: SingleValueEncodingContainer {
+extension _EncryptionEncoder: SingleValueEncodingContainer {
     // MARK: - SingleValueEncodingContainer Methods
     
     fileprivate func assertCanEncodeNewValue() {
@@ -579,7 +573,7 @@ extension _EncryptedEncoder: SingleValueEncodingContainer {
 
 // MARK: - Concrete Value Representations
 
-extension _EncryptedEncoder {
+extension _EncryptionEncoder {
     
     /// Returns the given value boxed in a container appropriate for pushing onto the container stack.
     fileprivate func box(_ value: Bool)   -> NSObject { return NSNumber(value: value) }
@@ -597,10 +591,9 @@ extension _EncryptedEncoder {
     
     fileprivate func box(_ float: Float) throws -> NSObject {
         guard !float.isInfinite && !float.isNaN else {
-            guard case let
-                .convertToString(positiveInfinity: posInfString,
-                                 negativeInfinity: negInfString,
-                                 nan: nanString) = self.options.nonConformingFloatEncodingStrategy
+            guard case .convertToString(positiveInfinity: let posInfString,
+                                        negativeInfinity: let negInfString,
+                                        nan:              let nanString) = self.options.nonConformingFloatEncodingStrategy
                 else {
                     throw EncodingError._invalidFloatingPointValue(float, at: codingPath)
             }
@@ -736,27 +729,30 @@ extension _EncryptedEncoder {
         return try box_(value) ?? NSDictionary()
     }
     
-    // This method is called "box_" instead of "box" to disambiguate it from the overloads.
-    //  Because the return type here is different from all of the "box" overloads (and is
-    //  more general), any "box" calls in here would call back into "box" recursively
-    //  instead of calling the appropriate overload, which is not what we want.
+    /// This method is called "box_" instead of "box" to disambiguate it from the overloads.
+    ///  Because the return type here is different from all of the "box" overloads (and is
+    ///  more general), any "box" calls in here would call back into "box" recursively
+    ///  instead of calling the appropriate overload, which is not what we want.
     fileprivate func box_<T: Encodable>(_ value: T) throws -> NSObject? {
         if T.self == Date.self || T.self == NSDate.self {
             // Respect Date encoding strategy
             return try self.box((value as! Date))
+            
         } else if T.self == Data.self || T.self == NSData.self {
             // Respect Data encoding strategy
             return try self.box((value as! Data))
+            
         } else if T.self == URL.self || T.self == NSURL.self {
             // Encode URLs as single strings.
             return self.box((value as! URL).absoluteString)
+            
         } else if T.self == Decimal.self || T.self == NSDecimalNumber.self {
-            // #warning: See if this is the case for ItemEncryptor
+            // TODO: See if this is the case for EncryptionSerialization
             // JSONSerialization can natively handle NSDecimalNumber.
             return (value as! NSDecimalNumber)
         }
         
-        // The value should request a container from the _EncryptingEncoder
+        // The value should request a container from the _EncryptionEncoder
         let depth = self.storage.count
         do {
             try value.encode(to: self)
@@ -779,12 +775,12 @@ extension _EncryptedEncoder {
     
 }
 
-/// _EncryptingReferencingEncoder is a special subclass of _JSONEncoder which has its own
+/// _EncryptionReferencingEncoder is a special subclass of _EncryptionEncoder which has its own
 ///   storage, but references the contents of a different encoder.
 /// It's used in superEncoder(), which returns a new encoder for encoding a superclass --
 ///   the lifetime of the encoder should not escape the scope it's created in, but it
 ///   doesn't necessarily know when it's done being used (to write to the original container).
-fileprivate class _EncryptingReferencingEncoder: _EncryptedEncoder {
+fileprivate class _EncryptionReferencingEncoder: _EncryptionEncoder {
     // MARK: Reference Types
     
     /// The type of container we're referencing.
@@ -799,7 +795,7 @@ fileprivate class _EncryptingReferencingEncoder: _EncryptedEncoder {
     // MARK: - Properties
     
     /// The encoder we're referencing.
-    fileprivate let encoder: _EncryptedEncoder
+    fileprivate let encoder: _EncryptionEncoder
     
     /// The container reference itself.
     private let reference: Reference
@@ -807,16 +803,16 @@ fileprivate class _EncryptingReferencingEncoder: _EncryptedEncoder {
     // MARK: - Initialization
     
     /// Initializes `self` by referencing the given array container in the given encoder.
-    fileprivate init(referencing encoder: _EncryptedEncoder, at index: Int, wrapping array: NSMutableArray) {
+    fileprivate init(referencing encoder: _EncryptionEncoder, at index: Int, wrapping array: NSMutableArray) {
         self.encoder = encoder
         self.reference = .array(array, index)
         super.init(options: encoder.options, codingPath: encoder.codingPath)
         
-        self.codingPath.append(_EncryptedKey(index: index))
+        self.codingPath.append(_EncryptionKey(index: index))
     }
     
     /// Initializes `self` by referencing the given dictionary container in the given encoder.
-    fileprivate init(referencing encoder: _EncryptedEncoder, key: CodingKey, wrapping dictionary: NSMutableDictionary) {
+    fileprivate init(referencing encoder: _EncryptionEncoder, key: CodingKey, wrapping dictionary: NSMutableDictionary) {
         self.encoder = encoder
         self.reference = .dictionary(dictionary, key.stringValue)
         super.init(options: encoder.options, codingPath: encoder.codingPath)
@@ -858,8 +854,8 @@ fileprivate class _EncryptingReferencingEncoder: _EncryptedEncoder {
 // Encryption Decoder
 //===----------------------------------------------------------------------===//
 
-/// `EncryptingDecoder` facilitates the decoding of encrypted data into semantic `Decodable` types.
-public class EncryptingDecoder {
+/// `EncryptionDecoder` facilitates the decoding of encrypted data into semantic `Decodable` types.
+public class EncryptionDecoder {
     // MARK: Options
     
     /// The strategy to use for decoding `Date` values.
@@ -915,11 +911,7 @@ public class EncryptingDecoder {
     public var nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy = .throw
     
     /// The encryption configuration to use when encoding input data.
-    private let configuration: EncryptionSerialization.Configuration
-    
-    /// The key used to encrypt input data. Defaults to `nil`, and remains so until
-    ///   the user calls `encode(_:withPassword:)` on the receiver.
-    private var passwordKey: [UInt8]?
+    private let configuration: EncryptionSerialization.Specification
     
     /// Contextual user-provided information for use during decoding.
     fileprivate var userInfo: [CodingUserInfoKey: Any] = [:]
@@ -929,8 +921,7 @@ public class EncryptingDecoder {
         let dateDecodingStrategy: DateDecodingStrategy
         let dataDecodingStrategy: DataDecodingStrategy
         let nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy
-        let passwordKey: [UInt8]?
-        let configuration: EncryptionSerialization.Configuration
+        let configuration: EncryptionSerialization.Specification
         let userInfo: [CodingUserInfoKey: Any]
     }
     
@@ -939,14 +930,13 @@ public class EncryptingDecoder {
         return _Options(dateDecodingStrategy: dateDecodingStrategy,
                         dataDecodingStrategy: dataDecodingStrategy,
                         nonConformingFloatDecodingStrategy: nonConformingFloatDecodingStrategy,
-                        passwordKey: passwordKey,
                         configuration: configuration,
                         userInfo: userInfo)
     }
     
     // MARK: - Constructing an Encryption Decoder
     
-    init(configuration: EncryptionSerialization.Configuration = .default) {
+    init(configuration: EncryptionSerialization.Specification = .default) {
         self.configuration = configuration
     }
     
@@ -956,13 +946,13 @@ public class EncryptingDecoder {
     ///
     /// - parameter type: The type of the value to decode.
     /// - parameter data: The data to decode from.
+    /// - parameter password: The password to use for decrypting `value`. The password is never retained beyond the lifetime of this function's call stack.
     /// - returns: A value of the requested type.
-    /// - throws: `DecodingError.dataCorrupted` if values requested from the payload are corrupted, or if the given data is not valid JSON.
+    /// - throws: `DecodingError.dataCorrupted` if values requested from the payload are corrupted, or if the given data is not a valid archive format.
     /// - throws: An error if any value throws an error during decoding.
     public func decode<T: Decodable>(_ type: T.Type, from item: EncryptedItem, withPassword password: String) throws -> T {
         
-        let decryptor = EncryptionSerialization(configuration: configuration)
-        let data = try decryptor.decryptedData(from: item, password: password)
+        let data = try EncryptionSerialization.data(withEncryptedObject: item, password: password)
         
         let topLevel: Any
         do {
@@ -993,7 +983,7 @@ fileprivate class _EncryptionDecoder: Decoder {
     fileprivate var storage: _EncryptionDecodingStorage
     
     /// Options set on the top-level decoder.
-    fileprivate let options: EncryptingDecoder._Options
+    fileprivate let options: EncryptionDecoder._Options
     
     /// The path to the current point in encoding.
     fileprivate(set) var codingPath: [CodingKey]
@@ -1006,7 +996,7 @@ fileprivate class _EncryptionDecoder: Decoder {
     // MARK: - Initialization
     
     /// Initializes `self` with the given top-level container and options.
-    init(referencing container: Any, at codingPath: [CodingKey] = [], options: EncryptingDecoder._Options) {
+    init(referencing container: Any, at codingPath: [CodingKey] = [], options: EncryptionDecoder._Options) {
         self.storage = _EncryptionDecodingStorage()
         self.storage.push(container: container)
         self.codingPath = codingPath
@@ -1405,7 +1395,7 @@ fileprivate struct _EncryptionKeyedDecodingContainer<K: CodingKey>: KeyedDecodin
     }
     
     func superDecoder() throws -> Decoder {
-        return try _superDecoder(forKey: _EncryptedKey.super)
+        return try _superDecoder(forKey: _EncryptionKey.super)
     }
     
     func superDecoder(forKey key: K) throws -> Decoder {
@@ -1450,7 +1440,7 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decodeNil() throws -> Bool {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(Any?.self, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(Any?.self, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
         if self.container[self.currentIndex] is NSNull {
@@ -1463,14 +1453,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Bool.Type) throws -> Bool {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Bool.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1479,14 +1469,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int.Type) throws -> Int {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1495,14 +1485,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int8.Type) throws -> Int8 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int8.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1511,14 +1501,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int16.Type) throws -> Int16 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int16.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1527,14 +1517,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int32.Type) throws -> Int32 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int32.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1543,14 +1533,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int64.Type) throws -> Int64 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int64.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1559,14 +1549,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt.Type) throws -> UInt {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1575,14 +1565,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt8.Type) throws -> UInt8 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt8.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1591,14 +1581,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt16.Type) throws -> UInt16 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt16.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1607,14 +1597,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt32.Type) throws -> UInt32 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt32.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1623,14 +1613,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt64.Type) throws -> UInt64 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt64.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1639,14 +1629,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Float.Type) throws -> Float {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Float.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1655,14 +1645,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Double.Type) throws -> Double {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Double.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1671,14 +1661,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: String.Type) throws -> String {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: String.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1687,14 +1677,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode<T: Decodable>(_ type: T.Type) throws -> T {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: type) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1702,7 +1692,7 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     }
     
     mutating func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type) throws -> KeyedDecodingContainer<NestedKey> {
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard !self.isAtEnd else {
@@ -1730,7 +1720,7 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     }
     
     mutating func nestedUnkeyedContainer() throws -> UnkeyedDecodingContainer {
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard !self.isAtEnd else {
@@ -1757,7 +1747,7 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     }
     
     mutating func superDecoder() throws -> Decoder {
-        self.decoder.codingPath.append(_EncryptedKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard !self.isAtEnd else {
@@ -2241,7 +2231,7 @@ extension _EncryptionDecoder {
 // Shared Key Types
 //===----------------------------------------------------------------------===//
 
-fileprivate struct _EncryptedKey: CodingKey {
+fileprivate struct _EncryptionKey: CodingKey {
     var stringValue: String
     var intValue: Int?
     
@@ -2265,7 +2255,7 @@ fileprivate struct _EncryptedKey: CodingKey {
         self.intValue = index
     }
     
-    fileprivate static let `super` = _EncryptedKey(stringValue: "super")!
+    fileprivate static let `super` = _EncryptionKey(stringValue: "super")!
 }
 
 //===----------------------------------------------------------------------===//
@@ -2303,7 +2293,7 @@ fileprivate extension EncodingError {
             valueDescription = "\(T.self).nan"
         }
         
-        let debugDescription = "Unable to encode \(valueDescription) directly in JSON. Use EncryptingEncoder.NonConformingFloatEncodingStrategy.convertToString to specify how the value should be encoded."
+        let debugDescription = "Unable to encode \(valueDescription) directly in JSON. Use EncryptionEncoder.NonConformingFloatEncodingStrategy.convertToString to specify how the value should be encoded."
         return .invalidValue(value, EncodingError.Context(codingPath: codingPath, debugDescription: debugDescription))
     }
 }

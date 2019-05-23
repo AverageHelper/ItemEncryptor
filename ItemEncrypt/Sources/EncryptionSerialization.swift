@@ -8,116 +8,32 @@
 
 import Foundation
 
-public struct EncryptedItem {
-    
-    public enum Format {
-        /// The first version of our encryoted data format.
-        case pilot
-        
-        var rawValue: [UInt8] {
-            switch self {
-            case .pilot: return [0, 0, 1]
-            }
-        }
-        
-        init?(bytes: [UInt8]) {
-            if bytes == Format.pilot.rawValue {
-                self = .pilot
-                
-            } else {
-                return nil
-            }
-        }
-        
-    }
-    
-    fileprivate let version: Format
-    fileprivate let payload: Data
-    fileprivate let salt: [UInt8]
-    
-    
-    public var rawData: Data {
-        return version.rawValue + payload + salt
-    }
-    
-    internal init(version: Format = .pilot, payload: Data, salt: [UInt8]) {
-        self.version = version
-        self.payload = payload
-        self.salt = salt
-    }
-    
-    /// Attempts to derive an `EncryptedItem` from `data` with the given `configuration`
-    ///   specifications. If the given version is found not to match the configuration's
-    ///   version spec, a `DecryptionError` is thrown.
-    init(data: Data, usingConfiguration configuration: EncryptionSerialization.Configuration) throws {
-        // Configuration tells us how to look at this data.
-        
-        var resultPayload = Data()
-        var resultSalt = [UInt8]()
-        try EncryptedItem.parseData(data,
-                                    into: &resultPayload,
-                                    resultSalt: &resultSalt,
-                                    version: configuration.version,
-                                    saltSize: configuration.saltSize)
-        
-        self.version = configuration.version
-        self.payload = resultPayload
-        self.salt = resultSalt
-    }
-    
-    private static func parseData(_ data: Data,
-                                  into resultPayload: inout Data,
-                                  resultSalt: inout [UInt8],
-                                  version: Format,
-                                  saltSize expectedSaltSize: Int) throws {
-        
-        // version + payload + salt
-        var mutableData = data
-        
-        let expectedVersionSize = version.rawValue.count
-        let expectedVersionData = mutableData[mutableData.startIndex..<expectedVersionSize]
-        guard let foundVersion = Format(bytes: [UInt8](expectedVersionData)) else {
-            throw EncryptionSerialization.DecryptionError.badData
-        }
-        guard foundVersion == version else {
-            throw EncryptionSerialization.DecryptionError.incorrectVersion
-        }
-        
-        mutableData = mutableData.subdata(in: (expectedVersionSize - 1)..<mutableData.endIndex)
-        
-        let saltStart = data.endIndex.advanced(by: -expectedSaltSize)
-        let expectedSaltData = data[saltStart..<data.count]
-        let proposedSalt = [UInt8](expectedSaltData)
-        resultSalt = proposedSalt
-        
-        mutableData = mutableData.subdata(in: mutableData.startIndex..<saltStart)
-        resultPayload = mutableData
-    }
-    
-}
 
-public final class EncryptionSerialization {
-    // MARK: Configuration
+// MARK: - EncryptionSerialization
+
+public enum EncryptionSerialization {
+    // MARK: Options
     
-    public struct Configuration {
+    public struct Specification {
         
+        /// The spec version used to encrypt data.
         let version: EncryptedItem.Format
         
         var bufferSize: Int {
-            switch version {
+            switch self.version {
             case .pilot: return 1024
             }
         }
         
         /// The size of the salt, in bytes, that will be kept at the end of the data.
         var saltSize: Int {
-            switch version {
+            switch self.version {
             case .pilot: return 16
             }
         }
         
         var iterations: UInt32 {
-            switch version {
+            switch self.version {
             case .pilot: return 100_000
             }
         }
@@ -126,8 +42,8 @@ public final class EncryptionSerialization {
             self.version = format
         }
         
-        /// The default configuration to construct an `ItemEncryptor` class object.
-        public static let `default` = Configuration(format: .pilot)
+        /// The default specification.
+        public static let `default` = Specification(format: .pilot)
         
     }
     
@@ -136,15 +52,7 @@ public final class EncryptionSerialization {
         case incorrectVersion
     }
     
-    // MARK: - Properties
-    
-    public var configuration: Configuration
-    
     // MARK: - Key Derivation
-    
-    init(configuration: Configuration) {
-        self.configuration = configuration
-    }
     
     public static func keyFromPassword(_ password: String, saltSize: Int, iterations: Int) -> (key: [UInt8], salt: [UInt8]) {
         return keyFromPassword(password, saltSize: saltSize, iterations: UInt32(iterations))
@@ -165,18 +73,20 @@ public final class EncryptionSerialization {
         return key
     }
     
-    // MARK: Encryption
+    // MARK: - Encryption
     
     /// Performs SHA256 encryption on `data`, using a key generated from `password`.
     ///
     /// A key is generated using PBKDF and a cryptographically random salt, which is
     ///   attached to the returned object for later use in decryption.
     ///
-    /// - Parameter data: A data block to be encrypted.
-    /// - Parameter passwordKey: The password key by which to encrypt the data. This must
+    /// - parameter data: A data block to be encrypted.
+    /// - parameter passwordKey: The password key by which to encrypt the data. This must
     ///     not be empty.
-    /// - Returns: An `EncryptedItem` representing the encrypted data.
-    public func encryptedItem(from data: Data, passwordKey key: [UInt8], salt: [UInt8]) -> EncryptedItem {
+    /// - parameter salt: A glob of nonsecure bytes which was used to derive the password key. This is kept with the encrypted data.
+    /// - parameter options: The set of configuration options to use when encrypting the data.
+    /// - returns: An `EncryptedItem` representing the encrypted data.
+    public static func encryptedItem(with data: Data, passwordKey key: [UInt8], salt: [UInt8], options: Specification) -> EncryptedItem {
         
         guard !key.isEmpty else {
             fatalError("Password key was an empty array.")
@@ -195,7 +105,7 @@ public final class EncryptionSerialization {
         
         let dataStream = InputStream(data: data)
         let outStream = OutputStream(toMemory: ())
-        let bufferSize = configuration.bufferSize
+        let bufferSize = options.bufferSize
         
         EncryptionSerialization.crypt(sc: cryptor, inputStream: dataStream, outputStream: outStream, bufferSize: bufferSize)
         
@@ -207,14 +117,15 @@ public final class EncryptionSerialization {
     }
     
     
-    // MARK: Decryption
+    // MARK: - Decryption
     
-    public func decryptedData(from object: EncryptedItem, password: String) throws -> Data {
+    public static func data(withEncryptedObject object: EncryptedItem, password: String) throws -> Data {
         
+        let options = Specification(format: object.version)
         let data = object.payload
         let salt = object.salt
         
-        let key = EncryptionSerialization.keyFromPassword(password, salt: salt, iterations: configuration.iterations)
+        let key = EncryptionSerialization.keyFromPassword(password, salt: salt, iterations: options.iterations)
         
         let cryptor = StreamCryptor(operation: .decrypt,
                                     algorithm: .aes,
@@ -225,7 +136,7 @@ public final class EncryptionSerialization {
         
         let dataStream = InputStream(data: data)
         let outStream = OutputStream(toMemory: ())
-        let bufferSize = configuration.bufferSize
+        let bufferSize = options.bufferSize
         
         EncryptionSerialization.crypt(sc: cryptor, inputStream: dataStream, outputStream: outStream, bufferSize: bufferSize)
         
@@ -236,6 +147,8 @@ public final class EncryptionSerialization {
         return decryptedData
     }
     
+    
+    /// Uses the IDZSwiftSerialization library to encrypt or decrypt the given data stream.
     private static func crypt(sc: StreamCryptor, inputStream: InputStream, outputStream: OutputStream, bufferSize: Int) {
         
         var inputBuffer = [UInt8](repeating: 0, count: bufferSize)

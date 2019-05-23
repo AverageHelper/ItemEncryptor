@@ -51,12 +51,23 @@
 		850E0C08228CB54800D308DC /* KeySizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0C06228CB54800D308DC /* KeySizes.swift */; };
 		850E0C09228CB54800D308DC /* KeySizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0C06228CB54800D308DC /* KeySizes.swift */; };
 		850E0C0A228CB54800D308DC /* KeySizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0C06228CB54800D308DC /* KeySizes.swift */; };
-		856650AC228D24F800F9A409 /* EncryptingEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptingEncoder.swift */; };
-		856650AD228D24F800F9A409 /* EncryptingEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptingEncoder.swift */; };
-		856650AE228D24F800F9A409 /* EncryptingEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptingEncoder.swift */; };
-		856650AF228D24F800F9A409 /* EncryptingEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptingEncoder.swift */; };
+		854226C62296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptionEncoder.swift */; };
+		854226C72296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptionEncoder.swift */; };
+		854226C82296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptionEncoder.swift */; };
+		854226C92296E0A900B8CA33 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptionEncoder.swift */; };
+		854226CB2296F34F00B8CA33 /* EncryptingMacOSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226CA2296F34F00B8CA33 /* EncryptingMacOSTypes.swift */; };
+		854226CD2296F37000B8CA33 /* EncryptingSwiftTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */; };
+		854226CE2296F37600B8CA33 /* EncryptingSwiftTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */; };
+		854226CF2296F37700B8CA33 /* EncryptingSwiftTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */; };
+		854226D12296F48F00B8CA33 /* EncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D02296F48F00B8CA33 /* EncryptedItem.swift */; };
+		854226D22296F48F00B8CA33 /* EncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D02296F48F00B8CA33 /* EncryptedItem.swift */; };
+		854226D32296F48F00B8CA33 /* EncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D02296F48F00B8CA33 /* EncryptedItem.swift */; };
+		854226D42296F48F00B8CA33 /* EncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D02296F48F00B8CA33 /* EncryptedItem.swift */; };
+		85C4864622964EF300E1EFA5 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C4864522964EF300E1EFA5 /* Scary Puppy.png */; };
+		85C4864822964EF300E1EFA5 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C4864522964EF300E1EFA5 /* Scary Puppy.png */; };
+		85C4864922964F5100E1EFA5 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C4864522964EF300E1EFA5 /* Scary Puppy.png */; };
 		85CA1850228A631200159C0A /* ItemEncrypt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CA1846228A631200159C0A /* ItemEncrypt.framework */; };
-		85CA1855228A631200159C0A /* ItemEncryptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* ItemEncryptTests.swift */; };
+		85CA1855228A631200159C0A /* EncryptingiOSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* EncryptingiOSTypes.swift */; };
 		85CA1857228A631200159C0A /* ItemEncrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 85CA1849228A631200159C0A /* ItemEncrypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		85CA1861228A638700159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
 		85CA1870228A64BE00159C0A /* ItemEncrypt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CA1867228A64BE00159C0A /* ItemEncrypt.framework */; };
@@ -64,8 +75,7 @@
 		85CA18AD228A65D200159C0A /* ItemEncrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 85CA1849228A631200159C0A /* ItemEncrypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		85CA18C0228A670400159C0A /* ItemEncrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 85CA1849228A631200159C0A /* ItemEncrypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		85CA18C1228A670600159C0A /* ItemEncrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 85CA1849228A631200159C0A /* ItemEncrypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		85CA18C2228A671B00159C0A /* ItemEncryptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* ItemEncryptTests.swift */; };
-		85CA18C3228A671C00159C0A /* ItemEncryptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* ItemEncryptTests.swift */; };
+		85CA18C3228A671C00159C0A /* EncryptingiOSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* EncryptingiOSTypes.swift */; };
 		85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
 		85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
 		85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
@@ -107,12 +117,16 @@
 		850E0BD2228C94A200D308DC /* HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HMAC.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/HMAC.swift; sourceTree = SOURCE_ROOT; };
 		850E0BD3228C94A200D308DC /* KeyDerivation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyDerivation.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/KeyDerivation.swift; sourceTree = SOURCE_ROOT; };
 		850E0C06228CB54800D308DC /* KeySizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySizes.swift; sourceTree = "<group>"; };
-		856650AB228D24F800F9A409 /* EncryptingEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptingEncoder.swift; sourceTree = "<group>"; };
+		854226CA2296F34F00B8CA33 /* EncryptingMacOSTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptingMacOSTypes.swift; sourceTree = "<group>"; };
+		854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptingSwiftTypes.swift; sourceTree = "<group>"; };
+		854226D02296F48F00B8CA33 /* EncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedItem.swift; sourceTree = "<group>"; };
+		856650AB228D24F800F9A409 /* EncryptionEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionEncoder.swift; sourceTree = "<group>"; };
+		85C4864522964EF300E1EFA5 /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Scary Puppy.png"; path = "ItemEncryptTests/Assets/Images/Scary Puppy.png"; sourceTree = SOURCE_ROOT; };
 		85CA1846228A631200159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA1849228A631200159C0A /* ItemEncrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemEncrypt.h; sourceTree = "<group>"; };
 		85CA184A228A631200159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ItemEncrypt/Assets/iOS/Info.plist; sourceTree = SOURCE_ROOT; };
 		85CA184F228A631200159C0A /* ItemEncrypt-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ItemEncrypt-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		85CA1854228A631200159C0A /* ItemEncryptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEncryptTests.swift; sourceTree = "<group>"; };
+		85CA1854228A631200159C0A /* EncryptingiOSTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptingiOSTypes.swift; sourceTree = "<group>"; };
 		85CA1856228A631200159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ItemEncryptTests/Assets/iOS/Info.plist; sourceTree = SOURCE_ROOT; };
 		85CA1860228A638700159C0A /* EncryptionSerialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionSerialization.swift; sourceTree = "<group>"; };
 		85CA1867228A64BE00159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +215,14 @@
 			name = IDZSwiftCommonCrypto;
 			sourceTree = "<group>";
 		};
+		85C4864422964ECF00E1EFA5 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				85C4864522964EF300E1EFA5 /* Scary Puppy.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		85CA183C228A631100159C0A = {
 			isa = PBXGroup;
 			children = (
@@ -248,8 +270,9 @@
 			children = (
 				850E0BC9228C946800D308DC /* IDZSwiftCommonCrypto */,
 				85CA1860228A638700159C0A /* EncryptionSerialization.swift */,
-				856650AB228D24F800F9A409 /* EncryptingEncoder.swift */,
+				856650AB228D24F800F9A409 /* EncryptionEncoder.swift */,
 				850E0C06228CB54800D308DC /* KeySizes.swift */,
+				854226D02296F48F00B8CA33 /* EncryptedItem.swift */,
 				85CA1849228A631200159C0A /* ItemEncrypt.h */,
 			);
 			path = Sources;
@@ -301,6 +324,7 @@
 		85CA18AF228A660B00159C0A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				85C4864422964ECF00E1EFA5 /* Images */,
 				85CA18B1228A661F00159C0A /* iOS */,
 				85CA18B2228A662A00159C0A /* macOS */,
 				85CA18B4228A664E00159C0A /* tvOS */,
@@ -311,7 +335,9 @@
 		85CA18B0228A661300159C0A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				85CA1854228A631200159C0A /* ItemEncryptTests.swift */,
+				854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */,
+				854226CA2296F34F00B8CA33 /* EncryptingMacOSTypes.swift */,
+				85CA1854228A631200159C0A /* EncryptingiOSTypes.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -578,6 +604,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85C4864622964EF300E1EFA5 /* Scary Puppy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,6 +619,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85C4864922964F5100E1EFA5 /* Scary Puppy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +634,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85C4864822964EF300E1EFA5 /* Scary Puppy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,16 +748,17 @@
 				850E0C07228CB54800D308DC /* KeySizes.swift in Sources */,
 				850E0BDA228C94A200D308DC /* Crypto.swift in Sources */,
 				850E0BD9228C94A200D308DC /* Updateable.swift in Sources */,
+				854226C62296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
 				850E0BD6228C94A200D308DC /* Random.swift in Sources */,
 				850E0BD8228C94A200D308DC /* StreamCryptor.swift in Sources */,
 				850E0BD7228C94A200D308DC /* Status.swift in Sources */,
+				854226D12296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				85CA1861228A638700159C0A /* EncryptionSerialization.swift in Sources */,
 				850E0BDC228C94A200D308DC /* HMAC.swift in Sources */,
 				850E0BDB228C94A200D308DC /* Utilities.swift in Sources */,
 				850E0BDD228C94A200D308DC /* KeyDerivation.swift in Sources */,
 				850E0BD4228C94A200D308DC /* Cryptor.swift in Sources */,
 				850E0BD5228C94A200D308DC /* Digest.swift in Sources */,
-				856650AC228D24F800F9A409 /* EncryptingEncoder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -736,7 +766,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85CA1855228A631200159C0A /* ItemEncryptTests.swift in Sources */,
+				854226CE2296F37600B8CA33 /* EncryptingSwiftTypes.swift in Sources */,
+				85CA1855228A631200159C0A /* EncryptingiOSTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,16 +778,17 @@
 				850E0C08228CB54800D308DC /* KeySizes.swift in Sources */,
 				850E0BDE228C958C00D308DC /* Crypto.swift in Sources */,
 				850E0BE5228C958C00D308DC /* StreamCryptor.swift in Sources */,
+				854226C72296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
 				850E0BE7228C958C00D308DC /* Utilities.swift in Sources */,
 				850E0BE1228C958C00D308DC /* HMAC.swift in Sources */,
 				85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */,
+				854226D22296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				850E0BE4228C958C00D308DC /* Status.swift in Sources */,
 				850E0BDF228C958C00D308DC /* Cryptor.swift in Sources */,
 				850E0BE6228C958C00D308DC /* Updateable.swift in Sources */,
 				850E0BE2228C958C00D308DC /* KeyDerivation.swift in Sources */,
 				850E0BE0228C958C00D308DC /* Digest.swift in Sources */,
 				850E0BE3228C958C00D308DC /* Random.swift in Sources */,
-				856650AD228D24F800F9A409 /* EncryptingEncoder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,7 +796,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85CA18C2228A671B00159C0A /* ItemEncryptTests.swift in Sources */,
+				854226CD2296F37000B8CA33 /* EncryptingSwiftTypes.swift in Sources */,
+				854226CB2296F34F00B8CA33 /* EncryptingMacOSTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,16 +808,17 @@
 				850E0C09228CB54800D308DC /* KeySizes.swift in Sources */,
 				850E0BE8228C958D00D308DC /* Crypto.swift in Sources */,
 				850E0BEF228C958D00D308DC /* StreamCryptor.swift in Sources */,
+				854226C82296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
 				850E0BF1228C958D00D308DC /* Utilities.swift in Sources */,
 				850E0BEB228C958D00D308DC /* HMAC.swift in Sources */,
 				85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
+				854226D32296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				850E0BEE228C958D00D308DC /* Status.swift in Sources */,
 				850E0BE9228C958D00D308DC /* Cryptor.swift in Sources */,
 				850E0BF0228C958D00D308DC /* Updateable.swift in Sources */,
 				850E0BEC228C958D00D308DC /* KeyDerivation.swift in Sources */,
 				850E0BEA228C958D00D308DC /* Digest.swift in Sources */,
 				850E0BED228C958D00D308DC /* Random.swift in Sources */,
-				856650AE228D24F800F9A409 /* EncryptingEncoder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -792,7 +826,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85CA18C3228A671C00159C0A /* ItemEncryptTests.swift in Sources */,
+				854226CF2296F37700B8CA33 /* EncryptingSwiftTypes.swift in Sources */,
+				85CA18C3228A671C00159C0A /* EncryptingiOSTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -803,16 +838,17 @@
 				850E0C0A228CB54800D308DC /* KeySizes.swift in Sources */,
 				850E0BF2228C958E00D308DC /* Crypto.swift in Sources */,
 				850E0BF9228C958E00D308DC /* StreamCryptor.swift in Sources */,
+				854226C92296E0A900B8CA33 /* EncryptionEncoder.swift in Sources */,
 				850E0BFB228C958E00D308DC /* Utilities.swift in Sources */,
 				850E0BF5228C958E00D308DC /* HMAC.swift in Sources */,
 				85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
+				854226D42296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				850E0BF8228C958E00D308DC /* Status.swift in Sources */,
 				850E0BF3228C958E00D308DC /* Cryptor.swift in Sources */,
 				850E0BFA228C958E00D308DC /* Updateable.swift in Sources */,
 				850E0BF6228C958E00D308DC /* KeyDerivation.swift in Sources */,
 				850E0BF4228C958E00D308DC /* Digest.swift in Sources */,
 				850E0BF7228C958E00D308DC /* Random.swift in Sources */,
-				856650AF228D24F800F9A409 /* EncryptingEncoder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
