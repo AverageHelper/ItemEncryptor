@@ -7,46 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		850E0BD4228C94A200D308DC /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCA228C94A200D308DC /* Cryptor.swift */; };
-		850E0BD5228C94A200D308DC /* Digest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCB228C94A200D308DC /* Digest.swift */; };
-		850E0BD6228C94A200D308DC /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCC228C94A200D308DC /* Random.swift */; };
-		850E0BD7228C94A200D308DC /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCD228C94A200D308DC /* Status.swift */; };
-		850E0BD8228C94A200D308DC /* StreamCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCE228C94A200D308DC /* StreamCryptor.swift */; };
-		850E0BD9228C94A200D308DC /* Updateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCF228C94A200D308DC /* Updateable.swift */; };
-		850E0BDA228C94A200D308DC /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD0228C94A200D308DC /* Crypto.swift */; };
-		850E0BDB228C94A200D308DC /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD1228C94A200D308DC /* Utilities.swift */; };
-		850E0BDC228C94A200D308DC /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD2228C94A200D308DC /* HMAC.swift */; };
-		850E0BDD228C94A200D308DC /* KeyDerivation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD3228C94A200D308DC /* KeyDerivation.swift */; };
-		850E0BDE228C958C00D308DC /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD0228C94A200D308DC /* Crypto.swift */; };
-		850E0BDF228C958C00D308DC /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCA228C94A200D308DC /* Cryptor.swift */; };
-		850E0BE0228C958C00D308DC /* Digest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCB228C94A200D308DC /* Digest.swift */; };
-		850E0BE1228C958C00D308DC /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD2228C94A200D308DC /* HMAC.swift */; };
-		850E0BE2228C958C00D308DC /* KeyDerivation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD3228C94A200D308DC /* KeyDerivation.swift */; };
-		850E0BE3228C958C00D308DC /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCC228C94A200D308DC /* Random.swift */; };
-		850E0BE4228C958C00D308DC /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCD228C94A200D308DC /* Status.swift */; };
-		850E0BE5228C958C00D308DC /* StreamCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCE228C94A200D308DC /* StreamCryptor.swift */; };
-		850E0BE6228C958C00D308DC /* Updateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCF228C94A200D308DC /* Updateable.swift */; };
-		850E0BE7228C958C00D308DC /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD1228C94A200D308DC /* Utilities.swift */; };
-		850E0BE8228C958D00D308DC /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD0228C94A200D308DC /* Crypto.swift */; };
-		850E0BE9228C958D00D308DC /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCA228C94A200D308DC /* Cryptor.swift */; };
-		850E0BEA228C958D00D308DC /* Digest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCB228C94A200D308DC /* Digest.swift */; };
-		850E0BEB228C958D00D308DC /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD2228C94A200D308DC /* HMAC.swift */; };
-		850E0BEC228C958D00D308DC /* KeyDerivation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD3228C94A200D308DC /* KeyDerivation.swift */; };
-		850E0BED228C958D00D308DC /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCC228C94A200D308DC /* Random.swift */; };
-		850E0BEE228C958D00D308DC /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCD228C94A200D308DC /* Status.swift */; };
-		850E0BEF228C958D00D308DC /* StreamCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCE228C94A200D308DC /* StreamCryptor.swift */; };
-		850E0BF0228C958D00D308DC /* Updateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCF228C94A200D308DC /* Updateable.swift */; };
-		850E0BF1228C958D00D308DC /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD1228C94A200D308DC /* Utilities.swift */; };
-		850E0BF2228C958E00D308DC /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD0228C94A200D308DC /* Crypto.swift */; };
-		850E0BF3228C958E00D308DC /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCA228C94A200D308DC /* Cryptor.swift */; };
-		850E0BF4228C958E00D308DC /* Digest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCB228C94A200D308DC /* Digest.swift */; };
-		850E0BF5228C958E00D308DC /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD2228C94A200D308DC /* HMAC.swift */; };
-		850E0BF6228C958E00D308DC /* KeyDerivation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD3228C94A200D308DC /* KeyDerivation.swift */; };
-		850E0BF7228C958E00D308DC /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCC228C94A200D308DC /* Random.swift */; };
-		850E0BF8228C958E00D308DC /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCD228C94A200D308DC /* Status.swift */; };
-		850E0BF9228C958E00D308DC /* StreamCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCE228C94A200D308DC /* StreamCryptor.swift */; };
-		850E0BFA228C958E00D308DC /* Updateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BCF228C94A200D308DC /* Updateable.swift */; };
-		850E0BFB228C958E00D308DC /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0BD1228C94A200D308DC /* Utilities.swift */; };
+		2CB8AD59F872C8E537B84869 /* Pods_ItemEncrypt_MacTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF04FC7FE0775E6B845D7BA /* Pods_ItemEncrypt_MacTests.framework */; };
+		48588ADAD5A2F615791D9D81 /* Pods_ItemEncrypt_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F7098AFAAFB26918E6695D /* Pods_ItemEncrypt_iOSTests.framework */; };
+		628F68B824736B4FB50FC2A9 /* Pods_ItemEncrypt_watchOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482BD353188E05DB301164F3 /* Pods_ItemEncrypt_watchOS.framework */; };
+		821549B7457C0FC697F3ABCD /* Pods_ItemEncrypt_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D98D71BA3FF81A487F2DB68 /* Pods_ItemEncrypt_tvOS.framework */; };
 		850E0C07228CB54800D308DC /* KeySizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0C06228CB54800D308DC /* KeySizes.swift */; };
 		850E0C08228CB54800D308DC /* KeySizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0C06228CB54800D308DC /* KeySizes.swift */; };
 		850E0C09228CB54800D308DC /* KeySizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0C06228CB54800D308DC /* KeySizes.swift */; };
@@ -63,6 +27,11 @@
 		854226D22296F48F00B8CA33 /* EncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D02296F48F00B8CA33 /* EncryptedItem.swift */; };
 		854226D32296F48F00B8CA33 /* EncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D02296F48F00B8CA33 /* EncryptedItem.swift */; };
 		854226D42296F48F00B8CA33 /* EncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D02296F48F00B8CA33 /* EncryptedItem.swift */; };
+		854226D622977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
+		854226D722977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
+		854226D822977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
+		854226D922977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
+		859C2F902298303100DB9354 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 859C2F8F2298303100DB9354 /* .gitignore */; };
 		85C4864622964EF300E1EFA5 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C4864522964EF300E1EFA5 /* Scary Puppy.png */; };
 		85C4864822964EF300E1EFA5 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C4864522964EF300E1EFA5 /* Scary Puppy.png */; };
 		85C4864922964F5100E1EFA5 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C4864522964EF300E1EFA5 /* Scary Puppy.png */; };
@@ -79,6 +48,9 @@
 		85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
 		85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
 		85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
+		C0AE09F2DFAD7BD9EF3F4D42 /* Pods_ItemEncrypt_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E79A37807451707EE7E862BB /* Pods_ItemEncrypt_Mac.framework */; };
+		D1D6880F6836F11DF36E8406 /* Pods_ItemEncrypt_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BB5A4A2216AC0C8F937A66A /* Pods_ItemEncrypt_iOS.framework */; };
+		D58EE021E190C2AF249A8706 /* Pods_ItemEncrypt_tvOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1590568838338B180BA549 /* Pods_ItemEncrypt_tvOSTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,21 +78,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		850E0BCA228C94A200D308DC /* Cryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cryptor.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/Cryptor.swift; sourceTree = SOURCE_ROOT; };
-		850E0BCB228C94A200D308DC /* Digest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Digest.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/Digest.swift; sourceTree = SOURCE_ROOT; };
-		850E0BCC228C94A200D308DC /* Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Random.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/Random.swift; sourceTree = SOURCE_ROOT; };
-		850E0BCD228C94A200D308DC /* Status.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Status.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/Status.swift; sourceTree = SOURCE_ROOT; };
-		850E0BCE228C94A200D308DC /* StreamCryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StreamCryptor.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/StreamCryptor.swift; sourceTree = SOURCE_ROOT; };
-		850E0BCF228C94A200D308DC /* Updateable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Updateable.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/Updateable.swift; sourceTree = SOURCE_ROOT; };
-		850E0BD0228C94A200D308DC /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Crypto.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/Crypto.swift; sourceTree = SOURCE_ROOT; };
-		850E0BD1228C94A200D308DC /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/Utilities.swift; sourceTree = SOURCE_ROOT; };
-		850E0BD2228C94A200D308DC /* HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HMAC.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/HMAC.swift; sourceTree = SOURCE_ROOT; };
-		850E0BD3228C94A200D308DC /* KeyDerivation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyDerivation.swift; path = IDZSwiftCommonCrypto/IDZSwiftCommonCrypto/KeyDerivation.swift; sourceTree = SOURCE_ROOT; };
+		050C633A22AF7A45C5EA9AAE /* Pods-ItemEncrypt-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-iOS.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-iOS/Pods-ItemEncrypt-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		150A56D8D95218F573710EAF /* Pods-ItemEncrypt-Mac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-Mac.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-Mac/Pods-ItemEncrypt-Mac.debug.xcconfig"; sourceTree = "<group>"; };
+		15A3B3CA068AA11F846C35C2 /* Pods-ItemEncrypt-Mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-Mac.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-Mac/Pods-ItemEncrypt-Mac.release.xcconfig"; sourceTree = "<group>"; };
+		26D1BEF1D231EC8B497BBAB4 /* Pods-ItemEncrypt-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-tvOSTests/Pods-ItemEncrypt-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2D98D71BA3FF81A487F2DB68 /* Pods_ItemEncrypt_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		482BD353188E05DB301164F3 /* Pods_ItemEncrypt_watchOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_watchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BB5A4A2216AC0C8F937A66A /* Pods_ItemEncrypt_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		500A2E7451141306086ED816 /* Pods-ItemEncrypt-watchOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-watchOS.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-watchOS/Pods-ItemEncrypt-watchOS.debug.xcconfig"; sourceTree = "<group>"; };
+		64F7098AFAAFB26918E6695D /* Pods_ItemEncrypt_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CCBC9AFDF1136A10B40AF80 /* Pods-ItemEncrypt-watchOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-watchOS.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-watchOS/Pods-ItemEncrypt-watchOS.release.xcconfig"; sourceTree = "<group>"; };
+		6D44A50FF5A405AD19153E77 /* Pods-ItemEncrypt-MacTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-MacTests.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-MacTests/Pods-ItemEncrypt-MacTests.debug.xcconfig"; sourceTree = "<group>"; };
 		850E0C06228CB54800D308DC /* KeySizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySizes.swift; sourceTree = "<group>"; };
 		854226CA2296F34F00B8CA33 /* EncryptingMacOSTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptingMacOSTypes.swift; sourceTree = "<group>"; };
 		854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptingSwiftTypes.swift; sourceTree = "<group>"; };
 		854226D02296F48F00B8CA33 /* EncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedItem.swift; sourceTree = "<group>"; };
+		854226D522977BDB00B8CA33 /* Scheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheme.swift; sourceTree = "<group>"; };
 		856650AB228D24F800F9A409 /* EncryptionEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionEncoder.swift; sourceTree = "<group>"; };
+		859C2F8F2298303100DB9354 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		85C4864522964EF300E1EFA5 /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Scary Puppy.png"; path = "ItemEncryptTests/Assets/Images/Scary Puppy.png"; sourceTree = SOURCE_ROOT; };
 		85CA1846228A631200159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA1849228A631200159C0A /* ItemEncrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemEncrypt.h; sourceTree = "<group>"; };
@@ -140,6 +115,16 @@
 		85CA189F228A64EA00159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA18A2228A64EA00159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85CA4CA12295022400CE0EFB /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
+		9ABBBDAE15184E0978A68AD2 /* Pods-ItemEncrypt-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-tvOS/Pods-ItemEncrypt-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		9AF04FC7FE0775E6B845D7BA /* Pods_ItemEncrypt_MacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_MacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0BAEFFEB80A680891C0FD2C /* Pods-ItemEncrypt-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-tvOSTests/Pods-ItemEncrypt-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		D539200AB674BE531E861286 /* Pods-ItemEncrypt-MacTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-MacTests.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-MacTests/Pods-ItemEncrypt-MacTests.release.xcconfig"; sourceTree = "<group>"; };
+		DA1590568838338B180BA549 /* Pods_ItemEncrypt_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4C5C5D41B4B40DF1C0C9434 /* Pods-ItemEncrypt-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-iOSTests/Pods-ItemEncrypt-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E79A37807451707EE7E862BB /* Pods_ItemEncrypt_Mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_Mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBC4EC06E0B9B4FC8B58A053 /* Pods-ItemEncrypt-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-iOSTests/Pods-ItemEncrypt-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		F8DF8DF3140DB041FB15E92C /* Pods-ItemEncrypt-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-iOS/Pods-ItemEncrypt-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		FDF04A69B35D4DC2637FF970 /* Pods-ItemEncrypt-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-tvOS/Pods-ItemEncrypt-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1D6880F6836F11DF36E8406 /* Pods_ItemEncrypt_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85CA1850228A631200159C0A /* ItemEncrypt.framework in Frameworks */,
+				48588ADAD5A2F615791D9D81 /* Pods_ItemEncrypt_iOSTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,6 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0AE09F2DFAD7BD9EF3F4D42 /* Pods_ItemEncrypt_Mac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,6 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85CA1870228A64BE00159C0A /* ItemEncrypt.framework in Frameworks */,
+				2CB8AD59F872C8E537B84869 /* Pods_ItemEncrypt_MacTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +166,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				821549B7457C0FC697F3ABCD /* Pods_ItemEncrypt_tvOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85CA188C228A64D800159C0A /* ItemEncrypt.framework in Frameworks */,
+				D58EE021E190C2AF249A8706 /* Pods_ItemEncrypt_tvOSTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,27 +183,46 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				628F68B824736B4FB50FC2A9 /* Pods_ItemEncrypt_watchOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		850E0BC9228C946800D308DC /* IDZSwiftCommonCrypto */ = {
+		0A788788675C9ED7324E6574 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				850E0BD0228C94A200D308DC /* Crypto.swift */,
-				850E0BCA228C94A200D308DC /* Cryptor.swift */,
-				850E0BCB228C94A200D308DC /* Digest.swift */,
-				850E0BD2228C94A200D308DC /* HMAC.swift */,
-				850E0BD3228C94A200D308DC /* KeyDerivation.swift */,
-				850E0BCC228C94A200D308DC /* Random.swift */,
-				850E0BCD228C94A200D308DC /* Status.swift */,
-				850E0BCE228C94A200D308DC /* StreamCryptor.swift */,
-				850E0BCF228C94A200D308DC /* Updateable.swift */,
-				850E0BD1228C94A200D308DC /* Utilities.swift */,
+				E79A37807451707EE7E862BB /* Pods_ItemEncrypt_Mac.framework */,
+				9AF04FC7FE0775E6B845D7BA /* Pods_ItemEncrypt_MacTests.framework */,
+				4BB5A4A2216AC0C8F937A66A /* Pods_ItemEncrypt_iOS.framework */,
+				64F7098AFAAFB26918E6695D /* Pods_ItemEncrypt_iOSTests.framework */,
+				2D98D71BA3FF81A487F2DB68 /* Pods_ItemEncrypt_tvOS.framework */,
+				DA1590568838338B180BA549 /* Pods_ItemEncrypt_tvOSTests.framework */,
+				482BD353188E05DB301164F3 /* Pods_ItemEncrypt_watchOS.framework */,
 			);
-			name = IDZSwiftCommonCrypto;
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3C47B6E1C062D094D960D2FE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				150A56D8D95218F573710EAF /* Pods-ItemEncrypt-Mac.debug.xcconfig */,
+				15A3B3CA068AA11F846C35C2 /* Pods-ItemEncrypt-Mac.release.xcconfig */,
+				6D44A50FF5A405AD19153E77 /* Pods-ItemEncrypt-MacTests.debug.xcconfig */,
+				D539200AB674BE531E861286 /* Pods-ItemEncrypt-MacTests.release.xcconfig */,
+				F8DF8DF3140DB041FB15E92C /* Pods-ItemEncrypt-iOS.debug.xcconfig */,
+				050C633A22AF7A45C5EA9AAE /* Pods-ItemEncrypt-iOS.release.xcconfig */,
+				E4C5C5D41B4B40DF1C0C9434 /* Pods-ItemEncrypt-iOSTests.debug.xcconfig */,
+				EBC4EC06E0B9B4FC8B58A053 /* Pods-ItemEncrypt-iOSTests.release.xcconfig */,
+				9ABBBDAE15184E0978A68AD2 /* Pods-ItemEncrypt-tvOS.debug.xcconfig */,
+				FDF04A69B35D4DC2637FF970 /* Pods-ItemEncrypt-tvOS.release.xcconfig */,
+				26D1BEF1D231EC8B497BBAB4 /* Pods-ItemEncrypt-tvOSTests.debug.xcconfig */,
+				B0BAEFFEB80A680891C0FD2C /* Pods-ItemEncrypt-tvOSTests.release.xcconfig */,
+				500A2E7451141306086ED816 /* Pods-ItemEncrypt-watchOS.debug.xcconfig */,
+				6CCBC9AFDF1136A10B40AF80 /* Pods-ItemEncrypt-watchOS.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		85C4864422964ECF00E1EFA5 /* Images */ = {
@@ -226,10 +236,13 @@
 		85CA183C228A631100159C0A = {
 			isa = PBXGroup;
 			children = (
+				859C2F8F2298303100DB9354 /* .gitignore */,
 				85CA4CA12295022400CE0EFB /* .swiftlint.yml */,
 				85CA1848228A631200159C0A /* ItemEncrypt */,
 				85CA1853228A631200159C0A /* ItemEncryptTests */,
 				85CA1847228A631200159C0A /* Products */,
+				3C47B6E1C062D094D960D2FE /* Pods */,
+				0A788788675C9ED7324E6574 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -268,8 +281,8 @@
 		85CA18A7228A64F200159C0A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				850E0BC9228C946800D308DC /* IDZSwiftCommonCrypto */,
 				85CA1860228A638700159C0A /* EncryptionSerialization.swift */,
+				854226D522977BDB00B8CA33 /* Scheme.swift */,
 				856650AB228D24F800F9A409 /* EncryptionEncoder.swift */,
 				850E0C06228CB54800D308DC /* KeySizes.swift */,
 				854226D02296F48F00B8CA33 /* EncryptedItem.swift */,
@@ -408,6 +421,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85CA185A228A631200159C0A /* Build configuration list for PBXNativeTarget "ItemEncrypt-iOS" */;
 			buildPhases = (
+				5AE635639DDB5856F6DF8955 /* [CP] Check Pods Manifest.lock */,
 				85C67F22228B058100EAB80F /* Compile NSS */,
 				85CA1841228A631200159C0A /* Headers */,
 				85CA1842228A631200159C0A /* Sources */,
@@ -428,6 +442,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85CA185D228A631200159C0A /* Build configuration list for PBXNativeTarget "ItemEncrypt-iOSTests" */;
 			buildPhases = (
+				8F8AC352568FF25569E117C8 /* [CP] Check Pods Manifest.lock */,
 				85CA184B228A631200159C0A /* Sources */,
 				85CA184C228A631200159C0A /* Frameworks */,
 				85CA184D228A631200159C0A /* Resources */,
@@ -446,6 +461,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85CA1878228A64BE00159C0A /* Build configuration list for PBXNativeTarget "ItemEncrypt-Mac" */;
 			buildPhases = (
+				13C92B24B6A3CBADB94FD9A6 /* [CP] Check Pods Manifest.lock */,
 				85CA1862228A64BE00159C0A /* Headers */,
 				85CA1863228A64BE00159C0A /* Sources */,
 				85CA1864228A64BE00159C0A /* Frameworks */,
@@ -465,6 +481,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85CA187B228A64BE00159C0A /* Build configuration list for PBXNativeTarget "ItemEncrypt-MacTests" */;
 			buildPhases = (
+				4B259B856858CB3A76234A0F /* [CP] Check Pods Manifest.lock */,
 				85CA186B228A64BE00159C0A /* Sources */,
 				85CA186C228A64BE00159C0A /* Frameworks */,
 				85CA186D228A64BE00159C0A /* Resources */,
@@ -483,6 +500,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85CA1894228A64D800159C0A /* Build configuration list for PBXNativeTarget "ItemEncrypt-tvOS" */;
 			buildPhases = (
+				3D602DFA0FB45B22AAB21898 /* [CP] Check Pods Manifest.lock */,
 				85CA187E228A64D800159C0A /* Headers */,
 				85CA187F228A64D800159C0A /* Sources */,
 				85CA1880228A64D800159C0A /* Frameworks */,
@@ -502,6 +520,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85CA1897228A64D800159C0A /* Build configuration list for PBXNativeTarget "ItemEncrypt-tvOSTests" */;
 			buildPhases = (
+				01397E0CE976665522CB46DA /* [CP] Check Pods Manifest.lock */,
 				85CA1887228A64D800159C0A /* Sources */,
 				85CA1888228A64D800159C0A /* Frameworks */,
 				85CA1889228A64D800159C0A /* Resources */,
@@ -520,6 +539,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85CA18A4228A64EA00159C0A /* Build configuration list for PBXNativeTarget "ItemEncrypt-watchOS" */;
 			buildPhases = (
+				4E2378F07A8A7D9411773DAD /* [CP] Check Pods Manifest.lock */,
 				85CA189A228A64EA00159C0A /* Headers */,
 				85CA189B228A64EA00159C0A /* Sources */,
 				85CA189C228A64EA00159C0A /* Frameworks */,
@@ -597,6 +617,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				859C2F902298303100DB9354 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -648,6 +669,138 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		01397E0CE976665522CB46DA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ItemEncrypt-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		13C92B24B6A3CBADB94FD9A6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ItemEncrypt-Mac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3D602DFA0FB45B22AAB21898 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ItemEncrypt-tvOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4B259B856858CB3A76234A0F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ItemEncrypt-MacTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4E2378F07A8A7D9411773DAD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ItemEncrypt-watchOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5AE635639DDB5856F6DF8955 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ItemEncrypt-iOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		85C67F22228B058100EAB80F /* Compile NSS */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -738,6 +891,28 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\ncd PROJECT_DIR; swiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
+		8F8AC352568FF25569E117C8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ItemEncrypt-iOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -746,19 +921,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				850E0C07228CB54800D308DC /* KeySizes.swift in Sources */,
-				850E0BDA228C94A200D308DC /* Crypto.swift in Sources */,
-				850E0BD9228C94A200D308DC /* Updateable.swift in Sources */,
 				854226C62296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
-				850E0BD6228C94A200D308DC /* Random.swift in Sources */,
-				850E0BD8228C94A200D308DC /* StreamCryptor.swift in Sources */,
-				850E0BD7228C94A200D308DC /* Status.swift in Sources */,
+				854226D622977BDB00B8CA33 /* Scheme.swift in Sources */,
 				854226D12296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				85CA1861228A638700159C0A /* EncryptionSerialization.swift in Sources */,
-				850E0BDC228C94A200D308DC /* HMAC.swift in Sources */,
-				850E0BDB228C94A200D308DC /* Utilities.swift in Sources */,
-				850E0BDD228C94A200D308DC /* KeyDerivation.swift in Sources */,
-				850E0BD4228C94A200D308DC /* Cryptor.swift in Sources */,
-				850E0BD5228C94A200D308DC /* Digest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -776,19 +942,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				850E0C08228CB54800D308DC /* KeySizes.swift in Sources */,
-				850E0BDE228C958C00D308DC /* Crypto.swift in Sources */,
-				850E0BE5228C958C00D308DC /* StreamCryptor.swift in Sources */,
 				854226C72296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
-				850E0BE7228C958C00D308DC /* Utilities.swift in Sources */,
-				850E0BE1228C958C00D308DC /* HMAC.swift in Sources */,
+				854226D722977BDB00B8CA33 /* Scheme.swift in Sources */,
 				85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D22296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
-				850E0BE4228C958C00D308DC /* Status.swift in Sources */,
-				850E0BDF228C958C00D308DC /* Cryptor.swift in Sources */,
-				850E0BE6228C958C00D308DC /* Updateable.swift in Sources */,
-				850E0BE2228C958C00D308DC /* KeyDerivation.swift in Sources */,
-				850E0BE0228C958C00D308DC /* Digest.swift in Sources */,
-				850E0BE3228C958C00D308DC /* Random.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -806,19 +963,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				850E0C09228CB54800D308DC /* KeySizes.swift in Sources */,
-				850E0BE8228C958D00D308DC /* Crypto.swift in Sources */,
-				850E0BEF228C958D00D308DC /* StreamCryptor.swift in Sources */,
 				854226C82296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
-				850E0BF1228C958D00D308DC /* Utilities.swift in Sources */,
-				850E0BEB228C958D00D308DC /* HMAC.swift in Sources */,
+				854226D822977BDB00B8CA33 /* Scheme.swift in Sources */,
 				85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D32296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
-				850E0BEE228C958D00D308DC /* Status.swift in Sources */,
-				850E0BE9228C958D00D308DC /* Cryptor.swift in Sources */,
-				850E0BF0228C958D00D308DC /* Updateable.swift in Sources */,
-				850E0BEC228C958D00D308DC /* KeyDerivation.swift in Sources */,
-				850E0BEA228C958D00D308DC /* Digest.swift in Sources */,
-				850E0BED228C958D00D308DC /* Random.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,19 +984,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				850E0C0A228CB54800D308DC /* KeySizes.swift in Sources */,
-				850E0BF2228C958E00D308DC /* Crypto.swift in Sources */,
-				850E0BF9228C958E00D308DC /* StreamCryptor.swift in Sources */,
 				854226C92296E0A900B8CA33 /* EncryptionEncoder.swift in Sources */,
-				850E0BFB228C958E00D308DC /* Utilities.swift in Sources */,
-				850E0BF5228C958E00D308DC /* HMAC.swift in Sources */,
+				854226D922977BDB00B8CA33 /* Scheme.swift in Sources */,
 				85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D42296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
-				850E0BF8228C958E00D308DC /* Status.swift in Sources */,
-				850E0BF3228C958E00D308DC /* Cryptor.swift in Sources */,
-				850E0BFA228C958E00D308DC /* Updateable.swift in Sources */,
-				850E0BF6228C958E00D308DC /* KeyDerivation.swift in Sources */,
-				850E0BF4228C958E00D308DC /* Digest.swift in Sources */,
-				850E0BF7228C958E00D308DC /* Random.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -997,6 +1136,7 @@
 		};
 		85CA185B228A631200159C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F8DF8DF3140DB041FB15E92C /* Pods-ItemEncrypt-iOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1027,6 +1167,7 @@
 		};
 		85CA185C228A631200159C0A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 050C633A22AF7A45C5EA9AAE /* Pods-ItemEncrypt-iOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1056,6 +1197,7 @@
 		};
 		85CA185E228A631200159C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E4C5C5D41B4B40DF1C0C9434 /* Pods-ItemEncrypt-iOSTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1076,6 +1218,7 @@
 		};
 		85CA185F228A631200159C0A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC4EC06E0B9B4FC8B58A053 /* Pods-ItemEncrypt-iOSTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1096,6 +1239,7 @@
 		};
 		85CA1879228A64BE00159C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 150A56D8D95218F573710EAF /* Pods-ItemEncrypt-Mac.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1126,6 +1270,7 @@
 		};
 		85CA187A228A64BE00159C0A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 15A3B3CA068AA11F846C35C2 /* Pods-ItemEncrypt-Mac.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1156,6 +1301,7 @@
 		};
 		85CA187C228A64BE00159C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D44A50FF5A405AD19153E77 /* Pods-ItemEncrypt-MacTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -1179,6 +1325,7 @@
 		};
 		85CA187D228A64BE00159C0A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D539200AB674BE531E861286 /* Pods-ItemEncrypt-MacTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -1202,6 +1349,7 @@
 		};
 		85CA1895228A64D800159C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9ABBBDAE15184E0978A68AD2 /* Pods-ItemEncrypt-tvOS.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -1231,6 +1379,7 @@
 		};
 		85CA1896228A64D800159C0A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FDF04A69B35D4DC2637FF970 /* Pods-ItemEncrypt-tvOS.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -1260,6 +1409,7 @@
 		};
 		85CA1898228A64D800159C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 26D1BEF1D231EC8B497BBAB4 /* Pods-ItemEncrypt-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1282,6 +1432,7 @@
 		};
 		85CA1899228A64D800159C0A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0BAEFFEB80A680891C0FD2C /* Pods-ItemEncrypt-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1304,6 +1455,7 @@
 		};
 		85CA18A5228A64EA00159C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 500A2E7451141306086ED816 /* Pods-ItemEncrypt-watchOS.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1334,6 +1486,7 @@
 		};
 		85CA18A6228A64EA00159C0A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6CCBC9AFDF1136A10B40AF80 /* Pods-ItemEncrypt-watchOS.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";

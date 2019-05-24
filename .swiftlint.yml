@@ -9,6 +9,7 @@ disabled_rules:  # I don't want these
   - force_try
   - identifier_name
   - line_length
+  - nesting
   - no_fallthrough_only
   - private_over_fileprivate
   - return_arrow_whitespace
@@ -38,7 +39,7 @@ opt_in_rules:  # I really want these
 
 excluded:  # paths to ignore during linting.
   - ItemEncryptTests/
-  - IDZSwiftCommonCrypto/
+  - Pods/
 
 included:
   - ~/Desktop/XCode/HandyHelpers/HandyHelpers/CoreHelper/Core/CoreDataStack.swift

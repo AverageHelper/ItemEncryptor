@@ -10,50 +10,59 @@ import XCTest
 @testable import ItemEncrypt
 
 class ItemEncryptTests: XCTestCase {
-
+    
+    var encryptor: EncryptionEncoder!
+    var decryptor: EncryptionDecoder!
+    let password = "password"
+    
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        encryptor = EncryptionEncoder()
+        decryptor = EncryptionDecoder()
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        encryptor = nil
+        decryptor = nil
     }
     
     func testImageEncryption() {
         
-        let password = "password"
-        
         let bundle = Bundle(for: type(of: self))
-        let testImage = UIImage(named: "Scary Puppy", in: bundle, compatibleWith: nil)
-        let testData = testImage!.pngData()!
+        let testImage = UIImage(named: "Scary Puppy", in: bundle, compatibleWith: nil)!
+        let testData = testImage.pngData()!
         
-        if #available(OSX 10.0, *) {
-//            let imageName = NSImage.Name("Scary Puppy")
-//            let bundle = Bundle(for: type(of: self))
-//            let testImagePath = bundle.pathForImageResource(imageName)!
-//            let testImage = NSImage(contentsOfFile: testImagePath)!
-//            testData = testImage.pngRepresentation()!
-        }
-        
-        let encryptor = EncryptionEncoder()
+        XCTAssertFalse(UIImage(data: testData)!.isEqual(testImage), "Hello! .isEqual(_:) seems to work for parsing PNG data now! Investigate this.")
         
         let encryptedItem = try! encryptor.encode(testData, withPassword: password)
         let encryptedPNG = UIImage(data: encryptedItem.rawData)
 
         XCTAssertNotEqual(testImage, encryptedPNG)
 
-        let decryptor = EncryptionDecoder()
         let decryptedPNG = try! decryptor.decode(Data.self, from: encryptedItem, withPassword: password)
         let decryptedImage = UIImage(data: decryptedPNG)
-        XCTAssertEqual(decryptedImage, testImage)
+        XCTAssertNotNil(decryptedImage)
+        XCTAssert(decryptedImage!.isPNGDataEqual(testImage), "The decrypted image is not the same as the original.")
+        
+        do {
+            let wrongPasswordPNG = try decryptor.decode(Data.self, from: encryptedItem, withPassword: "this is wrong. :)")
+            XCTFail("This shouldn't have decrypted at all.")
+            let wrongPasswordImage = UIImage(data: wrongPasswordPNG)
+            XCTAssert(wrongPasswordImage?.isPNGDataEqual(testImage) == false, "The image decrypted with the wrong password!")
+            
+        } catch {
+            guard case DecodingError.dataCorrupted = error else {
+                XCTFail("Got some other error: \(error)")
+                return
+            }
+        }
     }
     
 }
 
 extension UIImage {
     
-    open override func isEqual(_ object: Any?) -> Bool {
-        guard let otherImage = object as? UIImage else {
+    func isPNGDataEqual(_ other: UIImage?) -> Bool {
+        guard let otherImage = other else {
             return false
         }
         
@@ -62,5 +71,5 @@ extension UIImage {
         
         return selfPNG == otherPNG
     }
-    
+
 }

@@ -1,0 +1,16 @@
+PODS:
+  - IDZSwiftCommonCrypto (0.12.0)
+
+DEPENDENCIES:
+  - IDZSwiftCommonCrypto (~> 0.12.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - IDZSwiftCommonCrypto
+
+SPEC CHECKSUMS:
+  IDZSwiftCommonCrypto: 8b079866c6a5bd94ca7f80578457408a3617f462
+
+PODFILE CHECKSUM: 529f93ddc34ac7467e9dd1553c9690d31cb098a2
+
+COCOAPODS: 1.7.0

@@ -10,18 +10,22 @@ import XCTest
 @testable import ItemEncrypt
 
 class EncryptingMacOSTypes: XCTestCase {
-
+    
+    var encryptor: EncryptionEncoder!
+    var decryptor: EncryptionDecoder!
+    let password = "password"
+    
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        encryptor = EncryptionEncoder()
+        decryptor = EncryptionDecoder()
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        encryptor = nil
+        decryptor = nil
     }
     
     func testImageEncryption() {
-        
-        let password = "password"
         
         let imageName = NSImage.Name("Scary Puppy")
         let bundle = Bundle(for: type(of: self))
@@ -53,8 +57,8 @@ extension NSImage {
         return imageRep?.representation(using: .png, properties: imageProps)
     }
     
-    open override func isEqual(_ object: Any?) -> Bool {
-        guard let otherImage = object as? NSImage else {
+    func isPNGDataEqual(_ other: NSImage?) -> Bool {
+        guard let otherImage = other else {
             return false
         }
         

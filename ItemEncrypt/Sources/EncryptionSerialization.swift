@@ -7,45 +7,15 @@
 //
 
 import Foundation
+import IDZSwiftCommonCrypto
 
 
 // MARK: - EncryptionSerialization
 
+/// `EncryptionSerialization` is a helper interface to securely encrypt raw data blocks.
+///  Use `EncryptionEncoder` to encrypt semantic data types.
 public enum EncryptionSerialization {
     // MARK: Options
-    
-    public struct Specification {
-        
-        /// The spec version used to encrypt data.
-        let version: EncryptedItem.Format
-        
-        var bufferSize: Int {
-            switch self.version {
-            case .pilot: return 1024
-            }
-        }
-        
-        /// The size of the salt, in bytes, that will be kept at the end of the data.
-        var saltSize: Int {
-            switch self.version {
-            case .pilot: return 16
-            }
-        }
-        
-        var iterations: UInt32 {
-            switch self.version {
-            case .pilot: return 100_000
-            }
-        }
-        
-        public init(format: EncryptedItem.Format) {
-            self.version = format
-        }
-        
-        /// The default specification.
-        public static let `default` = Specification(format: .pilot)
-        
-    }
     
     public enum DecryptionError: Error {
         case badData
@@ -54,39 +24,35 @@ public enum EncryptionSerialization {
     
     // MARK: - Key Derivation
     
-    public static func keyFromPassword(_ password: String, saltSize: Int, iterations: Int) -> (key: [UInt8], salt: [UInt8]) {
-        return keyFromPassword(password, saltSize: saltSize, iterations: UInt32(iterations))
-    }
-    
-    public static func keyFromPassword(_ password: String, saltSize: Int, iterations: UInt32) -> (key: [UInt8], salt: [UInt8]) {
-        let salt = try! Random.generateBytes(byteCount: saltSize)
-        let key = keyFromPassword(password, salt: salt, iterations: iterations)
-        return (key: key, salt: salt)
-    }
-    
-    fileprivate static func keyFromPassword(_ password: String, salt: [UInt8], iterations: UInt32) -> [UInt8] {
-        let key = PBKDF.deriveKey(password: password,
+    /// Derives a key using PBKDF2 from the given password using the given encryption scheme.
+    public static func keyFromPassword(_ password: String, salt: [UInt8], scheme: EncryptionSerialization.Scheme) -> [UInt8] {
+        return PBKDF.deriveKey(password: password,
                                   salt: salt,
-                                  prf: .sha256,
-                                  rounds: iterations,
-                                  derivedKeyLength: KeySize.aes256.rawValue)
-        return key
+                                  prf: scheme.randomAlgorithm,
+                                  rounds: scheme.iterations,
+                                  derivedKeyLength: scheme.derivedKeyLength.rawValue)
     }
     
     // MARK: - Encryption
     
     /// Performs SHA256 encryption on `data`, using a key generated from `password`.
     ///
-    /// A key is generated using PBKDF and a cryptographically random salt, which is
-    ///   attached to the returned object for later use in decryption.
+    /// A key should be generated using PBKDF2 and a cryptographically random salt, which is
+    ///   attached to the returned object for later use.
     ///
     /// - parameter data: A data block to be encrypted.
-    /// - parameter passwordKey: The password key by which to encrypt the data. This must
+    /// - parameter password: The password by which to encrypt the data. This must
     ///     not be empty.
-    /// - parameter salt: A glob of nonsecure bytes which was used to derive the password key. This is kept with the encrypted data.
-    /// - parameter options: The set of configuration options to use when encrypting the data.
+    /// - parameter scheme: The set of configuration options to use when encrypting the data.
     /// - returns: An `EncryptedItem` representing the encrypted data.
-    public static func encryptedItem(with data: Data, passwordKey key: [UInt8], salt: [UInt8], options: Specification) -> EncryptedItem {
+    public static func encryptedItem(with data: Data, password: String, scheme: Scheme) -> EncryptedItem {
+        
+        guard !password.isEmpty else {
+            fatalError("Password was found empty.")
+        }
+        
+        let salt = try! Random.generateBytes(byteCount: scheme.saltSize)
+        let key = EncryptionSerialization.keyFromPassword(password, salt: salt, scheme: scheme)
         
         guard !key.isEmpty else {
             fatalError("Password key was an empty array.")
@@ -97,15 +63,15 @@ public enum EncryptionSerialization {
         }
         
         let cryptor = StreamCryptor(operation: .encrypt,
-                                    algorithm: .aes,
-                                    mode: .CBC,
+                                    algorithm: scheme.algorithm,
+                                    mode: scheme.algorithmMode,
                                     padding: .PKCS7Padding,
                                     key: key,
-                                    iv: [UInt8]())
+                                    iv: [])
         
         let dataStream = InputStream(data: data)
         let outStream = OutputStream(toMemory: ())
-        let bufferSize = options.bufferSize
+        let bufferSize = scheme.bufferSize
         
         EncryptionSerialization.crypt(sc: cryptor, inputStream: dataStream, outputStream: outStream, bufferSize: bufferSize)
         
@@ -113,7 +79,7 @@ public enum EncryptionSerialization {
             fatalError("Encrypted output stream didn't return data.")
         }
         
-        return EncryptedItem(payload: encryptedData, salt: salt)
+        return EncryptedItem(version: scheme.version, payload: encryptedData, salt: salt)
     }
     
     
@@ -121,22 +87,22 @@ public enum EncryptionSerialization {
     
     public static func data(withEncryptedObject object: EncryptedItem, password: String) throws -> Data {
         
-        let options = Specification(format: object.version)
+        let scheme = Scheme(format: object.version)
         let data = object.payload
         let salt = object.salt
         
-        let key = EncryptionSerialization.keyFromPassword(password, salt: salt, iterations: options.iterations)
+        let key = EncryptionSerialization.keyFromPassword(password, salt: salt, scheme: scheme)
         
         let cryptor = StreamCryptor(operation: .decrypt,
-                                    algorithm: .aes,
-                                    mode: .CBC,
+                                    algorithm: scheme.algorithm,
+                                    mode: scheme.algorithmMode,
                                     padding: .PKCS7Padding,
                                     key: key,
-                                    iv: [UInt8]())
+                                    iv: [])
         
         let dataStream = InputStream(data: data)
         let outStream = OutputStream(toMemory: ())
-        let bufferSize = options.bufferSize
+        let bufferSize = scheme.bufferSize
         
         EncryptionSerialization.crypt(sc: cryptor, inputStream: dataStream, outputStream: outStream, bufferSize: bufferSize)
         

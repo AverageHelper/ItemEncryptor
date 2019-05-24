@@ -76,7 +76,7 @@ public final class EncryptionEncoder {
     public var nonConformingFloatEncodingStrategy: NonConformingFloatEncodingStrategy = .throw
     
     /// The encryption configuration to use when encoding input data.
-    private let configuration: EncryptionSerialization.Specification
+    private let configuration: EncryptionSerialization.Scheme
     
     /// Contextual user-provided information for use during encoding.
     public var userInfo: [CodingUserInfoKey: Any] = [:]
@@ -86,7 +86,7 @@ public final class EncryptionEncoder {
         let dateEncodingStrategy: DateEncodingStrategy
         let dataEncodingStrategy: DataEncodingStrategy
         let nonConformingFloatEncodingStrategy: NonConformingFloatEncodingStrategy
-        let configuration: EncryptionSerialization.Specification
+        let configuration: EncryptionSerialization.Scheme
         let userInfo: [CodingUserInfoKey: Any]
     }
     
@@ -115,7 +115,7 @@ public final class EncryptionEncoder {
     
     // MARK: - Constructing an Encryption Encoder
     
-    public init(configuration: EncryptionSerialization.Specification = .default) {
+    public init(configuration: EncryptionSerialization.Scheme = .default) {
         self.configuration = configuration
     }
     
@@ -128,10 +128,6 @@ public final class EncryptionEncoder {
     /// - returns: A new `Data` value containing the encoded data.
     /// - throws: An error if any value throws an error during encoding.
     public func encode<T: Encodable>(_ value: T, withPassword password: String) throws -> EncryptedItem {
-        let saltSize = configuration.saltSize
-        let iterationCount = configuration.iterations
-        let (passwordKey, salt) = EncryptionSerialization.keyFromPassword(password, saltSize: saltSize, iterations: iterationCount)
-        
         let encoder = _EncryptionEncoder(options: self.options)
         
         guard let topLevel = try encoder.box_(value) else {
@@ -140,9 +136,8 @@ public final class EncryptionEncoder {
         
         let data = NSKeyedArchiver.archivedData(withRootObject: topLevel)
         return EncryptionSerialization.encryptedItem(with: data,
-                                                     passwordKey: passwordKey,
-                                                     salt: salt,
-                                                     options: configuration)
+                                                     password: password,
+                                                     scheme: configuration)
     }
     
 }
@@ -911,7 +906,7 @@ public class EncryptionDecoder {
     public var nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy = .throw
     
     /// The encryption configuration to use when encoding input data.
-    private let configuration: EncryptionSerialization.Specification
+    private let configuration: EncryptionSerialization.Scheme
     
     /// Contextual user-provided information for use during decoding.
     fileprivate var userInfo: [CodingUserInfoKey: Any] = [:]
@@ -921,7 +916,7 @@ public class EncryptionDecoder {
         let dateDecodingStrategy: DateDecodingStrategy
         let dataDecodingStrategy: DataDecodingStrategy
         let nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy
-        let configuration: EncryptionSerialization.Specification
+        let configuration: EncryptionSerialization.Scheme
         let userInfo: [CodingUserInfoKey: Any]
     }
     
@@ -936,7 +931,7 @@ public class EncryptionDecoder {
     
     // MARK: - Constructing an Encryption Decoder
     
-    init(configuration: EncryptionSerialization.Specification = .default) {
+    init(configuration: EncryptionSerialization.Scheme = .default) {
         self.configuration = configuration
     }
     
@@ -962,7 +957,7 @@ public class EncryptionDecoder {
             topLevel = object
             
         } catch {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "The given data was not a valid archive.", underlyingError: error))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "The decrypted data came invalid. Perhaps an incorrect password?", underlyingError: error))
         }
         
         let decoder = _EncryptionDecoder(referencing: topLevel, options: self.options)

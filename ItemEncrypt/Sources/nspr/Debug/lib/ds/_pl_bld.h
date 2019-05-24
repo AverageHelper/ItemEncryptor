@@ -1,3 +1,0 @@
-#define _BUILD_STRING "2019-05-14 09:51:23"
-#define _BUILD_TIME 1557849083000000LL
-#define _PRODUCTION "libplds4.dylib"

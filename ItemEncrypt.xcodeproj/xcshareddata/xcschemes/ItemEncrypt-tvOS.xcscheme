@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8A5950D0C63C7F8F8A465EEF484D565E"
+               BuildableName = "IDZSwiftCommonCrypto.framework"
+               BlueprintName = "IDZSwiftCommonCrypto-tvOS"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "85CA1882228A64D800159C0A"
                BuildableName = "ItemEncrypt.framework"
                BlueprintName = "ItemEncrypt-tvOS"
