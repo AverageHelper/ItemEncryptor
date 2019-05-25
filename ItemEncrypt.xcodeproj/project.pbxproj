@@ -31,10 +31,16 @@
 		854226D722977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
 		854226D822977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
 		854226D922977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
+		85581DA122985A6E001DA6CE /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581D9F22985A55001DA6CE /* Scary Puppy.png */; };
+		85581DA222985A6F001DA6CE /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581D9F22985A55001DA6CE /* Scary Puppy.png */; };
+		85581DA322985A70001DA6CE /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581D9F22985A55001DA6CE /* Scary Puppy.png */; };
+		85581DA62298C317001DA6CE /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA42298C317001DA6CE /* Screenshot.png */; };
+		85581DA72298C317001DA6CE /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA42298C317001DA6CE /* Screenshot.png */; };
+		85581DA82298C317001DA6CE /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA42298C317001DA6CE /* Screenshot.png */; };
+		85581DA92298C317001DA6CE /* Receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.png */; };
+		85581DAA2298C317001DA6CE /* Receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.png */; };
+		85581DAB2298C317001DA6CE /* Receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.png */; };
 		859C2F902298303100DB9354 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 859C2F8F2298303100DB9354 /* .gitignore */; };
-		85C4864622964EF300E1EFA5 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C4864522964EF300E1EFA5 /* Scary Puppy.png */; };
-		85C4864822964EF300E1EFA5 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C4864522964EF300E1EFA5 /* Scary Puppy.png */; };
-		85C4864922964F5100E1EFA5 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C4864522964EF300E1EFA5 /* Scary Puppy.png */; };
 		85CA1850228A631200159C0A /* ItemEncrypt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CA1846228A631200159C0A /* ItemEncrypt.framework */; };
 		85CA1855228A631200159C0A /* EncryptingiOSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* EncryptingiOSTypes.swift */; };
 		85CA1857228A631200159C0A /* ItemEncrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 85CA1849228A631200159C0A /* ItemEncrypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -94,9 +100,11 @@
 		854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptingSwiftTypes.swift; sourceTree = "<group>"; };
 		854226D02296F48F00B8CA33 /* EncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedItem.swift; sourceTree = "<group>"; };
 		854226D522977BDB00B8CA33 /* Scheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheme.swift; sourceTree = "<group>"; };
+		85581D9F22985A55001DA6CE /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Scary Puppy.png"; path = "ItemEncryptTests/Assets/Images/Scary Puppy.png"; sourceTree = SOURCE_ROOT; };
+		85581DA42298C317001DA6CE /* Screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot.png; sourceTree = "<group>"; };
+		85581DA52298C317001DA6CE /* Receipt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Receipt.png; sourceTree = "<group>"; };
 		856650AB228D24F800F9A409 /* EncryptionEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionEncoder.swift; sourceTree = "<group>"; };
 		859C2F8F2298303100DB9354 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		85C4864522964EF300E1EFA5 /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Scary Puppy.png"; path = "ItemEncryptTests/Assets/Images/Scary Puppy.png"; sourceTree = SOURCE_ROOT; };
 		85CA1846228A631200159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA1849228A631200159C0A /* ItemEncrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemEncrypt.h; sourceTree = "<group>"; };
 		85CA184A228A631200159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ItemEncrypt/Assets/iOS/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -228,7 +236,9 @@
 		85C4864422964ECF00E1EFA5 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				85C4864522964EF300E1EFA5 /* Scary Puppy.png */,
+				85581DA52298C317001DA6CE /* Receipt.png */,
+				85581D9F22985A55001DA6CE /* Scary Puppy.png */,
+				85581DA42298C317001DA6CE /* Screenshot.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -281,11 +291,11 @@
 		85CA18A7228A64F200159C0A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				85CA1860228A638700159C0A /* EncryptionSerialization.swift */,
-				854226D522977BDB00B8CA33 /* Scheme.swift */,
 				856650AB228D24F800F9A409 /* EncryptionEncoder.swift */,
-				850E0C06228CB54800D308DC /* KeySizes.swift */,
+				85CA1860228A638700159C0A /* EncryptionSerialization.swift */,
 				854226D02296F48F00B8CA33 /* EncryptedItem.swift */,
+				854226D522977BDB00B8CA33 /* Scheme.swift */,
+				850E0C06228CB54800D308DC /* KeySizes.swift */,
 				85CA1849228A631200159C0A /* ItemEncrypt.h */,
 			);
 			path = Sources;
@@ -625,7 +635,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85C4864622964EF300E1EFA5 /* Scary Puppy.png in Resources */,
+				85581DA62298C317001DA6CE /* Screenshot.png in Resources */,
+				85581DA92298C317001DA6CE /* Receipt.png in Resources */,
+				85581DA122985A6E001DA6CE /* Scary Puppy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,7 +652,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85C4864922964F5100E1EFA5 /* Scary Puppy.png in Resources */,
+				85581DA72298C317001DA6CE /* Screenshot.png in Resources */,
+				85581DAA2298C317001DA6CE /* Receipt.png in Resources */,
+				85581DA222985A6F001DA6CE /* Scary Puppy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,7 +669,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85C4864822964EF300E1EFA5 /* Scary Puppy.png in Resources */,
+				85581DA82298C317001DA6CE /* Screenshot.png in Resources */,
+				85581DAB2298C317001DA6CE /* Receipt.png in Resources */,
+				85581DA322985A70001DA6CE /* Scary Puppy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1139,10 +1155,10 @@
 			baseConfigurationReference = F8DF8DF3140DB041FB15E92C /* Pods-ItemEncrypt-iOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = WS443QRDMF;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1157,6 +1173,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.iOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "${BUILT_PRODUCTS_DIR}/NSSModuleMap";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1170,10 +1187,10 @@
 			baseConfigurationReference = 050C633A22AF7A45C5EA9AAE /* Pods-ItemEncrypt-iOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = WS443QRDMF;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1188,6 +1205,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.iOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "${BUILT_PRODUCTS_DIR}/NSSModuleMap";
 				SWIFT_VERSION = 5.0;
@@ -1201,7 +1219,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = WS443QRDMF;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ItemEncryptTests/Assets/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1222,7 +1240,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = WS443QRDMF;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ItemEncryptTests/Assets/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1262,6 +1280,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.macOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1293,6 +1312,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.macOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;

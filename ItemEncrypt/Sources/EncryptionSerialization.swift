@@ -24,8 +24,13 @@ public enum EncryptionSerialization {
     
     // MARK: - Key Derivation
     
+    /// Returns a cryptographically random salt of the given length.
+    public static func randomSalt(size: Int) -> [UInt8] {
+        return try! Random.generateBytes(byteCount: size)
+    }
+    
     /// Derives a key using PBKDF2 from the given password using the given encryption scheme.
-    public static func keyFromPassword(_ password: String, salt: [UInt8], scheme: EncryptionSerialization.Scheme) -> [UInt8] {
+    public static func deriveKey(password: String, salt: [UInt8], scheme: EncryptionSerialization.Scheme) -> [UInt8] {
         return PBKDF.deriveKey(password: password,
                                   salt: salt,
                                   prf: scheme.randomAlgorithm,
@@ -51,23 +56,30 @@ public enum EncryptionSerialization {
             fatalError("Password was found empty.")
         }
         
-        let salt = try! Random.generateBytes(byteCount: scheme.saltSize)
-        let key = EncryptionSerialization.keyFromPassword(password, salt: salt, scheme: scheme)
+        let seed = randomSalt(size: scheme.seedSize)
+        let derivedKey = EncryptionKey(untreatedPassword: password, seed: seed, scheme: scheme)
         
-        guard !key.isEmpty else {
-            fatalError("Password key was an empty array.")
-        }
+        return encryptedItem(with: data, key: derivedKey)
+    }
+    
+    /// Performs SHA256 encryption on `data`, using the given encryption `key`.
+    ///
+    /// - parameter data: A data block to be encrypted.
+    /// - parameter key: The key to use for encryption.
+    /// - returns: An `EncryptedItem` representing the encrypted data.
+    public static func encryptedItem(with data: Data, key: EncryptionKey) -> EncryptedItem {
         
-        guard !salt.isEmpty else {
-            fatalError("Salt was an empty array.")
-        }
+        let scheme = key.scheme
+        let keyData = key.keyData
+        let iv = key.initializationVector
+        let salt = key.salt
         
         let cryptor = StreamCryptor(operation: .encrypt,
-                                    algorithm: scheme.algorithm,
+                                    algorithm: scheme.encryptionAlgorithm,
                                     mode: scheme.algorithmMode,
                                     padding: .PKCS7Padding,
-                                    key: key,
-                                    iv: [])
+                                    key: keyData,
+                                    iv: iv)
         
         let dataStream = InputStream(data: data)
         let outStream = OutputStream(toMemory: ())
@@ -85,20 +97,34 @@ public enum EncryptionSerialization {
     
     // MARK: - Decryption
     
+    /// Attempts to decrypt the given `object` using a key derived from the given `password`.
     public static func data(withEncryptedObject object: EncryptedItem, password: String) throws -> Data {
         
         let scheme = Scheme(format: object.version)
-        let data = object.payload
         let salt = object.salt
         
-        let key = EncryptionSerialization.keyFromPassword(password, salt: salt, scheme: scheme)
+        let derivedKey = EncryptionKey(untreatedPassword: password, treatedSalt: salt, scheme: scheme)
+        return try data(withEncryptedObject: object, key: derivedKey)
+    }
+    
+    /// Attempts to decrypt the given `object` using the given `key`.
+    public static func data(withEncryptedObject object: EncryptedItem, key: EncryptionKey) throws -> Data {
+        
+        let scheme = Scheme(format: object.version)
+        guard scheme == key.scheme else {
+            throw DecryptionError.incorrectVersion
+        }
+        
+        let data = object.payload
+        let iv = key.initializationVector
+        let keyData = key.keyData
         
         let cryptor = StreamCryptor(operation: .decrypt,
-                                    algorithm: scheme.algorithm,
+                                    algorithm: scheme.encryptionAlgorithm,
                                     mode: scheme.algorithmMode,
                                     padding: .PKCS7Padding,
-                                    key: key,
-                                    iv: [])
+                                    key: keyData,
+                                    iv: iv)
         
         let dataStream = InputStream(data: data)
         let outStream = OutputStream(toMemory: ())

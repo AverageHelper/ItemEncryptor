@@ -45,7 +45,7 @@ public struct EncryptedItem: Equatable, Hashable {
                                     into: &resultPayload,
                                     resultSalt: &resultSalt,
                                     version: configuration.version,
-                                    saltSize: configuration.saltSize)
+                                    saltSize: configuration.stretchedSaltSize)
         
         self.version = configuration.version
         self.payload = resultPayload

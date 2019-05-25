@@ -45,10 +45,10 @@ public final class EncryptionEncoder {
     
     /// The strategy to use for encoding `Data` values.
     public enum DataEncodingStrategy {
-        /// Defer to `Data` for choosing an encoding. This is the default strategy.
+        /// Defer to `Data` for choosing an encoding.
         case deferredToData
         
-        /// Encoded the `Data` as a Base64-encoded string.
+        /// Encoded the `Data` as a Base64-encoded string. This is the default strategy.
         case base64
         
         /// Encode the `Data` as a custom value encoded by the given closure.
@@ -69,8 +69,8 @@ public final class EncryptionEncoder {
     /// The strategy to use in encoding dates. Defaults to `.deferredToDate`.
     public var dateEncodingStrategy: DateEncodingStrategy = .deferredToDate
     
-    /// The strategy to use in encoding binary data. Defaults to `.deferredToData`.
-    public var dataEncodingStratety: DataEncodingStrategy = .deferredToData
+    /// The strategy to use in encoding binary data. Defaults to `.base64`.
+    public var dataEncodingStratety: DataEncodingStrategy = .base64
     
     /// The strategy to use in encoding non-conforming numbers. Defaults to `.throw`.
     public var nonConformingFloatEncodingStrategy: NonConformingFloatEncodingStrategy = .throw
@@ -101,7 +101,7 @@ public final class EncryptionEncoder {
     }
     
     fileprivate var saltSize: Int {
-        return configuration.saltSize
+        return configuration.seedSize
     }
     
     /// The options set on the top-level encoder.
@@ -121,7 +121,7 @@ public final class EncryptionEncoder {
     
     // MARK: - Encoding Values
     
-    /// Encodes the given top-level value and returns its encrypted representation.
+    /// Encodes the given top-level value and returns its uniquely encrypted representation.
     ///
     /// - parameter value: The value to encode.
     /// - parameter password: The password with which to encrypt `value`. This password is not retained past the lifetime of the function call.
@@ -138,6 +138,24 @@ public final class EncryptionEncoder {
         return EncryptionSerialization.encryptedItem(with: data,
                                                      password: password,
                                                      scheme: configuration)
+    }
+    
+    /// Encodes the given top-level value using the given key, and returns its encrypted representation.
+    ///
+    /// - parameter value: The value to encode.
+    /// - parameter key: The encryption key to use when encoding the `value`. This or an identical key may be used for later decryption.
+    /// - returns: A new `Data` value containing the encoded data.
+    /// - throws: An error if any value throws an error during encoding.
+    public func encode<T: Encodable>(_ value: T, withKey key: EncryptionKey) throws -> EncryptedItem {
+        
+        let encoder = _EncryptionEncoder(options: self.options)
+        
+        guard let topLevel = try encoder.box_(value) else {
+            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) did not encode any values."))
+        }
+        
+        let data = NSKeyedArchiver.archivedData(withRootObject: topLevel)
+        return EncryptionSerialization.encryptedItem(with: data, key: key)
     }
     
 }
@@ -382,7 +400,7 @@ fileprivate struct _EncryptionKeyedEncodingContainer<K: CodingKey>: KeyedEncodin
     }
     
     mutating func superEncoder() -> Encoder {
-        return _EncryptionReferencingEncoder(referencing: self.encoder, key: _EncryptionKey.super, wrapping: self.container)
+        return _EncryptionReferencingEncoder(referencing: self.encoder, key: _EncryptedItemKey.super, wrapping: self.container)
     }
     
     mutating func superEncoder(forKey key: K) -> Encoder {
@@ -434,26 +452,26 @@ fileprivate struct _EncryptionUnkeyedEncodingContainer: UnkeyedEncodingContainer
     
     mutating func encode(_ value: Float)  throws {
         // Since the float may be invalid and throw, the coding path needs to contain this key.
-        self.encoder.codingPath.append(_EncryptionKey(index: self.count))
+        self.encoder.codingPath.append(_EncryptedItemKey(index: self.count))
         defer { self.encoder.codingPath.removeLast() }
         self.container.add(try self.encoder.box(value))
     }
     
     mutating func encode(_ value: Double) throws {
         // Since the double may be invalid and throw, the coding path needs to contain this key.
-        self.encoder.codingPath.append(_EncryptionKey(index: self.count))
+        self.encoder.codingPath.append(_EncryptedItemKey(index: self.count))
         defer { self.encoder.codingPath.removeLast() }
         self.container.add(try self.encoder.box(value))
     }
     
     mutating func encode<T: Encodable>(_ value: T) throws {
-        self.encoder.codingPath.append(_EncryptionKey(index: self.count))
+        self.encoder.codingPath.append(_EncryptedItemKey(index: self.count))
         defer { self.encoder.codingPath.removeLast() }
         self.container.add(try self.encoder.box(value))
     }
     
     mutating func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> {
-        self.codingPath.append(_EncryptionKey(index: self.count))
+        self.codingPath.append(_EncryptedItemKey(index: self.count))
         defer { self.codingPath.removeLast() }
         
         let dictionary = NSMutableDictionary()
@@ -464,7 +482,7 @@ fileprivate struct _EncryptionUnkeyedEncodingContainer: UnkeyedEncodingContainer
     }
     
     mutating func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
-        self.codingPath.append(_EncryptionKey(index: self.count))
+        self.codingPath.append(_EncryptedItemKey(index: self.count))
         defer { self.codingPath.removeLast() }
         
         let array = NSMutableArray()
@@ -803,7 +821,7 @@ fileprivate class _EncryptionReferencingEncoder: _EncryptionEncoder {
         self.reference = .array(array, index)
         super.init(options: encoder.options, codingPath: encoder.codingPath)
         
-        self.codingPath.append(_EncryptionKey(index: index))
+        self.codingPath.append(_EncryptedItemKey(index: index))
     }
     
     /// Initializes `self` by referencing the given dictionary container in the given encoder.
@@ -877,10 +895,10 @@ public class EncryptionDecoder {
     
     /// The strategy to use for decoding `Data` values.
     public enum DataDecodingStrategy {
-        /// Defer to `Data` for decoding. This is the default strategy.
+        /// Defer to `Data` for decoding.
         case deferredToData
         
-        /// Decode the `Data` from a Base64-encoded string.
+        /// Decode the `Data` from a Base64-encoded string. This is the default strategy.
         case base64
         
         /// Decode the `Data` as a custom value decoded by the given closure.
@@ -899,8 +917,8 @@ public class EncryptionDecoder {
     /// The strategy to use in decoding dates. Defaults to `.deferredToDate`.
     public var dateDecodingStrategy: DateDecodingStrategy = .deferredToDate
     
-    /// The strategy to use in decoding binary data. Defaults to `.deferredToData`.
-    public var dataDecodingStrategy: DataDecodingStrategy = .deferredToData
+    /// The strategy to use in decoding binary data. Defaults to `.base64`.
+    public var dataDecodingStrategy: DataDecodingStrategy = .base64
     
     /// The strategy to use in decoding non-conforming numbers. Defaults to `.throw`.
     public var nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy = .throw
@@ -967,6 +985,30 @@ public class EncryptionDecoder {
         
         return value
     }
+    
+    public func decode<T: Decodable>(_ type: T.Type, from item: EncryptedItem, withKey key: EncryptionKey) throws -> T {
+        
+        let data = try EncryptionSerialization.data(withEncryptedObject: item, key: key)
+        
+        let topLevel: Any
+        do {
+            guard let object = NSKeyedUnarchiver.unarchiveObject(with: data) else {
+                throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: [], debugDescription: "The given data did not contain a top-level value."))
+            }
+            topLevel = object
+            
+        } catch {
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "The decrypted data came invalid. Perhaps an incorrect password?", underlyingError: error))
+        }
+        
+        let decoder = _EncryptionDecoder(referencing: topLevel, options: self.options)
+        guard let value = try decoder.unbox(topLevel, as: type) else {
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: [], debugDescription: "The given data did not contain a top-level value."))
+        }
+        
+        return value
+    }
+    
 }
 
 // MARK: - _EncryptionDecoder
@@ -999,7 +1041,6 @@ fileprivate class _EncryptionDecoder: Decoder {
     }
     
     // MARK: - Decoder Methods
-    
     
     func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key: CodingKey {
         guard !(self.storage.topContainer is NSNull) else {
@@ -1390,7 +1431,7 @@ fileprivate struct _EncryptionKeyedDecodingContainer<K: CodingKey>: KeyedDecodin
     }
     
     func superDecoder() throws -> Decoder {
-        return try _superDecoder(forKey: _EncryptionKey.super)
+        return try _superDecoder(forKey: _EncryptedItemKey.super)
     }
     
     func superDecoder(forKey key: K) throws -> Decoder {
@@ -1435,7 +1476,7 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decodeNil() throws -> Bool {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(Any?.self, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(Any?.self, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
         if self.container[self.currentIndex] is NSNull {
@@ -1448,14 +1489,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Bool.Type) throws -> Bool {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Bool.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1464,14 +1505,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int.Type) throws -> Int {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1480,14 +1521,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int8.Type) throws -> Int8 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int8.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1496,14 +1537,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int16.Type) throws -> Int16 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int16.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1512,14 +1553,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int32.Type) throws -> Int32 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int32.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1528,14 +1569,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Int64.Type) throws -> Int64 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Int64.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1544,14 +1585,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt.Type) throws -> UInt {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1560,14 +1601,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt8.Type) throws -> UInt8 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt8.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1576,14 +1617,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt16.Type) throws -> UInt16 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt16.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1592,14 +1633,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt32.Type) throws -> UInt32 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt32.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1608,14 +1649,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: UInt64.Type) throws -> UInt64 {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: UInt64.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1624,14 +1665,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Float.Type) throws -> Float {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Float.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1640,14 +1681,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: Double.Type) throws -> Double {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: Double.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1656,14 +1697,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode(_ type: String.Type) throws -> String {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: String.self) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1672,14 +1713,14 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     
     mutating func decode<T: Decodable>(_ type: T.Type) throws -> T {
         guard !self.isAtEnd else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Unkeyed container is at end."))
         }
         
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard let decoded = try self.decoder.unbox(self.container[self.currentIndex], as: type) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptionKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
+            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath + [_EncryptedItemKey(index: self.currentIndex)], debugDescription: "Expected \(type) but found null instead."))
         }
         
         self.currentIndex += 1
@@ -1687,7 +1728,7 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     }
     
     mutating func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type) throws -> KeyedDecodingContainer<NestedKey> {
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard !self.isAtEnd else {
@@ -1715,7 +1756,7 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     }
     
     mutating func nestedUnkeyedContainer() throws -> UnkeyedDecodingContainer {
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard !self.isAtEnd else {
@@ -1742,7 +1783,7 @@ fileprivate struct _EncryptionUnkeyedDecodingContainer: UnkeyedDecodingContainer
     }
     
     mutating func superDecoder() throws -> Decoder {
-        self.decoder.codingPath.append(_EncryptionKey(index: self.currentIndex))
+        self.decoder.codingPath.append(_EncryptedItemKey(index: self.currentIndex))
         defer { self.decoder.codingPath.removeLast() }
         
         guard !self.isAtEnd else {
@@ -2226,7 +2267,7 @@ extension _EncryptionDecoder {
 // Shared Key Types
 //===----------------------------------------------------------------------===//
 
-fileprivate struct _EncryptionKey: CodingKey {
+fileprivate struct _EncryptedItemKey: CodingKey {
     var stringValue: String
     var intValue: Int?
     
@@ -2250,7 +2291,7 @@ fileprivate struct _EncryptionKey: CodingKey {
         self.intValue = index
     }
     
-    fileprivate static let `super` = _EncryptionKey(stringValue: "super")!
+    fileprivate static let `super` = _EncryptedItemKey(stringValue: "super")!
 }
 
 //===----------------------------------------------------------------------===//
