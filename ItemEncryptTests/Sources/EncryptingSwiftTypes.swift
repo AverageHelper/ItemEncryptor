@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import ItemEncrypt
+import ItemEncrypt
 
 class EncryptingSwiftTypes: XCTestCase {
     
@@ -17,14 +17,17 @@ class EncryptingSwiftTypes: XCTestCase {
     let password = "password"
     var scheme: EncryptionSerialization.Scheme!
     var seed: [UInt8]!
+    var iv: [UInt8]!
     var encKey: EncryptionKey!
     
     override func setUp() {
         encryptor = EncryptionEncoder()
         decryptor = EncryptionDecoder()
         scheme = .default
-        seed = EncryptionSerialization.randomSalt(size: scheme.seedSize)
-        encKey = EncryptionKey(untreatedPassword: password, seed: seed, scheme: scheme)
+        seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
+        iv = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
+        encKey = EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: scheme)
+        encKey.context = "For testing"
     }
 
     override func tearDown() {
@@ -32,6 +35,7 @@ class EncryptingSwiftTypes: XCTestCase {
         decryptor = nil
         scheme = nil
         seed = nil
+        iv = nil
         encKey = nil
     }
     
@@ -278,11 +282,50 @@ class EncryptingSwiftTypes: XCTestCase {
         XCTAssertEqual(Int(decIsoDate.timeIntervalSinceReferenceDate),
                        Int(isoDate.timeIntervalSinceReferenceDate))
         
+        // Since 1970
+        
+        let secondsDate = Date()
+        
+        encryptor.dateEncodingStrategy = .secondsSince1970
+        decryptor.dateDecodingStrategy = .secondsSince1970
+        let encSecondsDate = try! encryptor.encode(secondsDate, withKey: encKey)
+        let decSecondsDate = try! decryptor.decode(Date.self, from: encSecondsDate, withKey: encKey)
+        // We cannot guarantee exact equality here, so we compare the integer of their reference intervals.
+        XCTAssertEqual(Int(decSecondsDate.timeIntervalSinceReferenceDate),
+                       Int(secondsDate.timeIntervalSinceReferenceDate))
+        
+        let millisecondsDate = Date()
+        
+        encryptor.dateEncodingStrategy = .millisecondsSince1970
+        decryptor.dateDecodingStrategy = .millisecondsSince1970
+        let encMilliDate = try! encryptor.encode(millisecondsDate, withKey: encKey)
+        let decMilliDate = try! decryptor.decode(Date.self, from: encMilliDate, withKey: encKey)
+        // We cannot guarantee exact equality here, so we compare the integer of their reference intervals.
+        XCTAssertEqual(Int(decMilliDate.timeIntervalSinceReferenceDate),
+                       Int(millisecondsDate.timeIntervalSinceReferenceDate))
+        
+    }
+    
+    func testDataEncryption() {
+        
+        let testData = Data(repeating: 9, count: 140_000) // 140KB
+        
+        encryptor.dataEncodingStratety = .base64
+        let encData = try! encryptor.encode(testData, withKey: encKey)
+        let decData = try! decryptor.decode(Data.self, from: encData, withKey: encKey)
+        XCTAssertEqual(decData, testData)
+        
+        encryptor.dataEncodingStratety = .deferredToData
+        decryptor.dataDecodingStrategy = .deferredToData
+        let encDeferredData = try! encryptor.encode(testData, withKey: encKey)
+        let decDeferredData = try! decryptor.decode(Data.self, from: encDeferredData, withKey: encKey)
+        XCTAssertEqual(decDeferredData, testData)
+        
     }
     
     func testNilEncryption() {
         do {
-            let _ = try encryptor.encode(NullValue(), withPassword: password)
+            _ = try encryptor.encode(NullValue(), withPassword: password)
             
         } catch {
             XCTFail("\(error)")
@@ -303,7 +346,7 @@ class EncryptingSwiftTypes: XCTestCase {
         let encryptedData = encryptedItem.rawData
         
         do {
-            let newItem = try EncryptedItem(data: encryptedData, usingConfiguration: .default)
+            let newItem = try EncryptedItem(data: encryptedData)
             XCTAssertEqual(newItem, encryptedItem)
             XCTAssertEqual(newItem.rawData, encryptedData)
             
@@ -325,7 +368,7 @@ class EncryptingSwiftTypes: XCTestCase {
         let randomData = Data(repeating: UInt8.random(in: 0...9), count: 16)
         
         do {
-            let item = try EncryptedItem(data: randomData, usingConfiguration: .default)
+            let item = try EncryptedItem(data: randomData)
             XCTFail("Random data shouldn't create an EncryptedItem: \(item.rawData)")
             
         } catch {
@@ -337,29 +380,75 @@ class EncryptingSwiftTypes: XCTestCase {
     
     // MARK: - Encryption Keys
     
-    func testEncryptionKeyDerivation() {
+    func testEncryptionKeyFromPassword() {
         let userId = "thisIsMyUserID1234"
         let scheme = EncryptionSerialization.Scheme.default
-        let randomSeed = EncryptionSerialization.randomSalt(size: scheme.seedSize)
+        let randomSeed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
+        let randomIV = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
         let newTestKey = EncryptionKey(untreatedPassword: password,
                                        additionalData: [userId],
                                        seed: randomSeed,
+                                       iv: randomIV,
                                        scheme: scheme)
+        
         // Store the salt for later...
         let storedSalt = newTestKey.salt
+        let storedIV = newTestKey.initializationVector
         
+        // ... and now use it.
         let derivedKey = EncryptionKey(untreatedPassword: password,
                                        treatedSalt: storedSalt,
+                                       iv: storedIV,
                                        scheme: scheme)
         XCTAssertEqual(derivedKey, newTestKey)
         
     }
     
+    func testEncryptionKeyStorage() {
+        
+        let tag = "com.LeadDevCreations.keys.testKey"
+        let storage = KeychainHandle()
+        
+        try! storage.deleteKey(withTag: tag)
+        
+        do {
+            let notThereYet = try storage.key(withTag: tag)
+            XCTAssertNil(notThereYet)
+        } catch {
+            XCTFail("Failed to grab nonexistent key: \(error)")
+        }
+        
+        do {
+            try storage.setKey(encKey, forTag: tag)
+            let storedKey = try storage.key(withTag: tag)
+            XCTAssertNotNil(storedKey, "The item was not retrieved after storage.")
+        } catch {
+            XCTFail("Failed to store key: \(error)")
+        }
+        
+        do {
+            let goneKey = try storage.deleteKey(withTag: tag)
+            XCTAssertNotNil(goneKey, "The item was not returned after deletion.")
+        } catch {
+            XCTFail("Failed to delete key: \(error)")
+        }
+        
+        do {
+            let notThereAnymore = try storage.key(withTag: tag)
+            XCTAssertNil(notThereAnymore)
+            
+        } catch {
+            XCTFail("Failed to grab now nonexistent key: \(error)")
+        }
+        
+    }
+    
     func testSetOfKeys() {
-        var randomSeed: [UInt8] { return EncryptionSerialization.randomSalt(size: 16) }
-        let key1 = EncryptionKey(untreatedPassword: password, seed: randomSeed, scheme: .default)
-        let key2 = EncryptionKey(untreatedPassword: password, seed: randomSeed, scheme: .default)
-        let key3 = EncryptionKey(untreatedPassword: password, seed: randomSeed, scheme: .default)
+        var randomSeed: [UInt8] { return EncryptionSerialization.randomBytes(count: 16) }
+        var randomIV: [UInt8] { return EncryptionSerialization.randomBytes(count: 3) }
+        let key1 = EncryptionKey(untreatedPassword: password, seed: randomSeed, iv: randomIV, scheme: .default)
+        let key2 = EncryptionKey(untreatedPassword: password, seed: randomSeed, iv: randomIV, scheme: .default)
+        let key3 = EncryptionKey(untreatedPassword: password, seed: randomSeed, iv: randomIV, scheme: .default)
         
         var keySet = Set<EncryptionKey>()
         keySet.insert(key1)
@@ -397,11 +486,12 @@ class EncryptingSwiftTypes: XCTestCase {
         let testString = "Lorem ipsum dolor sit amet"
         
         let scheme = EncryptionSerialization.Scheme.default
-        let randomSeed = EncryptionSerialization.randomSalt(size: scheme.seedSize)
-        let encKey = EncryptionKey(untreatedPassword: password, seed: randomSeed, scheme: scheme)
+        let randomSeed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
+        let randomIV = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
+        let encKey = EncryptionKey(untreatedPassword: password, seed: randomSeed, iv: randomIV, scheme: scheme)
         
         measure {
-            let _ = try! encryptor.encode(testString, withKey: encKey)
+            _ = try! encryptor.encode(testString, withKey: encKey)
         }
         
     }
@@ -410,12 +500,38 @@ class EncryptingSwiftTypes: XCTestCase {
         let testString = "Lorem ipsum dolor sit amet"
         
         let scheme = EncryptionSerialization.Scheme.default
-        let randomSeed = EncryptionSerialization.randomSalt(size: scheme.seedSize)
-        let encKey = EncryptionKey(untreatedPassword: password, seed: randomSeed, scheme: scheme)
+        let randomSeed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
+        let randomIV = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
+        let encKey = EncryptionKey(untreatedPassword: password, seed: randomSeed, iv: randomIV, scheme: scheme)
         let encryptedString = try! encryptor.encode(testString, withKey: encKey)
         
         measure {
-            let _ = try! decryptor.decode(String.self, from: encryptedString, withKey: encKey)
+            _ = try! decryptor.decode(String.self, from: encryptedString, withKey: encKey)
+        }
+        
+    }
+    
+    func testBase64EncryptionPerformance() {
+        
+        let testData = Data(repeating: 9, count: 140_000) // 140KB
+        
+        encryptor.dataEncodingStratety = .base64
+        measure {
+            _ = try! encryptor.encode(testData, withKey: encKey)
+        }
+        
+    }
+    
+    func testBase64DecryptionPerformance() {
+        
+        let testData = Data(repeating: 9, count: 140_000) // 140KB
+        
+        encryptor.dataEncodingStratety = .base64
+        decryptor.dataDecodingStrategy = .base64
+        let encData = try! encryptor.encode(testData, withKey: encKey)
+        
+        measure {
+            _ = try! decryptor.decode(Data.self, from: encData, withKey: encKey)
         }
         
     }

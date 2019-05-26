@@ -40,6 +40,14 @@
 		85581DA92298C317001DA6CE /* Receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.png */; };
 		85581DAA2298C317001DA6CE /* Receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.png */; };
 		85581DAB2298C317001DA6CE /* Receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.png */; };
+		857360F92298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
+		857360FA2298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
+		857360FB2298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
+		857360FC2298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
+		857360FE2298F0360011B32B /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360FD2298F0360011B32B /* EncryptionKey.swift */; };
+		857360FF2298F0360011B32B /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360FD2298F0360011B32B /* EncryptionKey.swift */; };
+		857361002298F0360011B32B /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360FD2298F0360011B32B /* EncryptionKey.swift */; };
+		857361012298F0360011B32B /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360FD2298F0360011B32B /* EncryptionKey.swift */; };
 		859C2F902298303100DB9354 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 859C2F8F2298303100DB9354 /* .gitignore */; };
 		85CA1850228A631200159C0A /* ItemEncrypt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CA1846228A631200159C0A /* ItemEncrypt.framework */; };
 		85CA1855228A631200159C0A /* EncryptingiOSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* EncryptingiOSTypes.swift */; };
@@ -104,6 +112,8 @@
 		85581DA42298C317001DA6CE /* Screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot.png; sourceTree = "<group>"; };
 		85581DA52298C317001DA6CE /* Receipt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Receipt.png; sourceTree = "<group>"; };
 		856650AB228D24F800F9A409 /* EncryptionEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionEncoder.swift; sourceTree = "<group>"; };
+		857360F82298E5130011B32B /* KeychainHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHandle.swift; sourceTree = "<group>"; };
+		857360FD2298F0360011B32B /* EncryptionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKey.swift; sourceTree = "<group>"; };
 		859C2F8F2298303100DB9354 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		85CA1846228A631200159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA1849228A631200159C0A /* ItemEncrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemEncrypt.h; sourceTree = "<group>"; };
@@ -291,10 +301,12 @@
 		85CA18A7228A64F200159C0A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				857360F82298E5130011B32B /* KeychainHandle.swift */,
 				856650AB228D24F800F9A409 /* EncryptionEncoder.swift */,
 				85CA1860228A638700159C0A /* EncryptionSerialization.swift */,
 				854226D02296F48F00B8CA33 /* EncryptedItem.swift */,
 				854226D522977BDB00B8CA33 /* Scheme.swift */,
+				857360FD2298F0360011B32B /* EncryptionKey.swift */,
 				850E0C06228CB54800D308DC /* KeySizes.swift */,
 				85CA1849228A631200159C0A /* ItemEncrypt.h */,
 			);
@@ -937,10 +949,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				850E0C07228CB54800D308DC /* KeySizes.swift in Sources */,
+				857360FE2298F0360011B32B /* EncryptionKey.swift in Sources */,
 				854226C62296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
 				854226D622977BDB00B8CA33 /* Scheme.swift in Sources */,
 				854226D12296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				85CA1861228A638700159C0A /* EncryptionSerialization.swift in Sources */,
+				857360F92298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -958,10 +972,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				850E0C08228CB54800D308DC /* KeySizes.swift in Sources */,
+				857360FF2298F0360011B32B /* EncryptionKey.swift in Sources */,
 				854226C72296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
 				854226D722977BDB00B8CA33 /* Scheme.swift in Sources */,
 				85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D22296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
+				857360FA2298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -979,10 +995,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				850E0C09228CB54800D308DC /* KeySizes.swift in Sources */,
+				857361002298F0360011B32B /* EncryptionKey.swift in Sources */,
 				854226C82296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
 				854226D822977BDB00B8CA33 /* Scheme.swift in Sources */,
 				85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D32296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
+				857360FB2298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1000,10 +1018,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				850E0C0A228CB54800D308DC /* KeySizes.swift in Sources */,
+				857361012298F0360011B32B /* EncryptionKey.swift in Sources */,
 				854226C92296E0A900B8CA33 /* EncryptionEncoder.swift in Sources */,
 				854226D922977BDB00B8CA33 /* Scheme.swift in Sources */,
 				85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D42296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
+				857360FC2298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,9 +24,9 @@ public enum EncryptionSerialization {
     
     // MARK: - Key Derivation
     
-    /// Returns a cryptographically random salt of the given length.
-    public static func randomSalt(size: Int) -> [UInt8] {
-        return try! Random.generateBytes(byteCount: size)
+    /// Returns an array of cryptographically random data of the given length.
+    public static func randomBytes(count: Int) -> [UInt8] {
+        return try! Random.generateBytes(byteCount: count)
     }
     
     /// Derives a key using PBKDF2 from the given password using the given encryption scheme.
@@ -56,8 +56,12 @@ public enum EncryptionSerialization {
             fatalError("Password was found empty.")
         }
         
-        let seed = randomSalt(size: scheme.seedSize)
-        let derivedKey = EncryptionKey(untreatedPassword: password, seed: seed, scheme: scheme)
+        let seed = randomBytes(count: scheme.seedSize)
+        let iv = randomBytes(count: scheme.initializationVectorSize)
+        let derivedKey = EncryptionKey(untreatedPassword: password,
+                                       seed: seed,
+                                       iv: iv,
+                                       scheme: scheme)
         
         return encryptedItem(with: data, key: derivedKey)
     }
@@ -87,11 +91,9 @@ public enum EncryptionSerialization {
         
         EncryptionSerialization.crypt(sc: cryptor, inputStream: dataStream, outputStream: outStream, bufferSize: bufferSize)
         
-        guard let encryptedData = outStream.property(forKey: .dataWrittenToMemoryStreamKey) as? Data else {
-            fatalError("Encrypted output stream didn't return data.")
-        }
+        let encryptedData = outStream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
         
-        return EncryptedItem(version: scheme.version, payload: encryptedData, salt: salt)
+        return EncryptedItem(version: scheme.version, payload: encryptedData, salt: salt, iv: iv)
     }
     
     
@@ -99,11 +101,10 @@ public enum EncryptionSerialization {
     
     /// Attempts to decrypt the given `object` using a key derived from the given `password`.
     public static func data(withEncryptedObject object: EncryptedItem, password: String) throws -> Data {
-        
-        let scheme = Scheme(format: object.version)
-        let salt = object.salt
-        
-        let derivedKey = EncryptionKey(untreatedPassword: password, treatedSalt: salt, scheme: scheme)
+        let derivedKey = EncryptionKey(untreatedPassword: password,
+                                       treatedSalt: object.salt,
+                                       iv: object.iv,
+                                       scheme: Scheme(format: object.version))
         return try data(withEncryptedObject: object, key: derivedKey)
     }
     

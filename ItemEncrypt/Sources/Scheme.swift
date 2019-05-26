@@ -8,7 +8,6 @@
 
 import Foundation
 import IDZSwiftCommonCrypto
-import CommonCrypto
 
 extension EncryptionSerialization {
     // MARK: Encryption Schemes
@@ -32,6 +31,10 @@ extension EncryptionSerialization {
                 }
             }
             
+            static var dataSize: Int {
+                return 3
+            }
+            
             /// Attempts to derive an `EncryptedItem.Format` from `bytes`, returning `nil` if an appropriate representation cannot be found.
             init?(bytes: [UInt8]) {
                 if bytes == Format.pilot.rawValue {
@@ -47,7 +50,7 @@ extension EncryptionSerialization {
         // MARK: - Properties
         
         /// The spec version used to encrypt data.
-        let version: Format
+        public let version: Format
         
         /// The pseudorandom algorithm we use to derive keys from passwords.
         var randomAlgorithm: PBKDF.PseudoRandomAlgorithm {
@@ -71,25 +74,32 @@ extension EncryptionSerialization {
         }
         
         /// The size of the encryption buffer to use.
-        var bufferSize: Int {
+        public var bufferSize: Int {
             switch self.version {
             case .pilot: return 1024
             }
         }
         
         /// The number of bytes that a random inital seed should be.
-        var seedSize: Int {
+        public var seedSize: Int {
             switch self.version {
             case .pilot: return 16
             }
         }
         
-        var stretchedSaltSize: Int {
+        /// The number of bytes that an initialization vector should be.
+        public var initializationVectorSize: Int {
+            switch self.version {
+            case .pilot: return 16
+            }
+        }
+        
+        public var stretchedSaltSize: Int {
             return hmacAlgorithm.digestLength()
         }
         
         /// The number of PBKDF2 iterations to run for key derivation.
-        var iterations: UInt32 {
+        public var iterations: UInt32 {
             switch self.version {
             case .pilot: return 100_000
             }
@@ -124,88 +134,6 @@ extension EncryptionSerialization {
             hasher.combine(version.rawValue)
         }
         
-    }
-    
-}
-
-
-public struct EncryptionKey: Equatable, Hashable {
-    // MARK: Properties
-    
-    let scheme: EncryptionSerialization.Scheme
-    let initializationVector: [UInt8]
-    let salt: [UInt8]
-    let keyData: [UInt8]
-    
-    // MARK: - Constructing an Encryption Key
-    
-    /// Derives an encryption key from the given password string and any additional data provided using the given encryption scheme.
-    ///
-    /// - parameter untreatedPassword: The raw password string from the user. This password is trimmed of leading and trailing whitespace, and Unicode normalized before being used to derive the key.
-    /// - parameter salt: Some data which is used in the encryption algorithm. This is to be retrieved from storage, or generated randomly for a new key, but it is not considered secure data. It MUST match the salt size configured in the given encryption `scheme`.
-    /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to derive the key.
-    init(untreatedPassword: String, additionalData: [String] = [], seed: [UInt8], scheme: EncryptionSerialization.Scheme) {
-        
-        self.scheme = scheme
-        
-        // Trimmed and normalized password
-        let treatedPassword = untreatedPassword.trimmingCharacters(in: .whitespacesAndNewlines).decomposedStringWithCompatibilityMapping
-        
-        // Treated salt
-        guard seed.count == scheme.seedSize else {
-            fatalError("Incoming seed was the wrong size for the encryption scheme.")
-        }
-        
-        var hasher = HMAC(algorithm: scheme.hmacAlgorithm, key: seed)
-        for data in additionalData {
-            // Hash in the email, user ID, etc. passed in.
-            hasher = hasher.update(string: data)!
-        }
-        
-        self.salt = hasher.final()
-        self.initializationVector = []
-        
-        self.keyData = EncryptionSerialization.deriveKey(password: treatedPassword,
-                                                         salt: salt,
-                                                         scheme: scheme)
-    }
-    
-    init(untreatedPassword: String, treatedSalt: [UInt8], scheme: EncryptionSerialization.Scheme) {
-        
-        self.scheme = scheme
-        
-        // Trimmed and normalized password
-        let treatedPassword = untreatedPassword.trimmingCharacters(in: .whitespacesAndNewlines).decomposedStringWithCompatibilityMapping
-        
-        // Treated salt
-        guard treatedSalt.count == scheme.stretchedSaltSize else {
-            fatalError("Incoming salt was the wrong size for the encryption scheme.")
-        }
-        
-        self.salt = treatedSalt
-        self.initializationVector = []
-        
-        self.keyData = EncryptionSerialization.deriveKey(password: treatedPassword,
-                                                         salt: salt,
-                                                         scheme: scheme)
-    }
-    
-}
-
-extension EncryptionKey {
-    
-    public static func == (lhs: EncryptionKey, rhs: EncryptionKey) -> Bool {
-        return lhs.scheme == rhs.scheme &&
-                lhs.initializationVector == rhs.initializationVector &&
-                lhs.salt == rhs.salt &&
-                lhs.keyData == rhs.keyData
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(scheme)
-        hasher.combine(initializationVector)
-        hasher.combine(salt)
-        hasher.combine(keyData)
     }
     
 }

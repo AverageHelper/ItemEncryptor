@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import ItemEncrypt
+import ItemEncrypt
 
 class EncryptingMacOSTypes: XCTestCase {
     
@@ -17,14 +17,16 @@ class EncryptingMacOSTypes: XCTestCase {
     let password = "password"
     var scheme: EncryptionSerialization.Scheme!
     var seed: [UInt8]!
+    var iv: [UInt8]!
     var encKey: EncryptionKey!
     
     override func setUp() {
         encryptor = EncryptionEncoder()
         decryptor = EncryptionDecoder()
         scheme = .default
-        seed = EncryptionSerialization.randomSalt(size: scheme.seedSize)
-        encKey = EncryptionKey(untreatedPassword: password, seed: seed, scheme: scheme)
+        seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
+        iv = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
+        encKey = EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: scheme)
     }
 
     override func tearDown() {
@@ -32,6 +34,7 @@ class EncryptingMacOSTypes: XCTestCase {
         decryptor = nil
         scheme = nil
         seed = nil
+        iv = nil
         encKey = nil
     }
     
@@ -50,6 +53,19 @@ class EncryptingMacOSTypes: XCTestCase {
         let decryptedPNG = try! decryptor.decode(Data.self, from: encryptedItem, withPassword: password)
         let decryptedImage = NSImage(data: decryptedPNG)
         XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+        
+        do {
+            let wrongPasswordPNG = try decryptor.decode(Data.self, from: encryptedItem, withPassword: "this is wrong. :)")
+            XCTFail("This shouldn't have decrypted at all.")
+            let wrongPasswordImage = NSImage(data: wrongPasswordPNG)
+            XCTAssert(wrongPasswordImage?.isPNGDataEqual(testImage) == false, "The image decrypted with the wrong password!")
+            
+        } catch {
+            guard case DecodingError.dataCorrupted = error else {
+                XCTFail("Got some other error: \(error)")
+                return
+            }
+        }
         
     }
     

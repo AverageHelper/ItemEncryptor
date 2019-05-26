@@ -949,7 +949,7 @@ public class EncryptionDecoder {
     
     // MARK: - Constructing an Encryption Decoder
     
-    init(configuration: EncryptionSerialization.Scheme = .default) {
+    public init(configuration: EncryptionSerialization.Scheme = .default) {
         self.configuration = configuration
     }
     
