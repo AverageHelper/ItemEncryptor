@@ -17,9 +17,14 @@ import IDZSwiftCommonCrypto
 public enum EncryptionSerialization {
     // MARK: Options
     
+    public enum EncryptionError: Error {
+        case noPassword
+    }
+    
     public enum DecryptionError: Error {
         case badData
         case incorrectVersion
+        case noPassword
     }
     
     // MARK: - Key Derivation
@@ -50,10 +55,10 @@ public enum EncryptionSerialization {
     ///     not be empty.
     /// - parameter scheme: The set of configuration options to use when encrypting the data.
     /// - returns: An `EncryptedItem` representing the encrypted data.
-    public static func encryptedItem(with data: Data, password: String, scheme: Scheme) -> EncryptedItem {
+    public static func encryptedItem(with data: Data, password: String, scheme: Scheme) throws -> EncryptedItem {
         
         guard !password.isEmpty else {
-            fatalError("Password was found empty.")
+            throw EncryptionError.noPassword
         }
         
         let seed = randomBytes(count: scheme.seedSize)
@@ -96,11 +101,38 @@ public enum EncryptionSerialization {
         return EncryptedItem(version: scheme.version, payload: encryptedData, salt: salt, iv: iv)
     }
     
+    /// Encrypts data from an input stream, sending output data to another stream.
+    ///
+    /// Encrypts data from an input stream, sending output data to another stream. This output may be shunted into an `EncryptedItem` payload, or used in any other way.
+    ///
+    /// - parameter input: The input data stream.
+    /// - parameter key: The key with which to encrypt the data.
+    /// - parameter output: A stream of encrypted data.
+    public static func encryptDataStream(_ input: InputStream, withKey key: EncryptionKey, into output: OutputStream) {
+        
+        let scheme = key.scheme
+        let keyData = key.keyData
+        let iv = key.initializationVector
+        
+        let cryptor = StreamCryptor(operation: .encrypt,
+                                    algorithm: scheme.encryptionAlgorithm,
+                                    mode: scheme.algorithmMode,
+                                    padding: .PKCS7Padding,
+                                    key: keyData,
+                                    iv: iv)
+        
+        EncryptionSerialization.crypt(sc: cryptor, inputStream: input, outputStream: output, bufferSize: scheme.bufferSize)
+    }
     
     // MARK: - Decryption
     
     /// Attempts to decrypt the given `object` using a key derived from the given `password`.
     public static func data(withEncryptedObject object: EncryptedItem, password: String) throws -> Data {
+        
+        guard !password.isEmpty else {
+            throw DecryptionError.noPassword
+        }
+        
         let derivedKey = EncryptionKey(untreatedPassword: password,
                                        treatedSalt: object.salt,
                                        iv: object.iv,
@@ -133,13 +165,35 @@ public enum EncryptionSerialization {
         
         EncryptionSerialization.crypt(sc: cryptor, inputStream: dataStream, outputStream: outStream, bufferSize: bufferSize)
         
-        guard let decryptedData = outStream.property(forKey: .dataWrittenToMemoryStreamKey) as? Data else {
-            fatalError("Decrypted output stream didn't return data.")
-        }
+        let decryptedData = outStream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
         
         return decryptedData
     }
     
+    /// Decrypts data from an input stream, sending output data to another stream.
+    ///
+    /// Decrypts data from an input stream, sending output data to another stream. The input may be the payload of an `EncryptedItem`, or from something else.
+    ///
+    /// - parameter input: A stream of encrypted data.
+    /// - parameter key: The key with which to decrypt the data.
+    /// - parameter output: A stream of the decrypted data.
+    public static func decryptDataStream(_ input: InputStream, withKey key: EncryptionKey, into output: OutputStream) {
+        
+        let scheme = key.scheme
+        let keyData = key.keyData
+        let iv = key.initializationVector
+        
+        let cryptor = StreamCryptor(operation: .decrypt,
+                                    algorithm: scheme.encryptionAlgorithm,
+                                    mode: scheme.algorithmMode,
+                                    padding: .PKCS7Padding,
+                                    key: keyData,
+                                    iv: iv)
+        
+        EncryptionSerialization.crypt(sc: cryptor, inputStream: input, outputStream: output, bufferSize: scheme.bufferSize)
+    }
+    
+    // MARK: - The actual encryption.
     
     /// Uses the IDZSwiftSerialization library to encrypt or decrypt the given data stream.
     private static func crypt(sc: StreamCryptor, inputStream: InputStream, outputStream: OutputStream, bufferSize: Int) {

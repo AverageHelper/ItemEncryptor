@@ -310,10 +310,17 @@ class EncryptingSwiftTypes: XCTestCase {
         
         let testData = Data(repeating: 9, count: 140_000) // 140KB
         
+        encryptor.dataEncodingStratety = .raw
+        decryptor.dataDecodingStrategy = .raw
+        let encRawData = try! encryptor.encode(testData, withKey: encKey)
+        let decRawData = try! decryptor.decode(Data.self, from: encRawData, withKey: encKey)
+        XCTAssertEqual(decRawData, testData)
+        
         encryptor.dataEncodingStratety = .base64
-        let encData = try! encryptor.encode(testData, withKey: encKey)
-        let decData = try! decryptor.decode(Data.self, from: encData, withKey: encKey)
-        XCTAssertEqual(decData, testData)
+        decryptor.dataDecodingStrategy = .base64
+        let encStringData = try! encryptor.encode(testData, withKey: encKey)
+        let decStringData = try! decryptor.decode(Data.self, from: encStringData, withKey: encKey)
+        XCTAssertEqual(decStringData, testData)
         
         encryptor.dataEncodingStratety = .deferredToData
         decryptor.dataDecodingStrategy = .deferredToData
@@ -375,6 +382,54 @@ class EncryptingSwiftTypes: XCTestCase {
             XCTAssert(error is EncryptionSerialization.DecryptionError, "Got a different error: \(error)")
         }
         
+    }
+    
+    func testEncryptedDataWithoutPassword() {
+        let randomData = Data(repeating: UInt8.random(in: 0...9), count: 16)
+        
+        do {
+            _ = try encryptor.encode(randomData, withPassword: "")
+            XCTFail("Encryptor should throw at empty password string.")
+        } catch let error as EncryptionSerialization.EncryptionError {
+            XCTAssertEqual(error, .noPassword)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testDecryptedDataWithoutPassword() {
+        let testText = "Lorem ipsum dolor sit amet"
+        
+        let encryptedItem = try! encryptor.encode(testText, withPassword: password)
+        
+        do {
+            _ = try decryptor.decode(String.self, from: encryptedItem, withPassword: "")
+            XCTFail("Decryptor should throw at empty password string.")
+        } catch let error as EncryptionSerialization.DecryptionError {
+            XCTAssertEqual(error, .noPassword)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testDecryptedDataFromMismatchingSchemes() {
+        let randomData = Data(repeating: UInt8.random(in: 0...9), count: 16)
+        let encryptedItem = try! encryptor.encode(randomData, withKey: encKey)
+        
+        do {
+            let oddScheme = EncryptionSerialization.Scheme(format: .unused)
+            let oddSeed = EncryptionSerialization.randomBytes(count: oddScheme.seedSize)
+            let oddIV = EncryptionSerialization.randomBytes(count: oddScheme.initializationVectorSize)
+            let oddKey = EncryptionKey(untreatedPassword: "doesn't matter", seed: oddSeed, iv: oddIV, scheme: oddScheme)
+            
+            let decoded = try decryptor.decode(Data.self, from: encryptedItem, withKey: oddKey)
+            XCTFail("Odd scheme shouldn't decode anything: \(decoded)")
+            
+        } catch let error as EncryptionSerialization.DecryptionError {
+            XCTAssertEqual(error, .incorrectVersion)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
     
     
@@ -528,6 +583,31 @@ class EncryptingSwiftTypes: XCTestCase {
         
         encryptor.dataEncodingStratety = .base64
         decryptor.dataDecodingStrategy = .base64
+        let encData = try! encryptor.encode(testData, withKey: encKey)
+        
+        measure {
+            _ = try! decryptor.decode(Data.self, from: encData, withKey: encKey)
+        }
+        
+    }
+    
+    func testRawEncryptionPerformance() {
+        
+        let testData = Data(repeating: 9, count: 140_000) // 140KB
+        
+        encryptor.dataEncodingStratety = .raw
+        measure {
+            _ = try! encryptor.encode(testData, withKey: encKey)
+        }
+        
+    }
+    
+    func testRawDecryptionPerformance() {
+        
+        let testData = Data(repeating: 9, count: 140_000) // 140KB
+        
+        encryptor.dataEncodingStratety = .raw
+        decryptor.dataDecodingStrategy = .raw
         let encData = try! encryptor.encode(testData, withKey: encKey)
         
         measure {

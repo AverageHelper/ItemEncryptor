@@ -105,13 +105,37 @@ class EncryptingMacOSTypes: XCTestCase {
         
     }
     
+    func testHugeImageStreamEncryption() {
+        
+        let imageName = NSImage.Name("Receipt") // ~16MB
+        let bundle = Bundle(for: type(of: self))
+        let testImagePath = bundle.pathForImageResource(imageName)!
+        let testImage = NSImage(contentsOfFile: testImagePath)!
+        let testData = testImage.pngRepresentation()!
+        
+        let encInput = InputStream(data: testData)
+        let encOutput = OutputStream(toMemory: ())
+        EncryptionSerialization.encryptDataStream(encInput, withKey: encKey, into: encOutput)
+        
+        let encryptedData = encOutput.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
+        
+        let decInput = InputStream(data: encryptedData)
+        let decOutput = OutputStream(toMemory: ())
+        EncryptionSerialization.decryptDataStream(decInput, withKey: encKey, into: decOutput)
+        
+        let decryptedData = decOutput.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
+        XCTAssertEqual(decryptedData, testData)
+        let decryptedImage = NSImage(data: decryptedData)
+        XCTAssert(decryptedImage?.pngRepresentation() == testImage.pngRepresentation())
+    }
+    
     func testHugeImageEncryptionPerformance() {
         
         let imageName = NSImage.Name("Receipt") // ~16MB
         let bundle = Bundle(for: type(of: self))
         let testImagePath = bundle.pathForImageResource(imageName)!
         let testImage = NSImage(contentsOfFile: testImagePath)!
-        let testData = testImage.pngRepresentation()
+        let testData = testImage.pngRepresentation()!
         
         measure {
             _ = try! encryptor.encode(testData, withKey: encKey)
@@ -125,12 +149,54 @@ class EncryptingMacOSTypes: XCTestCase {
         let bundle = Bundle(for: type(of: self))
         let testImagePath = bundle.pathForImageResource(imageName)!
         let testImage = NSImage(contentsOfFile: testImagePath)!
-        let testData = testImage.pngRepresentation()
+        let testData = testImage.pngRepresentation()!
         
         let encryptedItem = try! encryptor.encode(testData, withKey: encKey)
         
         measure {
             _ = try! decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+        }
+        
+    }
+    
+    func testHugeImageEncryptionStreamPerformance() {
+        
+        let imageName = NSImage.Name("Receipt") // ~16MB
+        let bundle = Bundle(for: type(of: self))
+        let testImagePath = bundle.pathForImageResource(imageName)!
+        let testImage = NSImage(contentsOfFile: testImagePath)!
+        let testData = testImage.pngRepresentation()!
+        
+        measureMetrics([.wallClockTime], automaticallyStartMeasuring: false) {
+            let encInput = InputStream(data: testData)
+            let encOutput = OutputStream(toMemory: ())
+            startMeasuring()
+            EncryptionSerialization.encryptDataStream(encInput, withKey: encKey, into: encOutput)
+            stopMeasuring()
+        }
+        
+    }
+    
+    func testHugeImageDecryptionStreamPerformance() {
+        
+        let imageName = NSImage.Name("Receipt") // ~16MB
+        let bundle = Bundle(for: type(of: self))
+        let testImagePath = bundle.pathForImageResource(imageName)!
+        let testImage = NSImage(contentsOfFile: testImagePath)!
+        let testData = testImage.pngRepresentation()!
+        
+        let encInput = InputStream(data: testData)
+        let encOutput = OutputStream(toMemory: ())
+        EncryptionSerialization.encryptDataStream(encInput, withKey: encKey, into: encOutput)
+        
+        let encryptedData = encOutput.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
+        
+        measureMetrics([.wallClockTime], automaticallyStartMeasuring: false) {
+            let decInput = InputStream(data: encryptedData)
+            let decOutput = OutputStream(toMemory: ())
+            startMeasuring()
+            EncryptionSerialization.decryptDataStream(decInput, withKey: encKey, into: decOutput)
+            stopMeasuring()
         }
         
     }

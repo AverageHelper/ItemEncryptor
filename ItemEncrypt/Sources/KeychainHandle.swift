@@ -7,22 +7,20 @@
 //
 
 import Foundation
-import SecurityInterface
+import Security
 
 
 /// A simple interface for keeping and retrieving semantic `EncryptionKey` objects from the Keychain.
 public class KeychainHandle {
-    // MARK: Errors
+    // MARK: Properties
     
-    public enum StorageError: Error {
-        case incorrectContents
-        case duplicateItem
-        case unknown(reason: String)
-    }
+    var description: String
     
     // MARK: - Constructing a Keychain Handle
     
-    public init() {}
+    public init(description: String = "com.LeadDevCreations.ItemEncrypt.KeychainHandle Items") {
+        self.description = description
+    }
     
     // MARK: - Storing Keys
     
@@ -30,7 +28,7 @@ public class KeychainHandle {
     ///
     /// - parameter encryptionKey: The key to store.
     /// - parameter tag: The name to associate with the key for future retrieval. This should be in reverse-DNS notation.
-    /// - throws: A `StorageError` describing the issue if the save failed.
+    /// - throws: A `StorageError` if the save failed.
     /// - returns: The key that was stored in the keychain.
     @discardableResult
     public func setKey(_ encryptionKey: EncryptionKey, forTag tag: String) throws -> EncryptionKey {
@@ -38,32 +36,37 @@ public class KeychainHandle {
         // Delete the existing key, if there is one.
         try deleteKey(withTag: tag)
         
-        var access: SecAccess?
-        let accessStatus = SecAccessCreate("Financial Image View Key" as CFString, nil, &access)
-        guard accessStatus == errSecSuccess else {
-            let explanation = SecCopyErrorMessageString(accessStatus, nil) ?? "Unknown reason." as CFString
-            throw StorageError.unknown(reason: explanation as String)
-        }
-        
         let key = encryptionKey.rawData as CFData
         
         // We store the "key" data as a "password". See answer to https://forums.developer.apple.com/thread/113321
         var addQuery: [String: Any] =
             [kSecClass as String: kSecClassGenericPassword,
-             kSecAttrLabel as String: tag,
-             kSecAttrIsInvisible as String: true,
+             kSecAttrLabel as String: tag as CFString,
+             kSecAttrIsInvisible as String: true as CFBoolean,
              kSecAttrCreationDate as String: Date() as CFDate,
              kSecValueData as String: key,
-             kSecReturnData as String: true]
+             kSecReturnData as String: true as CFBoolean]
         
         // Save the context under "account"
         if let account = encryptionKey.context {
             addQuery[kSecAttrAccount as String] = account
         }
+        
+        #if os(macOS)
         if #available(OSX 10.0, *) {
+            var access: SecAccess?
+            let accessStatus = SecAccessCreate(self.description as CFString, nil, &access)
+            
+            guard accessStatus == errSecSuccess else {
+                // Throw the error
+                let explanation = SecCopyErrorMessageString(accessStatus, nil) ?? "Unknown reason." as CFString
+                throw StorageError.unknown(reason: explanation as String)
+            }
+            
             addQuery[kSecAttrAccess as String] = access!
         }
-        
+        #endif
+
         var result: CFTypeRef?
         let status = SecItemAdd(addQuery as CFDictionary, &result)
         
@@ -76,9 +79,8 @@ public class KeychainHandle {
             throw StorageError.duplicateItem
             
         default:
-            // Throw error
-            let explanation = SecCopyErrorMessageString(status, nil) ?? "Unknown reason." as CFString
-            throw StorageError.unknown(reason: explanation as String)
+            // Handle error
+            try handleGenericError(status: status)
         }
         
         // Expect plain data as the result
@@ -114,9 +116,8 @@ public class KeychainHandle {
             return nil
             
         default:
-            // Throw error
-            let explanation = SecCopyErrorMessageString(status, nil) ?? "Unknown reason." as CFString
-            throw StorageError.unknown(reason: explanation as String)
+            // Handle error
+            try handleGenericError(status: status)
         }
         
         // Get the item dictionary
@@ -148,7 +149,6 @@ public class KeychainHandle {
         let existingKey = try? key(withTag: tag)
         
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecMatchLimit as String: kSecMatchLimitOne,
                                     kSecAttrLabel as String: tag]
         
         let status = SecItemDelete(query as CFDictionary)
@@ -160,12 +160,47 @@ public class KeychainHandle {
             return nil
             
         default:
-            // Throw error
-            let explanation = SecCopyErrorMessageString(status, nil) ?? "Unknown reason." as CFString
-            throw StorageError.unknown(reason: explanation as String)
+            // Handle error
+            try handleGenericError(status: status)
         }
         
         return existingKey
+    }
+    
+    // MARK: - Handling Errors
+    
+    public enum StorageError: Error {
+        case badRequest
+        case cancelled
+        case diskFull
+        case duplicateItem
+        case incorrectContents
+        case invalidParameters
+        case invalidValueDetected
+        case ioError
+        case itemNotFound
+        case memoryError(reason: String)
+        case unknown(reason: String)
+    }
+    
+    private func handleGenericError(status: OSStatus) throws {
+        switch status {
+        case errSecSuccess:      break
+        case errSecAllocate:     throw StorageError.memoryError(reason: "Failed to allocate memory")
+        case errSecBadReq:       throw StorageError.badRequest
+        case errSecDiskFull, errSecDskFull: throw StorageError.diskFull
+        case errSecItemNotFound: throw StorageError.itemNotFound
+        case errSecIO:           throw StorageError.ioError
+        case errSecInvalidValue: throw StorageError.invalidValueDetected
+        case errSecMemoryError:  throw StorageError.memoryError(reason: "Generic")
+        case errSecParam:        throw StorageError.invalidParameters
+        case errSecUserCanceled: throw StorageError.cancelled
+            
+        default:
+            // Throw the error
+            let explanation = SecCopyErrorMessageString(status, nil) ?? "Unknown reason." as CFString
+            throw StorageError.unknown(reason: explanation as String)
+        }
     }
     
 }

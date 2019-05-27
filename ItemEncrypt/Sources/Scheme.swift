@@ -16,8 +16,10 @@ extension EncryptionSerialization {
         // MARK: Spec Versions
         
         public enum Format {
-            /// Version 1 of our encrypted data format. Derives with SHA256
+            /// Version 1 of our encrypted data format.
             case pilot
+            /// Some future version of our encrypted data format. DO NOT USE.
+            case unused
             
             /// The latest version of the spec.
             static let latest: Format = .pilot
@@ -28,6 +30,7 @@ extension EncryptionSerialization {
             var rawValue: [UInt8] {
                 switch self {
                 case .pilot: return [0, 0, 1]
+                case .unused: return [0, 0, 2]
                 }
             }
             
@@ -39,6 +42,9 @@ extension EncryptionSerialization {
             init?(bytes: [UInt8]) {
                 if bytes == Format.pilot.rawValue {
                     self = .pilot
+                    
+                } else if bytes == Format.unused.rawValue {
+                    self = .unused
                     
                 } else {
                     return nil
@@ -56,6 +62,7 @@ extension EncryptionSerialization {
         var randomAlgorithm: PBKDF.PseudoRandomAlgorithm {
             switch self.version {
             case .pilot: return .sha256
+            case .unused: return .sha512
             }
         }
         
@@ -63,6 +70,7 @@ extension EncryptionSerialization {
         var hmacAlgorithm: HMAC.Algorithm {
             switch self.version {
             case .pilot: return .sha256
+            case .unused: return .sha512
             }
         }
         
@@ -70,6 +78,7 @@ extension EncryptionSerialization {
         var derivedKeyLength: KeySize {
             switch self.version {
             case .pilot: return .aes256
+            case .unused: return .tripleDES
             }
         }
         
@@ -77,6 +86,7 @@ extension EncryptionSerialization {
         public var bufferSize: Int {
             switch self.version {
             case .pilot: return 1024
+            case .unused: return 1024
             }
         }
         
@@ -84,6 +94,7 @@ extension EncryptionSerialization {
         public var seedSize: Int {
             switch self.version {
             case .pilot: return 16
+            case .unused: return 16
             }
         }
         
@@ -91,6 +102,7 @@ extension EncryptionSerialization {
         public var initializationVectorSize: Int {
             switch self.version {
             case .pilot: return 16
+            case .unused: return 16
             }
         }
         
@@ -102,6 +114,7 @@ extension EncryptionSerialization {
         public var iterations: UInt32 {
             switch self.version {
             case .pilot: return 100_000
+            case .unused: return 200_000
             }
         }
         
@@ -109,6 +122,7 @@ extension EncryptionSerialization {
         var encryptionAlgorithm: StreamCryptor.Algorithm {
             switch self.version {
             case .pilot: return .aes
+            case .unused: return .tripleDES
             }
         }
         
@@ -116,6 +130,7 @@ extension EncryptionSerialization {
         var algorithmMode: StreamCryptor.Mode {
             switch self.version {
             case .pilot: return .CBC
+            case .unused: return .CBC
             }
         }
         

@@ -17,6 +17,7 @@ class ItemEncryptTests: XCTestCase {
     let password = "password"
     var scheme: EncryptionSerialization.Scheme!
     var seed: [UInt8]!
+    var iv: [UInt8]!
     var encKey: EncryptionKey!
     
     override func setUp() {
@@ -24,7 +25,8 @@ class ItemEncryptTests: XCTestCase {
         decryptor = EncryptionDecoder()
         scheme = .default
         seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
-        encKey = EncryptionKey(untreatedPassword: password, seed: seed, scheme: scheme)
+        iv = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
+        encKey = EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: scheme)
     }
 
     override func tearDown() {
@@ -32,6 +34,7 @@ class ItemEncryptTests: XCTestCase {
         decryptor = nil
         scheme = nil
         seed = nil
+        iv = nil
         encKey = nil
     }
     
@@ -126,6 +129,46 @@ class ItemEncryptTests: XCTestCase {
         
         measure {
             _ = try! decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+        }
+        
+    }
+    
+    func testHugeImageEncryptionStreamPerformance() {
+        
+        let imageName = "Receipt" // ~16MB
+        let bundle = Bundle(for: type(of: self))
+        let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
+        let testData = testImage.pngData()!
+        
+        measureMetrics([.wallClockTime], automaticallyStartMeasuring: false) {
+            let encInput = InputStream(data: testData)
+            let encOutput = OutputStream(toMemory: ())
+            startMeasuring()
+            EncryptionSerialization.encryptDataStream(encInput, withKey: encKey, into: encOutput)
+            stopMeasuring()
+        }
+        
+    }
+    
+    func testHugeImageDecryptionStreamPerformance() {
+        
+        let imageName = "Receipt" // ~16MB
+        let bundle = Bundle(for: type(of: self))
+        let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
+        let testData = testImage.pngData()!
+        
+        let encInput = InputStream(data: testData)
+        let encOutput = OutputStream(toMemory: ())
+        EncryptionSerialization.encryptDataStream(encInput, withKey: encKey, into: encOutput)
+        
+        let encryptedData = encOutput.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
+        
+        measureMetrics([.wallClockTime], automaticallyStartMeasuring: false) {
+            let decInput = InputStream(data: encryptedData)
+            let decOutput = OutputStream(toMemory: ())
+            startMeasuring()
+            EncryptionSerialization.decryptDataStream(decInput, withKey: encKey, into: decOutput)
+            stopMeasuring()
         }
         
     }

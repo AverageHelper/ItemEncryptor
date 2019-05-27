@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>classNames</key>
+	<dict>
+		<key>EncryptingMacOSTypes</key>
+		<dict>
+			<key>testHugeImageDecryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0542</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Local Baseline</string>
+				</dict>
+			</dict>
+			<key>testHugeImageDecryptionStreamPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.046773</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Local Baseline</string>
+				</dict>
+			</dict>
+			<key>testHugeImageEncryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0787</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Local Baseline</string>
+					<key>maxPercentRelativeStandardDeviation</key>
+					<real>15</real>
+				</dict>
+			</dict>
+			<key>testHugeImageEncryptionStreamPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.054112</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Local Baseline</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>EncryptingSwiftTypes</key>
+		<dict>
+			<key>testBase64DecryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0020327</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 25, 2019 at 7:58:35 PM</string>
+				</dict>
+			</dict>
+			<key>testBase64EncryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.002615</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 25, 2019 at 7:58:35 PM</string>
+				</dict>
+			</dict>
+			<key>testDecryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.075778</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 25, 2019 at 7:58:32 PM</string>
+				</dict>
+			</dict>
+			<key>testDecryptionPerformanceWithKey()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>8.112e-05</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 24, 2019 at 2:30:30 PM</string>
+				</dict>
+			</dict>
+			<key>testEncryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.078066</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 25, 2019 at 7:58:32 PM</string>
+				</dict>
+			</dict>
+			<key>testEncryptionPerformanceWithKey()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.000132</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 26, 2019 at 7:19:24 PM</string>
+					<key>maxPercentRelativeStandardDeviation</key>
+					<real>20</real>
+				</dict>
+			</dict>
+			<key>testRawDecryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.00066392</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Local Baseline</string>
+				</dict>
+			</dict>
+			<key>testRawEncryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.001018</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Local Baseline</string>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

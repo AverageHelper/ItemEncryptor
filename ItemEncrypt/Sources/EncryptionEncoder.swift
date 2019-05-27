@@ -48,8 +48,11 @@ public final class EncryptionEncoder {
         /// Defer to `Data` for choosing an encoding.
         case deferredToData
         
-        /// Encoded the `Data` as a Base64-encoded string. This is the default strategy.
+        /// Encode the `Data` as a Base64-encoded string.
         case base64
+        
+        /// Encode the `Data` as-is, in its raw format. This is the default strategy.
+        case raw
         
         /// Encode the `Data` as a custom value encoded by the given closure.
         ///
@@ -69,8 +72,8 @@ public final class EncryptionEncoder {
     /// The strategy to use in encoding dates. Defaults to `.deferredToDate`.
     public var dateEncodingStrategy: DateEncodingStrategy = .deferredToDate
     
-    /// The strategy to use in encoding binary data. Defaults to `.base64`.
-    public var dataEncodingStratety: DataEncodingStrategy = .base64
+    /// The strategy to use in encoding binary data. Defaults to `.raw`.
+    public var dataEncodingStratety: DataEncodingStrategy = .raw
     
     /// The strategy to use in encoding non-conforming numbers. Defaults to `.throw`.
     public var nonConformingFloatEncodingStrategy: NonConformingFloatEncodingStrategy = .throw
@@ -135,9 +138,9 @@ public final class EncryptionEncoder {
         }
         
         let data = NSKeyedArchiver.archivedData(withRootObject: topLevel)
-        return EncryptionSerialization.encryptedItem(with: data,
-                                                     password: password,
-                                                     scheme: configuration)
+        return try EncryptionSerialization.encryptedItem(with: data,
+                                                         password: password,
+                                                         scheme: configuration)
     }
     
     /// Encodes the given top-level value using the given key, and returns its encrypted representation.
@@ -694,6 +697,9 @@ extension _EncryptionEncoder {
     
     fileprivate func box(_ data: Data) throws -> NSObject {
         switch self.options.dataEncodingStrategy {
+        case .raw:
+            return NSData(data: data)
+            
         case .deferredToData:
             // Must be called with a surrounding with(pushedKey:) call.
             let depth = self.storage.count
@@ -898,8 +904,11 @@ public class EncryptionDecoder {
         /// Defer to `Data` for decoding.
         case deferredToData
         
-        /// Decode the `Data` from a Base64-encoded string. This is the default strategy.
+        /// Decode the `Data` from a Base64-encoded string.
         case base64
+        
+        /// Decode the `Data` as-is, in its raw format. This is the default strategy.
+        case raw
         
         /// Decode the `Data` as a custom value decoded by the given closure.
         case custom((_ decoder: Decoder) throws -> Data)
@@ -917,8 +926,8 @@ public class EncryptionDecoder {
     /// The strategy to use in decoding dates. Defaults to `.deferredToDate`.
     public var dateDecodingStrategy: DateDecodingStrategy = .deferredToDate
     
-    /// The strategy to use in decoding binary data. Defaults to `.base64`.
-    public var dataDecodingStrategy: DataDecodingStrategy = .base64
+    /// The strategy to use in decoding binary data. Defaults to `.raw`.
+    public var dataDecodingStrategy: DataDecodingStrategy = .raw
     
     /// The strategy to use in decoding non-conforming numbers. Defaults to `.throw`.
     public var nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy = .throw
@@ -2201,6 +2210,13 @@ extension _EncryptionDecoder {
         guard !(value is NSNull) else { return nil }
         
         switch self.options.dataDecodingStrategy {
+        case .raw:
+            guard let data = value as? Data else {
+                throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
+            }
+            
+            return data
+            
         case .deferredToData:
             self.storage.push(container: value)
             defer { self.storage.popContainer() }
