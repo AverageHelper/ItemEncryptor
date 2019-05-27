@@ -137,7 +137,7 @@ public final class EncryptionEncoder {
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) did not encode any values."))
         }
         
-        let data = NSKeyedArchiver.archivedData(withRootObject: topLevel)
+        let data = try NSKeyedArchiver.archivedData(withRootObject: topLevel, requiringSecureCoding: false)
         return try EncryptionSerialization.encryptedItem(with: data,
                                                          password: password,
                                                          scheme: configuration)
@@ -157,7 +157,7 @@ public final class EncryptionEncoder {
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) did not encode any values."))
         }
         
-        let data = NSKeyedArchiver.archivedData(withRootObject: topLevel)
+        let data = try NSKeyedArchiver.archivedData(withRootObject: topLevel, requiringSecureCoding: false)
         return EncryptionSerialization.encryptedItem(with: data, key: key)
     }
     

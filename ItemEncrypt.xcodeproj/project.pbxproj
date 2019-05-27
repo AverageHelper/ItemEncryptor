@@ -49,6 +49,10 @@
 		857361002298F0360011B32B /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360FD2298F0360011B32B /* EncryptionKey.swift */; };
 		857361012298F0360011B32B /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360FD2298F0360011B32B /* EncryptionKey.swift */; };
 		859C2F902298303100DB9354 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 859C2F8F2298303100DB9354 /* .gitignore */; };
+		85AC6676229BA80B00C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC6675229BA80A00C1C110 /* Security.framework */; };
+		85AC6678229BA81300C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC6677229BA81200C1C110 /* Security.framework */; };
+		85AC667A229BA81800C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC6679229BA81800C1C110 /* Security.framework */; };
+		85AC667C229BA81D00C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC667B229BA81D00C1C110 /* Security.framework */; };
 		85CA1850228A631200159C0A /* ItemEncrypt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CA1846228A631200159C0A /* ItemEncrypt.framework */; };
 		85CA1855228A631200159C0A /* EncryptingiOSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* EncryptingiOSTypes.swift */; };
 		85CA1857228A631200159C0A /* ItemEncrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 85CA1849228A631200159C0A /* ItemEncrypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -127,6 +131,10 @@
 		857360F82298E5130011B32B /* KeychainHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHandle.swift; sourceTree = "<group>"; };
 		857360FD2298F0360011B32B /* EncryptionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKey.swift; sourceTree = "<group>"; };
 		859C2F8F2298303100DB9354 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		85AC6675229BA80A00C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		85AC6677229BA81200C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		85AC6679229BA81800C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		85AC667B229BA81D00C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		85CA1846228A631200159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA1849228A631200159C0A /* ItemEncrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemEncrypt.h; sourceTree = "<group>"; };
 		85CA184A228A631200159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ItemEncrypt/Assets/iOS/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -170,6 +178,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85AC6676229BA80B00C1C110 /* Security.framework in Frameworks */,
 				D1D6880F6836F11DF36E8406 /* Pods_ItemEncrypt_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -187,6 +196,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85AC6678229BA81300C1C110 /* Security.framework in Frameworks */,
 				C0AE09F2DFAD7BD9EF3F4D42 /* Pods_ItemEncrypt_Mac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -204,6 +214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85AC667A229BA81800C1C110 /* Security.framework in Frameworks */,
 				821549B7457C0FC697F3ABCD /* Pods_ItemEncrypt_tvOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -221,6 +232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85AC667C229BA81D00C1C110 /* Security.framework in Frameworks */,
 				628F68B824736B4FB50FC2A9 /* Pods_ItemEncrypt_watchOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,6 +250,10 @@
 		0A788788675C9ED7324E6574 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				85AC6675229BA80A00C1C110 /* Security.framework */,
+				85AC6677229BA81200C1C110 /* Security.framework */,
+				85AC6679229BA81800C1C110 /* Security.framework */,
+				85AC667B229BA81D00C1C110 /* Security.framework */,
 				E79A37807451707EE7E862BB /* Pods_ItemEncrypt_Mac.framework */,
 				9AF04FC7FE0775E6B845D7BA /* Pods_ItemEncrypt_MacTests.framework */,
 				4BB5A4A2216AC0C8F937A66A /* Pods_ItemEncrypt_iOS.framework */,
@@ -1628,7 +1644,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+				WATCHOS_DEPLOYMENT_TARGET = 5.1;
 			};
 			name = Debug;
 		};
@@ -1659,7 +1675,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+				WATCHOS_DEPLOYMENT_TARGET = 5.1;
 			};
 			name = Release;
 		};
