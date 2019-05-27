@@ -6,14 +6,34 @@
 	<dict>
 		<key>EncryptingSwiftTypes</key>
 		<dict>
+			<key>testBase64DecryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0023654</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 11:24:31 AM</string>
+				</dict>
+			</dict>
+			<key>testBase64EncryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0033383</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 11:24:31 AM</string>
+				</dict>
+			</dict>
 			<key>testDecryptionPerformance()</key>
 			<dict>
 				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
 				<dict>
 					<key>baselineAverage</key>
-					<real>0.099816</real>
+					<real>0.070938</real>
 					<key>baselineIntegrationDisplayName</key>
-					<string>May 24, 2019 at 8:17:04 PM</string>
+					<string>May 27, 2019 at 11:24:31 AM</string>
 				</dict>
 			</dict>
 			<key>testDecryptionPerformanceWithKey()</key>
@@ -21,9 +41,9 @@
 				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
 				<dict>
 					<key>baselineAverage</key>
-					<real>0.00012212</real>
+					<real>9.313e-05</real>
 					<key>baselineIntegrationDisplayName</key>
-					<string>May 24, 2019 at 8:17:04 PM</string>
+					<string>May 27, 2019 at 11:24:31 AM</string>
 				</dict>
 			</dict>
 			<key>testEncryptionPerformance()</key>
@@ -31,9 +51,9 @@
 				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
 				<dict>
 					<key>baselineAverage</key>
-					<real>0.066817</real>
+					<real>0.0637</real>
 					<key>baselineIntegrationDisplayName</key>
-					<string>May 24, 2019 at 8:17:04 PM</string>
+					<string>May 27, 2019 at 11:24:31 AM</string>
 				</dict>
 			</dict>
 			<key>testEncryptionPerformanceWithKey()</key>
@@ -41,9 +61,72 @@
 				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
 				<dict>
 					<key>baselineAverage</key>
-					<real>0.00014034</real>
+					<real>0.00015511</real>
 					<key>baselineIntegrationDisplayName</key>
-					<string>May 24, 2019 at 8:17:04 PM</string>
+					<string>May 27, 2019 at 11:24:31 AM</string>
+				</dict>
+			</dict>
+			<key>testRawDecryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.00072913</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 11:24:31 AM</string>
+				</dict>
+			</dict>
+			<key>testRawEncryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0012117</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 11:24:31 AM</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>EncryptingiOSTypes</key>
+		<dict>
+			<key>testHugeImageDecryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.081</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 5:02:25 PM</string>
+				</dict>
+			</dict>
+			<key>testHugeImageDecryptionStreamPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.060158</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 5:02:29 PM</string>
+				</dict>
+			</dict>
+			<key>testHugeImageEncryptionPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.11479</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 5:02:34 PM</string>
+				</dict>
+			</dict>
+			<key>testHugeImageEncryptionStreamPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.086731</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 5:02:40 PM</string>
 				</dict>
 			</dict>
 		</dict>
@@ -54,9 +137,19 @@
 				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
 				<dict>
 					<key>baselineAverage</key>
-					<real>0.39281</real>
+					<real>0.08</real>
 					<key>baselineIntegrationDisplayName</key>
-					<string>May 24, 2019 at 8:17:04 PM</string>
+					<string>Local Baseline</string>
+				</dict>
+			</dict>
+			<key>testHugeImageDecryptionStreamPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.055541</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 11:24:31 AM</string>
 				</dict>
 			</dict>
 			<key>testHugeImageEncryptionPerformance()</key>
@@ -64,9 +157,19 @@
 				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
 				<dict>
 					<key>baselineAverage</key>
-					<real>0.31254</real>
+					<real>0.155</real>
 					<key>baselineIntegrationDisplayName</key>
-					<string>May 24, 2019 at 8:17:04 PM</string>
+					<string>Local Baseline</string>
+				</dict>
+			</dict>
+			<key>testHugeImageEncryptionStreamPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.07393</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>May 27, 2019 at 11:24:31 AM</string>
 				</dict>
 			</dict>
 		</dict>

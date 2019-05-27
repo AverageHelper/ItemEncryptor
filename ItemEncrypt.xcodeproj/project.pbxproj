@@ -15,10 +15,6 @@
 		850E0C08228CB54800D308DC /* KeySizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0C06228CB54800D308DC /* KeySizes.swift */; };
 		850E0C09228CB54800D308DC /* KeySizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0C06228CB54800D308DC /* KeySizes.swift */; };
 		850E0C0A228CB54800D308DC /* KeySizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850E0C06228CB54800D308DC /* KeySizes.swift */; };
-		854226C62296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptionEncoder.swift */; };
-		854226C72296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptionEncoder.swift */; };
-		854226C82296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptionEncoder.swift */; };
-		854226C92296E0A900B8CA33 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856650AB228D24F800F9A409 /* EncryptionEncoder.swift */; };
 		854226CB2296F34F00B8CA33 /* EncryptingMacOSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226CA2296F34F00B8CA33 /* EncryptingMacOSTypes.swift */; };
 		854226CD2296F37000B8CA33 /* EncryptingSwiftTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */; };
 		854226CE2296F37600B8CA33 /* EncryptingSwiftTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */; };
@@ -53,6 +49,14 @@
 		85AC6678229BA81300C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC6677229BA81200C1C110 /* Security.framework */; };
 		85AC667A229BA81800C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC6679229BA81800C1C110 /* Security.framework */; };
 		85AC667C229BA81D00C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC667B229BA81D00C1C110 /* Security.framework */; };
+		85AC6689229C496300C1C110 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6688229C496300C1C110 /* AppDelegate.swift */; };
+		85AC668B229C496300C1C110 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC668A229C496300C1C110 /* ViewController.swift */; };
+		85AC668E229C496300C1C110 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85AC668C229C496300C1C110 /* Main.storyboard */; };
+		85AC6690229C496600C1C110 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85AC668F229C496600C1C110 /* Assets.xcassets */; };
+		85AC6697229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */; };
+		85AC6698229C5D4400C1C110 /* EncryptionEncoder-Archiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */; };
+		85AC6699229C5D4500C1C110 /* EncryptionEncoder-Archiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */; };
+		85AC669A229C5D4600C1C110 /* EncryptionEncoder-Archiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */; };
 		85CA1850228A631200159C0A /* ItemEncrypt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CA1846228A631200159C0A /* ItemEncrypt.framework */; };
 		85CA1855228A631200159C0A /* EncryptingiOSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* EncryptingiOSTypes.swift */; };
 		85CA1857228A631200159C0A /* ItemEncrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 85CA1849228A631200159C0A /* ItemEncrypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -135,6 +139,17 @@
 		85AC6677229BA81200C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		85AC6679229BA81800C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		85AC667B229BA81D00C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		85AC667D229C490400C1C110 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		85AC667E229C490400C1C110 /* ItemEncrypt.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = ItemEncrypt.podspec; sourceTree = "<group>"; };
+		85AC667F229C490500C1C110 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		85AC6680229C490500C1C110 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		85AC6686229C496200C1C110 /* ItemEncrypt-tvOSHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ItemEncrypt-tvOSHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85AC6688229C496300C1C110 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		85AC668A229C496300C1C110 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		85AC668D229C496300C1C110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		85AC668F229C496600C1C110 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		85AC6691229C496600C1C110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EncryptionEncoder-Archiver.swift"; sourceTree = "<group>"; };
 		85CA1846228A631200159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA1849228A631200159C0A /* ItemEncrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemEncrypt.h; sourceTree = "<group>"; };
 		85CA184A228A631200159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ItemEncrypt/Assets/iOS/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -154,13 +169,13 @@
 		85CA18A2228A64EA00159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85CA4CA12295022400CE0EFB /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		85F79DB2229A503100D11397 /* ItemEncrypt-iOSHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ItemEncrypt-iOSHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		85F79DB4229A503100D11397 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "../../../../ItemEncrypt-iOSHost/AppDelegate.swift"; sourceTree = "<group>"; };
-		85F79DB6229A503100D11397 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = "../../../../ItemEncrypt-iOSHost/ViewController.swift"; sourceTree = "<group>"; };
+		85F79DB4229A503100D11397 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		85F79DB6229A503100D11397 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		85F79DB9229A503200D11397 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		85F79DBB229A503400D11397 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../../ItemEncrypt-iOSHost/Assets.xcassets"; sourceTree = "<group>"; };
+		85F79DBB229A503400D11397 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		85F79DBE229A503400D11397 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		85F79DC0229A503400D11397 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../../../../ItemEncrypt-iOSHost/Info.plist"; sourceTree = "<group>"; };
-		85F79DC6229A504C00D11397 /* ItemEncrypt-iOSHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "ItemEncrypt-iOSHost.entitlements"; path = "../../../../ItemEncrypt-iOSHost/ItemEncrypt-iOSHost.entitlements"; sourceTree = "<group>"; };
+		85F79DC0229A503400D11397 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85F79DC6229A504C00D11397 /* ItemEncrypt-iOSHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ItemEncrypt-iOSHost.entitlements"; sourceTree = "<group>"; };
 		9ABBBDAE15184E0978A68AD2 /* Pods-ItemEncrypt-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-tvOS/Pods-ItemEncrypt-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		9AF04FC7FE0775E6B845D7BA /* Pods_ItemEncrypt_MacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_MacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0BAEFFEB80A680891C0FD2C /* Pods-ItemEncrypt-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-tvOSTests/Pods-ItemEncrypt-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -174,6 +189,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		85AC6683229C496200C1C110 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		85CA1843228A631200159C0A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -286,6 +308,31 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		85AC6681229C491A00C1C110 /* ItemEncrypt Pod */ = {
+			isa = PBXGroup;
+			children = (
+				859C2F8F2298303100DB9354 /* .gitignore */,
+				85CA4CA12295022400CE0EFB /* .swiftlint.yml */,
+				85AC667E229C490400C1C110 /* ItemEncrypt.podspec */,
+				85AC667D229C490400C1C110 /* LICENSE */,
+				85AC667F229C490500C1C110 /* Podfile */,
+				85AC6680229C490500C1C110 /* README.md */,
+			);
+			name = "ItemEncrypt Pod";
+			sourceTree = "<group>";
+		};
+		85AC6695229C49AE00C1C110 /* Host App */ = {
+			isa = PBXGroup;
+			children = (
+				85AC6688229C496300C1C110 /* AppDelegate.swift */,
+				85AC668A229C496300C1C110 /* ViewController.swift */,
+				85AC668C229C496300C1C110 /* Main.storyboard */,
+				85AC668F229C496600C1C110 /* Assets.xcassets */,
+				85AC6691229C496600C1C110 /* Info.plist */,
+			);
+			path = "Host App";
+			sourceTree = "<group>";
+		};
 		85C4864422964ECF00E1EFA5 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,11 +346,9 @@
 		85CA183C228A631100159C0A = {
 			isa = PBXGroup;
 			children = (
-				859C2F8F2298303100DB9354 /* .gitignore */,
-				85CA4CA12295022400CE0EFB /* .swiftlint.yml */,
+				85AC6681229C491A00C1C110 /* ItemEncrypt Pod */,
 				85CA1848228A631200159C0A /* ItemEncrypt */,
 				85CA1853228A631200159C0A /* ItemEncryptTests */,
-				85F79DB3229A503100D11397 /* ItemEncrypt-iOSHost */,
 				85CA1847228A631200159C0A /* Products */,
 				3C47B6E1C062D094D960D2FE /* Pods */,
 				0A788788675C9ED7324E6574 /* Frameworks */,
@@ -321,6 +366,7 @@
 				85CA188B228A64D800159C0A /* ItemEncrypt-tvOSTests.xctest */,
 				85CA189F228A64EA00159C0A /* ItemEncrypt.framework */,
 				85F79DB2229A503100D11397 /* ItemEncrypt-iOSHost.app */,
+				85AC6686229C496200C1C110 /* ItemEncrypt-tvOSHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -348,6 +394,7 @@
 			children = (
 				857360F82298E5130011B32B /* KeychainHandle.swift */,
 				856650AB228D24F800F9A409 /* EncryptionEncoder.swift */,
+				85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */,
 				85CA1860228A638700159C0A /* EncryptionSerialization.swift */,
 				854226D02296F48F00B8CA33 /* EncryptedItem.swift */,
 				854226D522977BDB00B8CA33 /* Scheme.swift */,
@@ -442,16 +489,10 @@
 		85CA18B4228A664E00159C0A /* tvOS */ = {
 			isa = PBXGroup;
 			children = (
+				85AC6695229C49AE00C1C110 /* Host App */,
 				85CA1892228A64D800159C0A /* Info.plist */,
 			);
 			path = tvOS;
-			sourceTree = "<group>";
-		};
-		85F79DB3229A503100D11397 /* ItemEncrypt-iOSHost */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "ItemEncrypt-iOSHost";
 			sourceTree = "<group>";
 		};
 		85F79DC7229A51DC00D11397 /* Host App */ = {
@@ -506,6 +547,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		85AC6685229C496200C1C110 /* ItemEncrypt-tvOSHost */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85AC6692229C496600C1C110 /* Build configuration list for PBXNativeTarget "ItemEncrypt-tvOSHost" */;
+			buildPhases = (
+				85AC6682229C496200C1C110 /* Sources */,
+				85AC6683229C496200C1C110 /* Frameworks */,
+				85AC6684229C496200C1C110 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ItemEncrypt-tvOSHost";
+			productName = "ItemEncrypt-tvOSHost";
+			productReference = 85AC6686229C496200C1C110 /* ItemEncrypt-tvOSHost.app */;
+			productType = "com.apple.product-type.application";
+		};
 		85CA1845228A631200159C0A /* ItemEncrypt-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85CA185A228A631200159C0A /* Build configuration list for PBXNativeTarget "ItemEncrypt-iOS" */;
@@ -671,6 +729,14 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "LeadDevCreations, LLC";
 				TargetAttributes = {
+					85AC6685229C496200C1C110 = {
+						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+						};
+					};
 					85CA1845228A631200159C0A = {
 						CreatedOnToolsVersion = 10.2.1;
 						LastSwiftMigration = 1020;
@@ -724,12 +790,22 @@
 				85CA186E228A64BE00159C0A /* ItemEncrypt-MacTests */,
 				85CA1882228A64D800159C0A /* ItemEncrypt-tvOS */,
 				85CA188A228A64D800159C0A /* ItemEncrypt-tvOSTests */,
+				85AC6685229C496200C1C110 /* ItemEncrypt-tvOSHost */,
 				85CA189E228A64EA00159C0A /* ItemEncrypt-watchOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		85AC6684229C496200C1C110 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85AC6690229C496600C1C110 /* Assets.xcassets in Resources */,
+				85AC668E229C496300C1C110 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		85CA1844228A631200159C0A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1031,16 +1107,25 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		85AC6682229C496200C1C110 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85AC668B229C496300C1C110 /* ViewController.swift in Sources */,
+				85AC6689229C496300C1C110 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		85CA1842228A631200159C0A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				850E0C07228CB54800D308DC /* KeySizes.swift in Sources */,
 				857360FE2298F0360011B32B /* EncryptionKey.swift in Sources */,
-				854226C62296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
 				854226D622977BDB00B8CA33 /* Scheme.swift in Sources */,
 				854226D12296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				85CA1861228A638700159C0A /* EncryptionSerialization.swift in Sources */,
+				85AC6697229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift in Sources */,
 				857360F92298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1060,8 +1145,8 @@
 			files = (
 				850E0C08228CB54800D308DC /* KeySizes.swift in Sources */,
 				857360FF2298F0360011B32B /* EncryptionKey.swift in Sources */,
-				854226C72296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
 				854226D722977BDB00B8CA33 /* Scheme.swift in Sources */,
+				85AC6698229C5D4400C1C110 /* EncryptionEncoder-Archiver.swift in Sources */,
 				85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D22296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				857360FA2298E5130011B32B /* KeychainHandle.swift in Sources */,
@@ -1083,8 +1168,8 @@
 			files = (
 				850E0C09228CB54800D308DC /* KeySizes.swift in Sources */,
 				857361002298F0360011B32B /* EncryptionKey.swift in Sources */,
-				854226C82296E0A800B8CA33 /* EncryptionEncoder.swift in Sources */,
 				854226D822977BDB00B8CA33 /* Scheme.swift in Sources */,
+				85AC6699229C5D4500C1C110 /* EncryptionEncoder-Archiver.swift in Sources */,
 				85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D32296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				857360FB2298E5130011B32B /* KeychainHandle.swift in Sources */,
@@ -1106,8 +1191,8 @@
 			files = (
 				850E0C0A228CB54800D308DC /* KeySizes.swift in Sources */,
 				857361012298F0360011B32B /* EncryptionKey.swift in Sources */,
-				854226C92296E0A900B8CA33 /* EncryptionEncoder.swift in Sources */,
 				854226D922977BDB00B8CA33 /* Scheme.swift in Sources */,
+				85AC669A229C5D4600C1C110 /* EncryptionEncoder-Archiver.swift in Sources */,
 				85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D42296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				857360FC2298E5130011B32B /* KeychainHandle.swift in Sources */,
@@ -1149,13 +1234,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		85AC668C229C496300C1C110 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				85AC668D229C496300C1C110 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		85F79DB8229A503200D11397 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				85F79DB9229A503200D11397 /* Base */,
 			);
 			name = Main.storyboard;
-			path = "../../../../ItemEncrypt-iOSHost";
 			sourceTree = "<group>";
 		};
 		85F79DBD229A503400D11397 /* LaunchScreen.storyboard */ = {
@@ -1164,12 +1256,53 @@
 				85F79DBE229A503400D11397 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			path = "../../../../ItemEncrypt-iOSHost";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		85AC6693229C496600C1C110 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "ItemEncryptTests/Assets/tvOS/Host App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "self.jamesrobinson.ItemEncrypt-tvOSHost";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.2;
+			};
+			name = Debug;
+		};
+		85AC6694229C496600C1C110 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "ItemEncryptTests/Assets/tvOS/Host App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "self.jamesrobinson.ItemEncrypt-tvOSHost";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.2;
+			};
+			name = Release;
+		};
 		85CA1858228A631200159C0A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1683,10 +1816,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "ItemEncrypt-iOSHost/ItemEncrypt-iOSHost.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "ItemEncryptTests/Assets/iOS/Host App/ItemEncrypt-iOSHost.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WS443QRDMF;
-				INFOPLIST_FILE = "ItemEncrypt-iOSHost/Info.plist";
+				INFOPLIST_FILE = "ItemEncryptTests/Assets/iOS/Host App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1702,10 +1835,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "ItemEncrypt-iOSHost/ItemEncrypt-iOSHost.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "ItemEncryptTests/Assets/iOS/Host App/ItemEncrypt-iOSHost.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WS443QRDMF;
-				INFOPLIST_FILE = "ItemEncrypt-iOSHost/Info.plist";
+				INFOPLIST_FILE = "ItemEncryptTests/Assets/iOS/Host App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1720,6 +1853,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		85AC6692229C496600C1C110 /* Build configuration list for PBXNativeTarget "ItemEncrypt-tvOSHost" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85AC6693229C496600C1C110 /* Debug */,
+				85AC6694229C496600C1C110 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		85CA1840228A631100159C0A /* Build configuration list for PBXProject "ItemEncrypt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

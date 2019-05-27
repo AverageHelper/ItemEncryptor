@@ -4,7 +4,7 @@
 <dict>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)self.jamesrobinson.ItemEncrypt-iOSTests</string>
+		<string>$(AppIdentifierPrefix)self.jamesrobinson.ItemEncrypt-iOSHost</string>
 	</array>
 </dict>
 </plist>

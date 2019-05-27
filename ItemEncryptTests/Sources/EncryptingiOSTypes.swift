@@ -9,7 +9,7 @@
 import XCTest
 import ItemEncrypt
 
-class ItemEncryptTests: XCTestCase {
+class EncryptingiOSTypes: XCTestCase {
     
     var encryptor: EncryptionEncoder!
     var decryptor: EncryptionDecoder!
@@ -26,7 +26,7 @@ class ItemEncryptTests: XCTestCase {
         scheme = .default
         seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
         iv = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
-        encKey = EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: scheme)
+        encKey = try! EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: scheme)
     }
 
     override func tearDown() {
@@ -47,15 +47,22 @@ class ItemEncryptTests: XCTestCase {
         
         XCTAssertFalse(UIImage(data: testData)!.isEqual(testImage), "Hello! .isEqual(_:) seems to work for parsing PNG data now! Investigate this.")
         
-        let encryptedItem = try! encryptor.encode(testData, withPassword: password)
-        let encryptedPNG = UIImage(data: encryptedItem.rawData)
-
-        XCTAssertNotEqual(testImage, encryptedPNG)
-
-        let decryptedPNG = try! decryptor.decode(Data.self, from: encryptedItem, withPassword: password)
-        let decryptedImage = UIImage(data: decryptedPNG)
-        XCTAssertNotNil(decryptedImage)
-        XCTAssert(decryptedImage!.isPNGDataEqual(testImage), "The decrypted image is not the same as the original.")
+        let encryptedItem: EncryptedItem
+        do {
+            encryptedItem = try encryptor.encode(testData, withPassword: password)
+            let encryptedPNG = UIImage(data: encryptedItem.rawData)
+            
+            XCTAssertNotEqual(testImage, encryptedPNG)
+            
+            let decryptedPNG = try decryptor.decode(Data.self, from: encryptedItem, withPassword: password)
+            let decryptedImage = UIImage(data: decryptedPNG)
+            XCTAssertNotNil(decryptedImage)
+            XCTAssert(decryptedImage!.isPNGDataEqual(testImage), "The decrypted image is not the same as the original.")
+            
+        } catch {
+            XCTFail("\(error)")
+            return
+        }
         
         do {
             let wrongPasswordPNG = try decryptor.decode(Data.self, from: encryptedItem, withPassword: "this is wrong. :)")
@@ -65,7 +72,7 @@ class ItemEncryptTests: XCTestCase {
             
         } catch {
             guard case DecodingError.dataCorrupted = error else {
-                XCTFail("Got some other error: \(error)")
+                XCTFail("\(error)")
                 return
             }
         }
@@ -78,14 +85,18 @@ class ItemEncryptTests: XCTestCase {
         let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
         let testData = testImage.pngData()!
         
-        let encryptedItem = try! encryptor.encode(testData, withKey: encKey)
-        let encryptedPNG = UIImage(data: encryptedItem.rawData)
-        XCTAssertNotEqual(encryptedPNG, testImage)
-        
-        let decryptedPNG = try! decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
-        let decryptedImage = UIImage(data: decryptedPNG)
-        XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
-        
+        do {
+            let encryptedItem = try encryptor.encode(testData, withKey: encKey)
+            let encryptedPNG = UIImage(data: encryptedItem.rawData)
+            XCTAssertNotEqual(encryptedPNG, testImage)
+            
+            let decryptedPNG = try decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+            let decryptedImage = UIImage(data: decryptedPNG)
+            XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+            
+        } catch {
+            XCTFail("\(error)")
+        }
     }
     
     func testHugeImageEncryptionWithKey() {
@@ -95,13 +106,18 @@ class ItemEncryptTests: XCTestCase {
         let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
         let testData = testImage.pngData()!
         
-        let encryptedItem = try! encryptor.encode(testData, withKey: encKey)
-        let encryptedPNG = UIImage(data: encryptedItem.rawData)
-        XCTAssertNotEqual(encryptedPNG, testImage)
-        
-        let decryptedPNG = try! decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
-        let decryptedImage = UIImage(data: decryptedPNG)
-        XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+        do {
+            let encryptedItem = try encryptor.encode(testData, withKey: encKey)
+            let encryptedPNG = UIImage(data: encryptedItem.rawData)
+            XCTAssertNotEqual(encryptedPNG, testImage)
+            
+            let decryptedPNG = try decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+            let decryptedImage = UIImage(data: decryptedPNG)
+            XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+            
+        } catch {
+            XCTFail("\(error)")
+        }
         
     }
     
@@ -113,7 +129,11 @@ class ItemEncryptTests: XCTestCase {
         let testData = testImage.pngData()!
         
         measure {
-            _ = try! encryptor.encode(testData, withKey: encKey)
+            do {
+                _ = try encryptor.encode(testData, withKey: encKey)
+            } catch {
+                XCTFail("\(error)")
+            }
         }
         
     }
@@ -125,10 +145,20 @@ class ItemEncryptTests: XCTestCase {
         let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
         let testData = testImage.pngData()!
         
-        let encryptedItem = try! encryptor.encode(testData, withKey: encKey)
+        let encryptedItem: EncryptedItem
+        do {
+            encryptedItem = try encryptor.encode(testData, withKey: encKey)
+        } catch {
+            XCTFail("\(error)")
+            return
+        }
         
         measure {
-            _ = try! decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+            do {
+                _ = try decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+            } catch {
+                XCTFail("\(error)")
+            }
         }
         
     }

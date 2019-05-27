@@ -26,7 +26,7 @@ class EncryptingMacOSTypes: XCTestCase {
         scheme = .default
         seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
         iv = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
-        encKey = EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: scheme)
+        encKey = try! EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: scheme)
     }
 
     override func tearDown() {
@@ -46,13 +46,20 @@ class EncryptingMacOSTypes: XCTestCase {
         let testImage = NSImage(contentsOfFile: testImagePath)!
         let testData = testImage.pngRepresentation()!
         
-        let encryptedItem = try! encryptor.encode(testData, withPassword: password)
-        let encryptedPNG = NSImage(data: encryptedItem.rawData)
-        XCTAssertNotEqual(encryptedPNG, testImage)
-        
-        let decryptedPNG = try! decryptor.decode(Data.self, from: encryptedItem, withPassword: password)
-        let decryptedImage = NSImage(data: decryptedPNG)
-        XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+        let encryptedItem: EncryptedItem
+        do {
+            encryptedItem = try encryptor.encode(testData, withPassword: password)
+            let encryptedPNG = NSImage(data: encryptedItem.rawData)
+            XCTAssertNotEqual(encryptedPNG, testImage)
+            
+            let decryptedPNG = try decryptor.decode(Data.self, from: encryptedItem, withPassword: password)
+            let decryptedImage = NSImage(data: decryptedPNG)
+            XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+            
+        } catch {
+            XCTFail("\(error)")
+            return
+        }
         
         do {
             let wrongPasswordPNG = try decryptor.decode(Data.self, from: encryptedItem, withPassword: "this is wrong. :)")
@@ -62,7 +69,7 @@ class EncryptingMacOSTypes: XCTestCase {
             
         } catch {
             guard case DecodingError.dataCorrupted = error else {
-                XCTFail("Got some other error: \(error)")
+                XCTFail("\(error)")
                 return
             }
         }
@@ -77,13 +84,18 @@ class EncryptingMacOSTypes: XCTestCase {
         let testImage = NSImage(contentsOfFile: testImagePath)!
         let testData = testImage.pngRepresentation()
         
-        let encryptedItem = try! encryptor.encode(testData, withKey: encKey)
-        let encryptedPNG = NSImage(data: encryptedItem.rawData)
-        XCTAssertNotEqual(encryptedPNG, testImage)
-        
-        let decryptedPNG = try! decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
-        let decryptedImage = NSImage(data: decryptedPNG)
-        XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+        do {
+            let encryptedItem = try encryptor.encode(testData, withKey: encKey)
+            let encryptedPNG = NSImage(data: encryptedItem.rawData)
+            XCTAssertNotEqual(encryptedPNG, testImage)
+            
+            let decryptedPNG = try decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+            let decryptedImage = NSImage(data: decryptedPNG)
+            XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+            
+        } catch {
+            XCTFail("\(error)")
+        }
         
     }
     
@@ -95,13 +107,18 @@ class EncryptingMacOSTypes: XCTestCase {
         let testImage = NSImage(contentsOfFile: testImagePath)!
         let testData = testImage.pngRepresentation()
         
-        let encryptedItem = try! encryptor.encode(testData, withKey: encKey)
-        let encryptedPNG = NSImage(data: encryptedItem.rawData)
-        XCTAssertNotEqual(encryptedPNG, testImage)
-        
-        let decryptedPNG = try! decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
-        let decryptedImage = NSImage(data: decryptedPNG)
-        XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+        do {
+            let encryptedItem = try encryptor.encode(testData, withKey: encKey)
+            let encryptedPNG = NSImage(data: encryptedItem.rawData)
+            XCTAssertNotEqual(encryptedPNG, testImage)
+            
+            let decryptedPNG = try decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+            let decryptedImage = NSImage(data: decryptedPNG)
+            XCTAssert(decryptedImage?.isPNGDataEqual(testImage) == true)
+            
+        } catch {
+            XCTFail("\(error)")
+        }
         
     }
     
@@ -138,7 +155,11 @@ class EncryptingMacOSTypes: XCTestCase {
         let testData = testImage.pngRepresentation()!
         
         measure {
-            _ = try! encryptor.encode(testData, withKey: encKey)
+            do {
+                _ = try encryptor.encode(testData, withKey: encKey)
+            } catch {
+                XCTFail("\(error)")
+            }
         }
         
     }
@@ -151,10 +172,20 @@ class EncryptingMacOSTypes: XCTestCase {
         let testImage = NSImage(contentsOfFile: testImagePath)!
         let testData = testImage.pngRepresentation()!
         
-        let encryptedItem = try! encryptor.encode(testData, withKey: encKey)
+        let encryptedItem: EncryptedItem
+        do {
+            encryptedItem = try encryptor.encode(testData, withKey: encKey)
+        } catch {
+            XCTFail("\(error)")
+            return
+        }
         
         measure {
-            _ = try! decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+            do {
+                _ = try decryptor.decode(Data.self, from: encryptedItem, withKey: encKey)
+            } catch {
+                XCTFail("\(error)")
+            }
         }
         
     }

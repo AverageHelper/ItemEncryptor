@@ -63,7 +63,7 @@ public enum EncryptionSerialization {
         
         let seed = randomBytes(count: scheme.seedSize)
         let iv = randomBytes(count: scheme.initializationVectorSize)
-        let derivedKey = EncryptionKey(untreatedPassword: password,
+        let derivedKey = try! EncryptionKey(untreatedPassword: password,
                                        seed: seed,
                                        iv: iv,
                                        scheme: scheme)
@@ -133,10 +133,10 @@ public enum EncryptionSerialization {
             throw DecryptionError.noPassword
         }
         
-        let derivedKey = EncryptionKey(untreatedPassword: password,
-                                       treatedSalt: object.salt,
-                                       iv: object.iv,
-                                       scheme: Scheme(format: object.version))
+        let derivedKey = try EncryptionKey(untreatedPassword: password,
+                                           treatedSalt: object.salt,
+                                           iv: object.iv,
+                                           scheme: Scheme(format: object.version))
         return try data(withEncryptedObject: object, key: derivedKey)
     }
     

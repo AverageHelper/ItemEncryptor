@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 //===----------------------------------------------------------------------===//
 // Encryption Encoder - Based on JSONEncoder
 //  (https://github.com/apple/swift/blob/e5fdc0955ce662bd929c7e1706d4a1f1d0f5d397/stdlib/public/SDK/Foundation/JSONEncoder.swift)
@@ -137,7 +136,7 @@ public final class EncryptionEncoder {
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) did not encode any values."))
         }
         
-        let data = try NSKeyedArchiver.archivedData(withRootObject: topLevel, requiringSecureCoding: false)
+        let data = NSKeyedArchiver.archivedData(withRootObject: topLevel)
         return try EncryptionSerialization.encryptedItem(with: data,
                                                          password: password,
                                                          scheme: configuration)
@@ -157,7 +156,7 @@ public final class EncryptionEncoder {
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) did not encode any values."))
         }
         
-        let data = try NSKeyedArchiver.archivedData(withRootObject: topLevel, requiringSecureCoding: false)
+        let data = NSKeyedArchiver.archivedData(withRootObject: topLevel)
         return EncryptionSerialization.encryptedItem(with: data, key: key)
     }
     
@@ -874,7 +873,7 @@ fileprivate class _EncryptionReferencingEncoder: _EncryptionEncoder {
 //===----------------------------------------------------------------------===//
 
 /// `EncryptionDecoder` facilitates the decoding of encrypted data into semantic `Decodable` types.
-public class EncryptionDecoder {
+public final class EncryptionDecoder {
     // MARK: Options
     
     /// The strategy to use for decoding `Date` values.
@@ -932,7 +931,7 @@ public class EncryptionDecoder {
     /// The strategy to use in decoding non-conforming numbers. Defaults to `.throw`.
     public var nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy = .throw
     
-    /// The encryption configuration to use when encoding input data.
+    /// The encryption configuration to use when decoding input data.
     private let configuration: EncryptionSerialization.Scheme
     
     /// Contextual user-provided information for use during decoding.
@@ -1031,10 +1030,10 @@ fileprivate class _EncryptionDecoder: Decoder {
     /// Options set on the top-level decoder.
     fileprivate let options: EncryptionDecoder._Options
     
-    /// The path to the current point in encoding.
+    /// The path to the current point in decoding.
     fileprivate(set) var codingPath: [CodingKey]
     
-    /// Contextual user-provided information for use during encoding.
+    /// Contextual user-provided information for use during decoding.
     var userInfo: [CodingUserInfoKey: Any] {
         return self.options.userInfo
     }
