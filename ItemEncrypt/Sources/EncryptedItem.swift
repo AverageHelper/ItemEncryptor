@@ -11,10 +11,17 @@ import Foundation
 public struct EncryptedItem: Equatable, Hashable {
     // MARK: Properties
     
-    internal let version: EncryptionSerialization.Scheme.Format
+    /// The encryption format used to encrypt this item. It MUST be used for decryption as well.
+    public let version: EncryptionSerialization.Scheme.Format
+    
+    /// The encrypted data.
     internal let payload: Data
-    internal let salt: [UInt8]
-    internal let iv: [UInt8]
+    
+    /// Some data salt used to encrypt this item. It may be used for decryption as well.
+    public let salt: [UInt8]
+    
+    /// The initialization vector (IV) used to encrypt this item. It may be used for decryption as well.
+    public let iv: [UInt8]
     
     public var rawData: Data {
         var res = version.rawValue
