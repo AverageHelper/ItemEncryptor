@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "ItemEncrypt"
-  spec.version      = "0.2.2"
+  spec.version      = "0.2.5"
   spec.summary      = "A simple Swift API for encrypting arbitrary data and data types."
   spec.description  = <<-DESC
     A simple Swift API for encrypting arbitrary data and data types.
@@ -20,7 +20,7 @@ Pod::Spec.new do |spec|
 
   spec.source = { :git => "https://github.com/SparrowBlaze/ItemEncryptor.git", :tag => "v#{spec.version}" }
   spec.source_files  = "Sources", "ItemEncrypt/Sources/**/*.swift"
-  spec.exclude_files = "ItemEncrypt/Sources/EncryptionEncoder.swift"
+  spec.exclude_files = "ItemEncrypt/Sources/EncryptionEncoder-JSON.swift"
 
   spec.frameworks  = "Security", "Foundation", "IDZSwiftCommonCrypto"
   spec.requires_arc = true
