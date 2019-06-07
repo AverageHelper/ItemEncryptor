@@ -12,8 +12,10 @@ import IDZSwiftCommonCrypto
 
 // MARK: - EncryptionSerialization
 
-/// `EncryptionSerialization` is a helper interface to securely encrypt raw data blocks.
-///  Use `EncryptionEncoder` to encrypt semantic data types.
+/// An interface for securely encrypting raw data blocks.
+///
+/// Use `EncryptionEncoder` and `EncryptionDecoder` to encrypt and decrypt semantic data
+/// types, respectively.
 public enum EncryptionSerialization {
     // MARK: Options
     

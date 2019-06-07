@@ -12,39 +12,53 @@ import IDZSwiftCommonCrypto
 extension EncryptionSerialization {
     // MARK: Encryption Schemes
     
-    public struct Scheme: Equatable, Hashable {
+    /// Contains constants that are used for encryption.
+    public struct Scheme {
         // MARK: Spec Versions
         
+        /// Encryption format information.
+        ///
+        /// This defines the algorithms, key and buffer sizes, and other information
+        /// specific to a particular encryption scheme.
+        ///
+        /// We provide one here, but more may be added later as the need arises.
         public enum Format {
             /// Version 1 of our encrypted data format.
+            ///
+            /// Defines a scheme using AES-256 encryption in CBC mode, 100,000 iterations
+            /// of PBKDF2 with SHA-256 hashing, a 1024-byte buffer, and 16-byte seeds and
+            /// initialization vectors (IV).
             case pilot
-            /// Some future version of our encrypted data format. DO NOT USE.
-            case unused
             
             /// The latest version of the spec.
-            static let latest: Format = .pilot
-            /// The most common spec version to expect.
-            static let primary: Format = .pilot
+            public static let latest: Format = .pilot
+            
+            /// The most tested version of the spec.
+            public static let primary: Format = .pilot
             
             /// A representation of the format in bytes.
-            var rawValue: [UInt8] {
+            ///
+            /// This is used at runtime to identify the encryption scheme information
+            /// from a block of data.
+            internal var rawValue: [UInt8] {
                 switch self {
                 case .pilot: return [0, 0, 1]
-                case .unused: return [0, 0, 2]
+//                case .unused: return [0, 0, 2]
                 }
             }
             
-            static var dataSize: Int {
+            internal static var dataSize: Int {
                 return 3
             }
             
-            /// Attempts to derive an `EncryptedItem.Format` from `bytes`, returning `nil` if an appropriate representation cannot be found.
-            init?(bytes: [UInt8]) {
+            /// Attempts to derive an `EncryptedItem.Format` from an array of bytes,
+            /// returning `nil` if an appropriate representation cannot be found.
+            internal init?(bytes: [UInt8]) {
                 if bytes == Format.pilot.rawValue {
                     self = .pilot
                     
-                } else if bytes == Format.unused.rawValue {
-                    self = .unused
+//                } else if bytes == Format.unused.rawValue {
+//                    self = .unused
                     
                 } else {
                     return nil
@@ -59,26 +73,26 @@ extension EncryptionSerialization {
         public let version: Format
         
         /// The pseudorandom algorithm we use to derive keys from passwords.
-        var randomAlgorithm: PBKDF.PseudoRandomAlgorithm {
+        internal var randomAlgorithm: PBKDF.PseudoRandomAlgorithm {
             switch self.version {
             case .pilot: return .sha256
-            case .unused: return .sha512
+//            case .unused: return .sha512
             }
         }
         
         /// The pseudorandom algorithm we use to derive keys from other keys.
-        var hmacAlgorithm: HMAC.Algorithm {
+        internal var hmacAlgorithm: HMAC.Algorithm {
             switch self.version {
             case .pilot: return .sha256
-            case .unused: return .sha512
+//            case .unused: return .sha512
             }
         }
         
         /// The number of bytes our key should be.
-        var derivedKeyLength: KeySize {
+        internal var derivedKeyLength: KeySize {
             switch self.version {
             case .pilot: return .aes256
-            case .unused: return .tripleDES
+//            case .unused: return .tripleDES
             }
         }
         
@@ -86,7 +100,7 @@ extension EncryptionSerialization {
         public var bufferSize: Int {
             switch self.version {
             case .pilot: return 1024
-            case .unused: return 1024
+//            case .unused: return 1024
             }
         }
         
@@ -94,7 +108,7 @@ extension EncryptionSerialization {
         public var seedSize: Int {
             switch self.version {
             case .pilot: return 16
-            case .unused: return 16
+//            case .unused: return 16
             }
         }
         
@@ -102,7 +116,7 @@ extension EncryptionSerialization {
         public var initializationVectorSize: Int {
             switch self.version {
             case .pilot: return 16
-            case .unused: return 16
+//            case .unused: return 16
             }
         }
         
@@ -114,41 +128,39 @@ extension EncryptionSerialization {
         public var iterations: UInt32 {
             switch self.version {
             case .pilot: return 100_000
-            case .unused: return 200_000
+//            case .unused: return 200_000
             }
         }
         
         /// The encryption algorithm to use.
-        var encryptionAlgorithm: StreamCryptor.Algorithm {
+        internal var encryptionAlgorithm: StreamCryptor.Algorithm {
             switch self.version {
             case .pilot: return .aes
-            case .unused: return .tripleDES
+//            case .unused: return .tripleDES
             }
         }
         
         /// The mode in which the `encryptionAlgorithm` runs.
-        var algorithmMode: StreamCryptor.Mode {
+        internal var algorithmMode: StreamCryptor.Mode {
             switch self.version {
             case .pilot: return .CBC
-            case .unused: return .CBC
+//            case .unused: return .CBC
             }
         }
         
-        /// The default specification.
+        // MARK: - Constructing an Encryption Scheme
+        
+        /// The default specification. Defaults to `Format.primary`.
         public static let `default` = Scheme(format: .primary)
         
         public init(format: Format) {
             self.version = format
         }
         
-        public static func == (lhs: Scheme, rhs: Scheme) -> Bool {
-            return lhs.version == rhs.version
-        }
-        
-        public func hash(into hasher: inout Hasher) {
-            hasher.combine(version.rawValue)
-        }
-        
     }
     
+}
+
+extension EncryptionSerialization.Scheme: Equatable, Hashable {
+    // implementations are auto-generated. Our only stored proerty is `version`.
 }

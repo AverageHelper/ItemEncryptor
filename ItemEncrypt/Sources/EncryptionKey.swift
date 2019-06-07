@@ -10,20 +10,23 @@ import Foundation
 import IDZSwiftCommonCrypto
 
 /// A semantic representation of a symmetric key that can be used to encrypt and decrypt data.
-public struct EncryptionKey: Equatable, Hashable {
+public struct EncryptionKey {
+    
+    public typealias KeyData = [UInt8]
+    
     // MARK: Properties
     
     /// The encryption scheme this key uses.
     public let scheme: EncryptionSerialization.Scheme
     
     /// The key itself.
-    public let keyData: [UInt8]
+    public let keyData: KeyData
     
-    /// The initialization vector (IV) used to derive this key.
-    public let initializationVector: [UInt8]
+    /// The initialization vector used to derive this key.
+    public let initializationVector: EncryptedItem.IV
     
     /// The salt used to derive this key.
-    public let salt: [UInt8]
+    public let salt: EncryptedItem.Salt
     
     /// A string identifying the key. Usually an account ID, email address, or some other moniker.
     public var context: String?
@@ -72,7 +75,7 @@ public struct EncryptionKey: Equatable, Hashable {
     /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to derive the key.
     ///
     /// - throws: An `ImproperKey` error if the seed or IV are the wrong size for the given scheme. Inspect `scheme` for proper sizes.
-    public init(untreatedPassword: String, additionalKeywords: [String] = [], seed: [UInt8], iv: [UInt8], scheme: EncryptionSerialization.Scheme) throws {
+    public init(untreatedPassword: String, additionalKeywords: [String] = [], seed: [UInt8], iv: EncryptedItem.IV, scheme: EncryptionSerialization.Scheme) throws {
         
         guard seed.count == scheme.seedSize else {
             NSLog("Incoming seed was the wrong size <\(seed.count)> for the encryption scheme <\(scheme.seedSize)>.")
@@ -102,7 +105,7 @@ public struct EncryptionKey: Equatable, Hashable {
     /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to encrypt and decrypt data.
     ///
     /// - throws: An `ImproperKey` error if the salt or IV are the wrong size for the given scheme. Inspect `scheme` for proper sizes.
-    public init(untreatedPassword: String, treatedSalt: [UInt8], iv: [UInt8], scheme: EncryptionSerialization.Scheme) throws {
+    public init(untreatedPassword: String, treatedSalt: EncryptedItem.Salt, iv: EncryptedItem.IV, scheme: EncryptionSerialization.Scheme) throws {
         
         self.scheme = scheme
         
@@ -135,9 +138,9 @@ public struct EncryptionKey: Equatable, Hashable {
     public init(data: Data) throws {
         // Configuration tells us how to look at this data.
         
-        var iv = [UInt8]()
-        var salt = [UInt8]()
-        var keyData = [UInt8]()
+        var iv = EncryptedItem.IV()
+        var salt = EncryptedItem.Salt()
+        var keyData = KeyData()
         var version = EncryptionSerialization.Scheme.Format.primary
         
         self.scheme = try EncryptionKey.parseData(data,
@@ -153,9 +156,9 @@ public struct EncryptionKey: Equatable, Hashable {
     
     /// Attempts to parse given data into semantic version format ID, innitialization vector, salt, and payload blocks.
     private static func parseData(_ data: Data,
-                                  into resultPayload: inout [UInt8],
-                                  initializationVector: inout [UInt8],
-                                  resultSalt: inout [UInt8],
+                                  into resultPayload: inout KeyData,
+                                  initializationVector: inout EncryptedItem.IV,
+                                  resultSalt: inout EncryptedItem.Salt,
                                   version: inout EncryptionSerialization.Scheme.Format) throws -> EncryptionSerialization.Scheme {
         
         // version + payload + iv + salt
@@ -166,7 +169,7 @@ public struct EncryptionKey: Equatable, Hashable {
         let expectedVersionData = mutableData[mutableData.startIndex..<expectedVersionSize]
         guard let foundVersion =
             EncryptionSerialization.Scheme.Format(bytes: [UInt8](expectedVersionData)) else {
-                throw ImproperKey.badFormatData
+                throw ImproperKey.malformattedData
         }
         version = foundVersion
         
@@ -177,7 +180,7 @@ public struct EncryptionKey: Equatable, Hashable {
         let saltSize = scheme.stretchedSaltSize
         let saltStart = mutableData.endIndex.advanced(by: -saltSize)
         let expectedSaltData = mutableData[saltStart..<mutableData.count]
-        resultSalt = [UInt8](expectedSaltData)
+        resultSalt = EncryptedItem.Salt(expectedSaltData)
         
         mutableData = mutableData.subdata(in: mutableData.startIndex..<saltStart)
         
@@ -185,17 +188,19 @@ public struct EncryptionKey: Equatable, Hashable {
         let vectorSize = scheme.initializationVectorSize
         let vectorStart = mutableData.endIndex.advanced(by: -vectorSize)
         let expectedVectorData = mutableData[vectorStart..<mutableData.count]
-        initializationVector = [UInt8](expectedVectorData)
+        initializationVector = EncryptedItem.IV(expectedVectorData)
         
         mutableData = mutableData.subdata(in: mutableData.startIndex..<vectorStart)
         
-        resultPayload = [UInt8](mutableData)
+        resultPayload = KeyData(mutableData)
         
         return scheme
     }
     
+    // MARK: - Errors
+    
     enum ImproperKey: Error {
-        case badFormatData
+        case malformattedData
         case initializationVectorSize(expectation: Int, reality: Int)
         case saltSize(expectation: Int, reality: Int)
         case seedSize(expectation: Int, reality: Int)
@@ -205,22 +210,6 @@ public struct EncryptionKey: Equatable, Hashable {
 
 // MARK: - Equatable and Hashable
 
-extension EncryptionKey {
-    
-    public static func == (lhs: EncryptionKey, rhs: EncryptionKey) -> Bool {
-        return lhs.scheme == rhs.scheme &&
-            lhs.initializationVector == rhs.initializationVector &&
-            lhs.salt == rhs.salt &&
-            lhs.keyData == rhs.keyData &&
-            lhs.context == rhs.context
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(scheme)
-        hasher.combine(initializationVector)
-        hasher.combine(salt)
-        hasher.combine(keyData)
-        hasher.combine(context)
-    }
-    
+extension EncryptionKey: Equatable, Hashable {
+    // implementations are auto-generated from stored properties.
 }

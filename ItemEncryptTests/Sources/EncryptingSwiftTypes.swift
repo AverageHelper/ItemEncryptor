@@ -519,27 +519,27 @@ class EncryptingSwiftTypes: XCTestCase {
         }
     }
     
-    func testDecryptedDataFromMismatchingSchemes() {
-        let randomData = Data(repeating: UInt8.random(in: 0...9), count: 16)
-        
-        do {
-            let encryptedItem = try encryptor.encode(randomData, withKey: encKey)
-            
-            let oddScheme = EncryptionSerialization.Scheme(format: .unused)
-            let oddSeed = EncryptionSerialization.randomBytes(count: oddScheme.seedSize)
-            let oddIV = EncryptionSerialization.randomBytes(count: oddScheme.initializationVectorSize)
-            let oddKey = try EncryptionKey(untreatedPassword: "doesn't matter", seed: oddSeed, iv: oddIV, scheme: oddScheme)
-            
-            let decoded = try decryptor.decode(Data.self, from: encryptedItem, withKey: oddKey)
-            XCTFail("Odd scheme shouldn't decode anything: \(decoded)")
-            
-        } catch let error as EncryptionSerialization.DecryptionError {
-            XCTAssertEqual(error, .incorrectVersion)
-            
-        } catch {
-            XCTFail("\(error)")
-        }
-    }
+//    func testDecryptedDataFromMismatchingSchemes() {
+//        let randomData = Data(repeating: UInt8.random(in: 0...9), count: 16)
+//
+//        do {
+//            let encryptedItem = try encryptor.encode(randomData, withKey: encKey)
+//
+//            let oddScheme = EncryptionSerialization.Scheme(format: .unused)
+//            let oddSeed = EncryptionSerialization.randomBytes(count: oddScheme.seedSize)
+//            let oddIV = EncryptionSerialization.randomBytes(count: oddScheme.initializationVectorSize)
+//            let oddKey = try EncryptionKey(untreatedPassword: "doesn't matter", seed: oddSeed, iv: oddIV, scheme: oddScheme)
+//
+//            let decoded = try decryptor.decode(Data.self, from: encryptedItem, withKey: oddKey)
+//            XCTFail("Odd scheme shouldn't decode anything: \(decoded)")
+//
+//        } catch let error as EncryptionSerialization.DecryptionError {
+//            XCTAssertEqual(error, .incorrectVersion)
+//
+//        } catch {
+//            XCTFail("\(error)")
+//        }
+//    }
     
     
     // MARK: - Encryption Keys
@@ -570,6 +570,64 @@ class EncryptingSwiftTypes: XCTestCase {
             XCTFail("\(error)")
         }
         
+    }
+    
+    func testIdenticalKeys() {
+        let userID = "thisIsMyUserIdDoYouLikeIt123"
+        let email = "myself@example.com"
+        
+        let scheme = EncryptionSerialization.Scheme.default
+        let seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
+        let iv = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
+        
+        let firstKey: EncryptionKey
+        let secondKey: EncryptionKey
+        do {
+            firstKey = try EncryptionKey(untreatedPassword: password,
+                                         additionalKeywords: [userID, email],
+                                         seed: seed,
+                                         iv: iv,
+                                         scheme: scheme)
+            secondKey = try EncryptionKey(untreatedPassword: password,
+                                          additionalKeywords: [userID, email],
+                                          seed: seed,
+                                          iv: iv,
+                                          scheme: scheme)
+        } catch {
+            XCTFail("\(error)")
+            return
+        }
+        
+        XCTAssertEqual(firstKey, secondKey)
+    }
+    
+    func testEncryptionKeyKeywordOrder() {
+        let userId = "thisIsMyUserIdDoYouLikeIt123"
+        let email = "myself@example.com"
+        
+        let scheme = EncryptionSerialization.Scheme.default
+        let seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
+        let iv = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
+        
+        let firstKey: EncryptionKey
+        let secondKey: EncryptionKey
+        do {
+            firstKey = try EncryptionKey(untreatedPassword: password,
+                                         additionalKeywords: [userId, email],
+                                         seed: seed,
+                                         iv: iv,
+                                         scheme: scheme)
+            secondKey = try EncryptionKey(untreatedPassword: password,
+                                          additionalKeywords: [email, userId],
+                                          seed: seed,
+                                          iv: iv,
+                                          scheme: scheme)
+        } catch {
+            XCTFail("\(error)")
+            return
+        }
+        
+        XCTAssertNotEqual(firstKey, secondKey)
     }
     
     func testEncryptionKeyMismatchKeywords() {

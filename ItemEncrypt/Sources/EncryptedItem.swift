@@ -8,21 +8,34 @@
 
 import Foundation
 
-public struct EncryptedItem: Equatable, Hashable {
+/// A semantic representation of encrypted data, encapsulating the encryption scheme format,
+/// the salt and initialization vector (IV) used to encrypt the data, and the encrypted
+/// payload itself.
+public struct EncryptedItem {
+    
+    /// An array of bytes used as a hashing salt.
+    public typealias Salt = [UInt8]
+    
+    /// An array of bytes used as an initialization vector for hashing.
+    public typealias IV = [UInt8]
+    
     // MARK: Properties
     
-    /// The encryption format used to encrypt this item. It MUST be used for decryption as well.
+    /// The encryption scheme format used to encrypt or decrypt this item.
     public let version: EncryptionSerialization.Scheme.Format
     
     /// The encrypted data.
     internal let payload: Data
     
-    /// Some data salt used to encrypt this item. It may be used for decryption as well.
-    public let salt: [UInt8]
+    /// Some data salt used to encrypt or decrypt the item.
+    public let salt: Salt
     
-    /// The initialization vector (IV) used to encrypt this item. It may be used for decryption as well.
-    public let iv: [UInt8]
+    /// The initialization vector (IV) used to encrypt or decrypt the item.
+    public let iv: IV
     
+    /// A representation of the item in raw bytes.
+    ///
+    /// This is usually what you would store on disk, and would be serialized into a new `EncryptedItem` with `init(data:)`.
     public var rawData: Data {
         var res = version.rawValue
         res.append(contentsOf: iv)
@@ -36,12 +49,16 @@ public struct EncryptedItem: Equatable, Hashable {
     
     internal init(version: EncryptionSerialization.Scheme.Format,
                   payload: Data,
-                  salt: [UInt8],
-                  iv: [UInt8]) {
+                  salt: Salt,
+                  iv: IV) {
         self.version = version
         self.payload = payload
         self.salt = salt
         self.iv = iv
+    }
+    
+    public init(_ other: EncryptedItem) {
+        self = try! EncryptedItem(data: other.rawData)
     }
     
     /// Attempts to derive an `EncryptedItem` from given `data`. If the data is invalid, an error is thrown.
@@ -49,8 +66,8 @@ public struct EncryptedItem: Equatable, Hashable {
         
         // Configuration tells us how to look at this data.
         var resultPayload = Data()
-        var resultSalt = [UInt8]()
-        var resultIV = [UInt8]()
+        var resultSalt = Salt()
+        var resultIV = IV()
         var resultScheme = EncryptionSerialization.Scheme.default
         try EncryptedItem.parseData(data,
                                     into: &resultPayload,
@@ -67,8 +84,8 @@ public struct EncryptedItem: Equatable, Hashable {
     /// Attempts to parse given data into semantic version format ID, salt, and payload blocks.
     private static func parseData(_ data: Data,
                                   into resultPayload: inout Data,
-                                  resultIV: inout [UInt8],
-                                  resultSalt: inout [UInt8],
+                                  resultIV: inout IV,
+                                  resultSalt: inout Salt,
                                   resultScheme: inout EncryptionSerialization.Scheme) throws {
         
         // version + iv + payload + salt
@@ -89,7 +106,7 @@ public struct EncryptedItem: Equatable, Hashable {
         // Find ID
         let expectedIVSize = scheme.initializationVectorSize
         let expectedIVData = mutableData[mutableData.startIndex..<expectedIVSize]
-        resultIV = [UInt8](expectedIVData)
+        resultIV = IV(expectedIVData)
         
         // Slice off our IV data
         mutableData = mutableData.subdata(in: expectedIVSize..<mutableData.endIndex)
@@ -98,7 +115,7 @@ public struct EncryptedItem: Equatable, Hashable {
         let expectedSaltSize = scheme.stretchedSaltSize
         let saltStart = mutableData.endIndex.advanced(by: -expectedSaltSize)
         let expectedSaltData = mutableData[saltStart..<mutableData.count]
-        let proposedSalt = [UInt8](expectedSaltData)
+        let proposedSalt = Salt(expectedSaltData)
         resultSalt = proposedSalt
         
         // Slice off our salt
@@ -108,7 +125,7 @@ public struct EncryptedItem: Equatable, Hashable {
     
 }
 
-extension EncryptedItem {
+extension EncryptedItem: Equatable, Hashable {
     
     public static func == (lhs: EncryptedItem, rhs: EncryptedItem) -> Bool {
         return lhs.rawData == rhs.rawData

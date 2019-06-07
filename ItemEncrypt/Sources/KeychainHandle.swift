@@ -10,10 +10,13 @@ import Foundation
 import Security
 
 
-/// A simple interface for keeping and retrieving semantic `EncryptionKey` objects from the Keychain.
+/// A simple interface for storing semantic `EncryptionKey`s in the Keychain.
 public class KeychainHandle {
     // MARK: Properties
     
+    /// A brief string used to describe your application's access to the Keychain. This
+    /// string may be presented to the user when an application is trying to access our key
+    /// data, such as from Keychain Access in macOS, or by some other means.
     var description: String
     
     // MARK: - Constructing a Keychain Handle
@@ -135,13 +138,36 @@ public class KeychainHandle {
         return key
     }
     
+    /// Returns `true` if a key exists and is accessible with the given `tag`.
+    ///
+    /// This method is equivalent to calling `key(withTag: tag)` and checking for a
+    /// nil value.
+    public func keyExists(withTag tag: String) -> Bool {
+        return (try? key(withTag: tag)) != nil
+    }
+    
+    public subscript(_ tag: String) -> EncryptionKey? {
+        get {
+            return try? key(withTag: tag)
+        }
+        set(key) {
+            if let newKey = key {
+                _ = try? setKey(newKey, forTag: tag)
+            } else {
+                _ = try? deleteKey(withTag: tag)
+            }
+        }
+    }
+    
     // MARK: - Deleting Keys
     
     /// Deletes the data with the given `tag` from the keychain.
     ///
     /// - parameter tag: The identifier for some keychian data.
-    /// - throws: A `StorageError` if the keychain fails to delete the data with the given `tag`.
-    /// - returns: The `EncryptionKey` which was deleted, or `nil` if there was no data with `tag`, or if that data wasn't an `EncryptionKey`.
+    /// - throws: A `StorageError` if the keychain fails to delete the data with the given
+    ///     `tag`.
+    /// - returns: The `EncryptionKey` which was deleted, or `nil` if there was no data
+    ///     with `tag`, or if that data wasn't an `EncryptionKey`.
     @discardableResult
     public func deleteKey(withTag tag: String) throws -> EncryptionKey? {
         
@@ -167,7 +193,7 @@ public class KeychainHandle {
         return existingKey
     }
     
-    // MARK: - Handling Errors
+    // MARK: - Errors
     
     public enum StorageError: Error {
         case badRequest
@@ -183,16 +209,17 @@ public class KeychainHandle {
         case unknown(reason: String)
     }
     
+    /// Converts the given `OSStatus` into a semantic `StorageError`, and throws it.
     private func handleGenericError(status: OSStatus) throws {
         switch status {
         case errSecSuccess:      break
-        case errSecAllocate:     throw StorageError.memoryError(reason: "Failed to allocate memory")
+        case errSecAllocate:     throw StorageError.memoryError(reason: "Failed to allocate memory.")
         case errSecBadReq:       throw StorageError.badRequest
         case errSecDiskFull, errSecDskFull: throw StorageError.diskFull
         case errSecItemNotFound: throw StorageError.itemNotFound
         case errSecIO:           throw StorageError.ioError
         case errSecInvalidValue: throw StorageError.invalidValueDetected
-        case errSecMemoryError:  throw StorageError.memoryError(reason: "Generic")
+        case errSecMemoryError:  throw StorageError.memoryError(reason: "A memory error occurred.")
         case errSecParam:        throw StorageError.invalidParameters
         case errSecUserCanceled: throw StorageError.cancelled
             

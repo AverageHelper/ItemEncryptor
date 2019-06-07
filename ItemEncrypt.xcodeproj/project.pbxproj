@@ -53,10 +53,10 @@
 		85AC668B229C496300C1C110 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC668A229C496300C1C110 /* ViewController.swift */; };
 		85AC668E229C496300C1C110 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85AC668C229C496300C1C110 /* Main.storyboard */; };
 		85AC6690229C496600C1C110 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85AC668F229C496600C1C110 /* Assets.xcassets */; };
-		85AC6697229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */; };
-		85AC6698229C5D4400C1C110 /* EncryptionEncoder-Archiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */; };
-		85AC6699229C5D4500C1C110 /* EncryptionEncoder-Archiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */; };
-		85AC669A229C5D4600C1C110 /* EncryptionEncoder-Archiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */; };
+		85AC6697229C5D3400C1C110 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder.swift */; };
+		85AC6698229C5D4400C1C110 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder.swift */; };
+		85AC6699229C5D4500C1C110 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder.swift */; };
+		85AC669A229C5D4600C1C110 /* EncryptionEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AC6696229C5D3400C1C110 /* EncryptionEncoder.swift */; };
 		85CA1850228A631200159C0A /* ItemEncrypt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CA1846228A631200159C0A /* ItemEncrypt.framework */; };
 		85CA1855228A631200159C0A /* EncryptingiOSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1854228A631200159C0A /* EncryptingiOSTypes.swift */; };
 		85CA1857228A631200159C0A /* ItemEncrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 85CA1849228A631200159C0A /* ItemEncrypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -131,7 +131,8 @@
 		85581D9F22985A55001DA6CE /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Scary Puppy.png"; path = "ItemEncryptTests/Assets/Images/Scary Puppy.png"; sourceTree = SOURCE_ROOT; };
 		85581DA42298C317001DA6CE /* Screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot.png; sourceTree = "<group>"; };
 		85581DA52298C317001DA6CE /* Receipt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Receipt.png; sourceTree = "<group>"; };
-		856650AB228D24F800F9A409 /* EncryptionEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionEncoder.swift; sourceTree = "<group>"; };
+		8565D4A922A46B0A00564DD8 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		856650AB228D24F800F9A409 /* EncryptionEncoder-JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EncryptionEncoder-JSON.swift"; sourceTree = "<group>"; };
 		857360F82298E5130011B32B /* KeychainHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHandle.swift; sourceTree = "<group>"; };
 		857360FD2298F0360011B32B /* EncryptionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKey.swift; sourceTree = "<group>"; };
 		859C2F8F2298303100DB9354 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -140,7 +141,7 @@
 		85AC6679229BA81800C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		85AC667B229BA81D00C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		85AC667D229C490400C1C110 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		85AC667E229C490400C1C110 /* ItemEncrypt.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = ItemEncrypt.podspec; sourceTree = "<group>"; };
+		85AC667E229C490400C1C110 /* ItemEncrypt.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = ItemEncrypt.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		85AC667F229C490500C1C110 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		85AC6680229C490500C1C110 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		85AC6686229C496200C1C110 /* ItemEncrypt-tvOSHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ItemEncrypt-tvOSHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,7 +150,7 @@
 		85AC668D229C496300C1C110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		85AC668F229C496600C1C110 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		85AC6691229C496600C1C110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EncryptionEncoder-Archiver.swift"; sourceTree = "<group>"; };
+		85AC6696229C5D3400C1C110 /* EncryptionEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionEncoder.swift; sourceTree = "<group>"; };
 		85CA1846228A631200159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA1849228A631200159C0A /* ItemEncrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemEncrypt.h; sourceTree = "<group>"; };
 		85CA184A228A631200159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ItemEncrypt/Assets/iOS/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -313,9 +314,10 @@
 			children = (
 				859C2F8F2298303100DB9354 /* .gitignore */,
 				85CA4CA12295022400CE0EFB /* .swiftlint.yml */,
+				8565D4A922A46B0A00564DD8 /* .travis.yml */,
+				85AC667F229C490500C1C110 /* Podfile */,
 				85AC667E229C490400C1C110 /* ItemEncrypt.podspec */,
 				85AC667D229C490400C1C110 /* LICENSE */,
-				85AC667F229C490500C1C110 /* Podfile */,
 				85AC6680229C490500C1C110 /* README.md */,
 			);
 			name = "ItemEncrypt Pod";
@@ -393,8 +395,8 @@
 			isa = PBXGroup;
 			children = (
 				857360F82298E5130011B32B /* KeychainHandle.swift */,
-				856650AB228D24F800F9A409 /* EncryptionEncoder.swift */,
-				85AC6696229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift */,
+				856650AB228D24F800F9A409 /* EncryptionEncoder-JSON.swift */,
+				85AC6696229C5D3400C1C110 /* EncryptionEncoder.swift */,
 				85CA1860228A638700159C0A /* EncryptionSerialization.swift */,
 				854226D02296F48F00B8CA33 /* EncryptedItem.swift */,
 				854226D522977BDB00B8CA33 /* Scheme.swift */,
@@ -1125,7 +1127,7 @@
 				854226D622977BDB00B8CA33 /* Scheme.swift in Sources */,
 				854226D12296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				85CA1861228A638700159C0A /* EncryptionSerialization.swift in Sources */,
-				85AC6697229C5D3400C1C110 /* EncryptionEncoder-Archiver.swift in Sources */,
+				85AC6697229C5D3400C1C110 /* EncryptionEncoder.swift in Sources */,
 				857360F92298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1146,7 +1148,7 @@
 				850E0C08228CB54800D308DC /* KeySizes.swift in Sources */,
 				857360FF2298F0360011B32B /* EncryptionKey.swift in Sources */,
 				854226D722977BDB00B8CA33 /* Scheme.swift in Sources */,
-				85AC6698229C5D4400C1C110 /* EncryptionEncoder-Archiver.swift in Sources */,
+				85AC6698229C5D4400C1C110 /* EncryptionEncoder.swift in Sources */,
 				85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D22296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				857360FA2298E5130011B32B /* KeychainHandle.swift in Sources */,
@@ -1169,7 +1171,7 @@
 				850E0C09228CB54800D308DC /* KeySizes.swift in Sources */,
 				857361002298F0360011B32B /* EncryptionKey.swift in Sources */,
 				854226D822977BDB00B8CA33 /* Scheme.swift in Sources */,
-				85AC6699229C5D4500C1C110 /* EncryptionEncoder-Archiver.swift in Sources */,
+				85AC6699229C5D4500C1C110 /* EncryptionEncoder.swift in Sources */,
 				85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D32296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				857360FB2298E5130011B32B /* KeychainHandle.swift in Sources */,
@@ -1192,7 +1194,7 @@
 				850E0C0A228CB54800D308DC /* KeySizes.swift in Sources */,
 				857361012298F0360011B32B /* EncryptionKey.swift in Sources */,
 				854226D922977BDB00B8CA33 /* Scheme.swift in Sources */,
-				85AC669A229C5D4600C1C110 /* EncryptionEncoder-Archiver.swift in Sources */,
+				85AC669A229C5D4600C1C110 /* EncryptionEncoder.swift in Sources */,
 				85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
 				854226D42296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				857360FC2298E5130011B32B /* KeychainHandle.swift in Sources */,

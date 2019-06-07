@@ -1,0 +1,6 @@
+language: swift
+os: osx
+xcode_project: ItemEncrypt.xcworkspace
+xcode_scheme: ItemEncrypt-iOSTests
+xcode_destination: platform=iOS Simulator,OS=12.3,name=iPad Pro (9.7-inch)
+osx_image: xcode10.2
