@@ -17,7 +17,7 @@ class EncryptingMacOSTypes: XCTestCase {
     let password = "password"
     var scheme: EncryptionSerialization.Scheme!
     var seed: [UInt8]!
-    var iv: [UInt8]!
+    var iv: EncryptedItem.IV!
     var encKey: EncryptionKey!
     
     override func setUp() {

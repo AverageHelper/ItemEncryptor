@@ -21,6 +21,16 @@ public class KeychainHandle {
     
     // MARK: - Constructing a Keychain Handle
     
+    /// Creates a new Keychain handle, giving it a `description`.
+    ///
+    /// This does not create new Keychain storage, simply a new handle by which to access
+    /// the same system Keychain. In macOS, the `description` is attached to the Keychain
+    /// items you store, and is presented to users requesting access to them from outside of
+    /// your app (usually a bad thing).
+    ///
+    /// - parameter description: A string which, in macOS, is is attached to the Keychain
+    /// items you store, and is presented to users requesting access to them from outside of
+    /// your app (usually a bad thing).
     public init(description: String = "com.LeadDevCreations.ItemEncrypt.KeychainHandle Items") {
         self.description = description
     }
@@ -76,10 +86,6 @@ public class KeychainHandle {
         switch status {
         case errSecSuccess,
              errSecItemNotFound: break
-            
-        case errSecDuplicateItem:
-            // Item already there
-            throw StorageError.duplicateItem
             
         default:
             // Handle error
@@ -195,6 +201,7 @@ public class KeychainHandle {
     
     // MARK: - Errors
     
+    /// Indicates that a storage operation could not proceed.
     public enum StorageError: Error {
         case badRequest
         case cancelled
@@ -209,13 +216,15 @@ public class KeychainHandle {
         case unknown(reason: String)
     }
     
-    /// Converts the given `OSStatus` into a semantic `StorageError`, and throws it.
+    /// Converts the given `OSStatus` into a semantic `StorageError`, and throws it if
+    /// appropriate.
     private func handleGenericError(status: OSStatus) throws {
         switch status {
         case errSecSuccess:      break
         case errSecAllocate:     throw StorageError.memoryError(reason: "Failed to allocate memory.")
         case errSecBadReq:       throw StorageError.badRequest
         case errSecDiskFull, errSecDskFull: throw StorageError.diskFull
+        case errSecDuplicateItem:           throw StorageError.duplicateItem
         case errSecItemNotFound: throw StorageError.itemNotFound
         case errSecIO:           throw StorageError.ioError
         case errSecInvalidValue: throw StorageError.invalidValueDetected
@@ -223,8 +232,7 @@ public class KeychainHandle {
         case errSecParam:        throw StorageError.invalidParameters
         case errSecUserCanceled: throw StorageError.cancelled
             
-        default:
-            // Throw the error
+        default: // Throw the error
             let explanation = SecCopyErrorMessageString(status, nil) ?? "Unknown reason." as CFString
             throw StorageError.unknown(reason: explanation as String)
         }

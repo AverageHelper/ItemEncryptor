@@ -17,7 +17,7 @@ class EncryptingSwiftTypes: XCTestCase {
     let password = "password"
     var scheme: EncryptionSerialization.Scheme!
     var seed: [UInt8]!
-    var iv: [UInt8]!
+    var iv: EncryptedItem.IV!
     var encKey: EncryptionKey!
     
     override func setUp() {
@@ -449,7 +449,6 @@ class EncryptingSwiftTypes: XCTestCase {
     // MARK: - Encrypted Item
     
     func testEncryptedDataParse() {
-        
         do {
             let testText = "Lorem ipsum dolor sit amet"
             
@@ -474,7 +473,42 @@ class EncryptingSwiftTypes: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
-        
+    }
+    
+    func testEncryptedItemCopy() {
+        do {
+            let testText = "Lorem ipsum dolor sit amet"
+            
+            let encryptedItem = try encryptor.encode(testText, withPassword: password)
+            let itemCopy = EncryptedItem(encryptedItem)
+            
+            XCTAssertEqual(itemCopy, encryptedItem, "The items are not identical!")
+            
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testEncryptedItemSet() {
+        do {
+            let testText = "Lorem ipsum dolor sit amet"
+            let testInt = 14_003
+            
+            let encryptedText = try encryptor.encode(testText, withPassword: password)
+            let encryptedInt = try encryptor.encode(testInt, withPassword: password)
+            let itemCopy = EncryptedItem(encryptedInt)
+            
+            var itemSet = Set<EncryptedItem>()
+            itemSet.insert(encryptedText)
+            itemSet.insert(encryptedInt)
+            XCTAssertEqual(itemSet.count, 2, "There are not 2 items in the set. Found \(itemSet.count)")
+            
+            itemSet.insert(itemCopy)
+            XCTAssertEqual(itemSet.count, 2, "The item seems to have been added to the set. Found \(itemSet.count) in the set.")
+            
+        } catch {
+            XCTFail("\(error)")
+        }
     }
     
     func testEncryptedItemFromBogusData() {
@@ -602,6 +636,7 @@ class EncryptingSwiftTypes: XCTestCase {
     }
     
     func testEncryptionKeyKeywordOrder() {
+        // Two keys should be unequal whose additionalKeywords are in a different order.
         let userId = "thisIsMyUserIdDoYouLikeIt123"
         let email = "myself@example.com"
         
@@ -683,6 +718,26 @@ class EncryptingSwiftTypes: XCTestCase {
         
     }
     
+    func testSetOfKeys() {
+        let scheme = EncryptionSerialization.Scheme.default
+        
+        let key1 = EncryptionKey(randomKeyFromPassword: password, scheme: scheme)
+        let key2 = EncryptionKey(randomKeyFromPassword: password, scheme: scheme)
+        let key3 = EncryptionKey(randomKeyFromPassword: password, scheme: scheme)
+        
+        var keySet = Set<EncryptionKey>()
+        keySet.insert(key1)
+        keySet.insert(key2)
+        keySet.insert(key3)
+        keySet.insert(key1)
+        XCTAssertEqual(keySet.count, 3)
+        
+    }
+    
+    
+    
+    // MARK: - Keychain Handle
+    
     func testEncryptionKeyStorage() {
         
         let tag = "com.LeadDevCreations.keys.testKey"
@@ -696,7 +751,9 @@ class EncryptingSwiftTypes: XCTestCase {
         
         do {
             let notThereYet = try storage.key(withTag: tag)
-            XCTAssertNil(notThereYet)
+            XCTAssertNil(notThereYet, "The key was found in storage!")
+            let keyExists = storage.keyExists(withTag: tag)
+            XCTAssertFalse(keyExists, "A key was found in storage!")
         } catch {
             XCTFail("Failed to grab nonexistent key: \(error)")
         }
@@ -704,7 +761,7 @@ class EncryptingSwiftTypes: XCTestCase {
         do {
             try storage.setKey(encKey, forTag: tag)
             let storedKey = try storage.key(withTag: tag)
-            XCTAssertNotNil(storedKey, "The item was not retrieved after storage.")
+            XCTAssertNotNil(storedKey, "The item was not retrieved from storage.")
         } catch {
             XCTFail("Failed to store key: \(error)")
         }
@@ -726,19 +783,34 @@ class EncryptingSwiftTypes: XCTestCase {
         
     }
     
-    func testSetOfKeys() {
-        let scheme = EncryptionSerialization.Scheme.default
+    func testKeychainAccessSubscript() {
         
-        let key1 = EncryptionKey(randomKeyFromPassword: password, scheme: scheme)
-        let key2 = EncryptionKey(randomKeyFromPassword: password, scheme: scheme)
-        let key3 = EncryptionKey(randomKeyFromPassword: password, scheme: scheme)
+        let tag = "com.LeadDevCreations.keys.testKey"
+        let storage = KeychainHandle()
         
-        var keySet = Set<EncryptionKey>()
-        keySet.insert(key1)
-        keySet.insert(key2)
-        keySet.insert(key3)
-        keySet.insert(key1)
-        XCTAssertEqual(keySet.count, 3)
+        do {
+            try storage.deleteKey(withTag: tag)
+        } catch {
+            XCTFail("\(error)")
+        }
+        
+        let notThereYet = storage[tag]
+        XCTAssertNil(notThereYet, "The key was found in storage!")
+        
+        storage[tag] = encKey
+        
+        let storedKey = storage[tag]
+        XCTAssertNotNil(storedKey, "The item was not retrieved from storage.")
+        
+        storage[tag] = nil
+        
+        do {
+            let notThereAnymore = try storage.key(withTag: tag)
+            XCTAssertNil(notThereAnymore)
+            
+        } catch {
+            XCTFail("Failed to grab now nonexistent key: \(error)")
+        }
         
     }
     

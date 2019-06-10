@@ -12,7 +12,7 @@ import IDZSwiftCommonCrypto
 extension EncryptionSerialization {
     // MARK: Encryption Schemes
     
-    /// Contains constants that are used for encryption.
+    /// Defines constants that are used for encryption and decryption.
     public struct Scheme {
         // MARK: Spec Versions
         
@@ -23,12 +23,8 @@ extension EncryptionSerialization {
         ///
         /// We provide one here, but more may be added later as the need arises.
         public enum Format {
-            /// Version 1 of our encrypted data format.
-            ///
-            /// Defines a scheme using AES-256 encryption in CBC mode, 100,000 iterations
-            /// of PBKDF2 with SHA-256 hashing, a 1024-byte buffer, and 16-byte seeds and
-            /// initialization vectors (IV).
-            case pilot
+            
+            typealias Bytes = [UInt8]
             
             /// The latest version of the spec.
             public static let latest: Format = .pilot
@@ -36,11 +32,18 @@ extension EncryptionSerialization {
             /// The most tested version of the spec.
             public static let primary: Format = .pilot
             
+            /// Version 1 of our encrypted data format.
+            ///
+            /// Defines a scheme using AES-256 encryption in CBC mode, 100,000 iterations
+            /// of PBKDF2 with SHA-256 hashing, a 1024-byte buffer, and 16-byte seeds and
+            /// initialization vectors (IV).
+            case pilot
+            
             /// A representation of the format in bytes.
             ///
             /// This is used at runtime to identify the encryption scheme information
             /// from a block of data.
-            internal var rawValue: [UInt8] {
+            internal var rawValue: Bytes {
                 switch self {
                 case .pilot: return [0, 0, 1]
 //                case .unused: return [0, 0, 2]
@@ -53,7 +56,7 @@ extension EncryptionSerialization {
             
             /// Attempts to derive an `EncryptedItem.Format` from an array of bytes,
             /// returning `nil` if an appropriate representation cannot be found.
-            internal init?(bytes: [UInt8]) {
+            internal init?(bytes: Bytes) {
                 if bytes == Format.pilot.rawValue {
                     self = .pilot
                     
@@ -153,6 +156,7 @@ extension EncryptionSerialization {
         /// The default specification. Defaults to `Format.primary`.
         public static let `default` = Scheme(format: .primary)
         
+        /// Creates a new `Scheme` using the given `format` information.
         public init(format: Format) {
             self.version = format
         }

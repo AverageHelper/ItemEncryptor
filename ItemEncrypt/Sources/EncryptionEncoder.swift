@@ -33,18 +33,21 @@ public final class EncryptionEncoder {
     /// Encodes the given top-level value and returns its uniquely encrypted representation.
     ///
     /// - parameter value: The value to encode.
-    /// - parameter password: The password with which to encrypt `value`. This password is not retained past the lifetime of the function call.
+    /// - parameter password: The password from which a new random key is derived. This key
+    ///     is used to encrypt the given `value`. This password is not retained past the
+    ///     lifetime of the function call.
     /// - returns: A new `Data` value containing the encoded data.
     /// - throws: An `EncodingError` if any value throws an error during encoding.
-    public func encode<T: Encodable>(_ value: T, withPassword password: String) throws -> EncryptedItem {
+    public func encode<T: Encodable>(_ value: T,
+                                     withPassword password: String) throws -> EncryptedItem {
         
         let archiver = NSKeyedArchiver(requiringSecureCoding: false)
         archiver.outputFormat = .binary
         
         try archiver.encodeEncodable(value, forKey: NSKeyedArchiveRootObjectKey)
-        let archive = archiver.encodedData
+        let data = archiver.encodedData
         
-        return try EncryptionSerialization.encryptedItem(with: archive,
+        return try EncryptionSerialization.encryptedItem(with: data,
                                                          password: password,
                                                          scheme: configuration)
     }
@@ -55,15 +58,16 @@ public final class EncryptionEncoder {
     /// - parameter key: The encryption key to use when encoding the `value`. This or an identical key may be used for later decryption.
     /// - returns: A new `Data` value containing the encoded data.
     /// - throws: An `EncodingError` if any value throws an error during encoding.
-    public func encode<T: Encodable>(_ value: T, withKey key: EncryptionKey) throws -> EncryptedItem {
+    public func encode<T: Encodable>(_ value: T,
+                                     withKey key: EncryptionKey) throws -> EncryptedItem {
         
         let archiver = NSKeyedArchiver(requiringSecureCoding: false)
         archiver.outputFormat = .binary
         
         try archiver.encodeEncodable(value, forKey: NSKeyedArchiveRootObjectKey)
-        let archive = archiver.encodedData
+        let data = archiver.encodedData
         
-        return EncryptionSerialization.encryptedItem(with: archive, key: key)
+        return EncryptionSerialization.encryptedItem(with: data, key: key)
     }
     
 }
@@ -72,7 +76,8 @@ public final class EncryptionEncoder {
 // Encryption Decoder
 //===----------------------------------------------------------------------===//
 
-/// `EncryptionDecoder` facilitates the decoding of encrypted data into semantic `Decodable` types.
+/// `EncryptionDecoder` facilitates the decoding of encrypted data into semantic
+/// `Decodable` types.
 public final class EncryptionDecoder {
     // MARK: Options
     
@@ -97,19 +102,23 @@ public final class EncryptionDecoder {
     /// - parameter password: The password to use for decrypting `item`. This password is
     ///     **never** retained beyond the lifetime of this function's call stack.
     /// - returns: A value of the requested type.
-    /// - throws: A `DecodingError` if the item couldn't be decoded with the given
-    ///     credentials.
-    public func decode<T: Decodable>(_ type: T.Type, from item: EncryptedItem, withPassword password: String) throws -> T {
+    /// - throws: A `DecryptionError` if the decryption fails, or a `DecodingError` if the
+    ///     item couldn't be decoded as the given `type`.
+    public func decode<T: Decodable>(_ type: T.Type,
+                                     from item: EncryptedItem,
+                                     withPassword password: String) throws -> T {
         
-        /// Decrypt the archive
-        let archive = try EncryptionSerialization.data(withEncryptedObject: item, password: password)
+        // Decrypt the archive
+        let data = try EncryptionSerialization.data(fromEncryptedObject: item,
+                                                       password: password)
         
         do {
-            let unarchiver = try NSKeyedUnarchiver(forReadingFrom: archive)
+            let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
             unarchiver.decodingFailurePolicy = .setErrorAndReturn
             
+            // Attempt to decode the semantic `type`
             guard let object = unarchiver.decodeDecodable(type, forKey: NSKeyedArchiveRootObjectKey) else {
-                throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: [], debugDescription: "The given data did not contain a top-level value."))
+                throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: [], debugDescription: "The given data did not contain a top-level value of type \(type)."))
             }
             return object
             
@@ -128,19 +137,22 @@ public final class EncryptionDecoder {
     /// - parameter key: The key to use for decrypting `item`. This key is **never**
     ///     retained beyond the lifetime of this function's call stack.
     /// - returns: A value of the requested type.
-    /// - throws: A `DecodingError` if the item couldn't be decoded with the given
-    ///     credentials.
-    public func decode<T: Decodable>(_ type: T.Type, from item: EncryptedItem, withKey key: EncryptionKey) throws -> T {
+    /// - throws: A `DecryptionError` if the decryption fails, or a `DecodingError` if the
+    ///     item couldn't be decoded as the given `type`.
+    public func decode<T: Decodable>(_ type: T.Type,
+                                     from item: EncryptedItem,
+                                     withKey key: EncryptionKey) throws -> T {
         
-        /// Decrypt the archive
-        let archive = try EncryptionSerialization.data(withEncryptedObject: item, key: key)
+        // Decrypt the archive
+        let data = try EncryptionSerialization.data(fromEncryptedObject: item, key: key)
         
         do {
-            let unarchiver = try NSKeyedUnarchiver(forReadingFrom: archive)
+            let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
             unarchiver.decodingFailurePolicy = .setErrorAndReturn
             
+            // Attempt to decode the semantic `type`
             guard let object = unarchiver.decodeDecodable(type, forKey: NSKeyedArchiveRootObjectKey) else {
-                throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: [], debugDescription: "The given data did not contain a top-level value."))
+                throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: [], debugDescription: "The given data did not contain a top-level value of type \(type)."))
             }
             return object
             

@@ -9,9 +9,11 @@
 import Foundation
 import IDZSwiftCommonCrypto
 
-/// A semantic representation of a symmetric key that can be used to encrypt and decrypt data.
+/// A semantic representation of a symmetric key that can be used to encrypt and decrypt
+/// arbitrary data.
 public struct EncryptionKey {
     
+    /// A block of data that represents the key itself.
     public typealias KeyData = [UInt8]
     
     // MARK: Properties
@@ -31,7 +33,8 @@ public struct EncryptionKey {
     /// A string identifying the key. Usually an account ID, email address, or some other moniker.
     public var context: String?
     
-    /// A representation of the key as raw data. This may be stored or moved around where you'd like, but PLEASE keep it someplace secure!
+    /// A representation of the key as raw data. This may be stored or moved around where
+    /// you'd like, but *PLEASE* keep it someplace secure!
     public var rawData: Data {
         // version + payload + iv + salt
         
@@ -45,13 +48,21 @@ public struct EncryptionKey {
     
     // MARK: - Constructing an Encryption Key
     
-    /// Derives a new random encryption key from the given password string and any additional data provided using the given encryption scheme.
+    /// Derives a new random encryption key from the given password string and any
+    /// additional data provided using the given encryption scheme.
     ///
-    /// - important: This function generates a random seed (using `EncryptionSerialization.randomBytes(count:)`) for the key. DO NOT expect passing the same data to generate the same key.
+    /// - important: This function generates a random seed (using
+    /// `EncryptionSerialization.randomBytes(count:)`) for the key. **DO NOT** expect the
+    /// same data input to generate a similar key.
     ///
-    /// - parameter password: The raw password string from the user. This password is trimmed of leading and trailing whitespace, and Unicode normalized before being used to derive the key.
-    /// - parameter additionalKeywords: Any array of contextual information (such as an account ID, email address, etc.) which should be tightly bound to the derived key.
-    /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to derive the key.
+    /// - parameter password: The raw password string from the user. This password is
+    ///     trimmed of leading and trailing whitespace, and Unicode normalized before being
+    ///     used to derive the key.
+    /// - parameter additionalKeywords: Any array of contextual information (such as an
+    ///     account ID, email address, etc.) which should be tightly bound to the derived
+    ///     key.
+    /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to
+    ///     derive the key.
     public init(randomKeyFromPassword password: String, additionalKeywords: [String] = [], scheme: EncryptionSerialization.Scheme) {
         
         let seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
@@ -64,17 +75,29 @@ public struct EncryptionKey {
                   scheme: scheme)
     }
     
-    /// Derives an encryption key from a password and additional provided data using the given encryption scheme.
+    /// Derives an encryption key from a password and additional provided data using the
+    /// given encryption scheme.
     ///
-    /// This method calls `EncryptionKey(untreatedPassword:treatedSalt:iv:scheme:)`. The `seed` parameter, mixed with `additionalKeywords`, is used to derive the salt.
+    /// This method calls `EncryptionKey(untreatedPassword:treatedSalt:iv:scheme:)`. The
+    /// `seed` parameter, mixed with `additionalKeywords`, is used to derive the salt.
     ///
-    /// - parameter untreatedPassword: A raw password string from the user. This password is trimmed of leading and trailing whitespace, and Unicode normalized before being used to derive the key.
-    /// - parameter additionalKeywords: Any array of contextual information (such as an account ID, email address, etc.) which should be tightly bound to the derived key.
-    /// - parameter seed: Some data which is used to derive the key. It is not considered sensitive data. This value MUST match the given encryption scheme's `stretchedSaltSize` to be valid.
-    /// - parameter iv: The initialization vector (IV) to use to derive the key. It is not considered sensitive data. This value MUST match the given encryption scheme's `initializationVectorSize` to be valid.
-    /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to derive the key.
+    /// - parameter untreatedPassword: A raw password string from the user. This password is
+    ///     trimmed of leading and trailing whitespace, and Unicode normalized before being
+    ///     used to derive the key.
+    /// - parameter additionalKeywords: Any array of contextual information (such as an
+    ///     account ID, email address, etc.) which should be tightly bound to the derived
+    ///     key.
+    /// - parameter seed: Some data which is used to derive the key. It is not considered
+    ///     sensitive data. This value MUST match the given encryption scheme's
+    ///     `stretchedSaltSize` to be valid.
+    /// - parameter iv: The initialization vector (IV) to use to derive the key. It is not
+    ///     considered sensitive data. This value MUST match the given encryption scheme's
+    ///     `initializationVectorSize` to be valid.
+    /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to
+    ///     derive the key.
     ///
-    /// - throws: An `ImproperKey` error if the seed or IV are the wrong size for the given scheme. Inspect `scheme` for proper sizes.
+    /// - throws: An `ImproperKey` error if the seed or IV are the wrong size for the given
+    ///     scheme. Inspect `scheme` for proper sizes.
     public init(untreatedPassword: String, additionalKeywords: [String] = [], seed: [UInt8], iv: EncryptedItem.IV, scheme: EncryptionSerialization.Scheme) throws {
         
         guard seed.count == scheme.seedSize else {
@@ -97,14 +120,23 @@ public struct EncryptionKey {
                   scheme: scheme)
     }
     
-    /// Derives an encryption key from a password, a previously treated salt, an initialization vector, and the given encryption scheme.
+    /// Derives an encryption key from a password, a previously treated salt, an
+    /// initialization vector, and the given encryption scheme.
     ///
-    /// - parameter untreatedPassword: A raw password string from the user. This password is trimmed of leading and trailing whitespace, and Unicode normalized before being used to derive the key.
-    /// - parameter treatedSalt: Some data used to derive the key. It is not considered sensitive data. This value MUST match the given encryption scheme's `stretchedSaltSize` to be valid.
-    /// - parameter iv: The initialization vector (IV) to use to derive the key. It is not considered sensitive data. This value MUST match the given encryption scheme's `initializationVectorSize` to be valid.
-    /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to encrypt and decrypt data.
+    /// - parameter untreatedPassword: A raw password string from the user. This password is
+    ///     trimmed of leading and trailing whitespace, and Unicode normalized before being
+    ///     used to derive the key.
+    /// - parameter treatedSalt: Some data used to derive the key. It is not considered
+    ///     sensitive data. This value MUST match the given encryption scheme's
+    ///     `stretchedSaltSize` to be valid.
+    /// - parameter iv: The initialization vector (IV) to use to derive the key. It is not
+    ///     considered sensitive data. This value MUST match the given encryption scheme's
+    ///     `initializationVectorSize` to be valid.
+    /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to
+    ///     encrypt and decrypt data.
     ///
-    /// - throws: An `ImproperKey` error if the salt or IV are the wrong size for the given scheme. Inspect `scheme` for proper sizes.
+    /// - throws: An `ImproperKey` error if the salt or IV are the wrong size for the given
+    ///     scheme. Inspect `scheme` for proper sizes.
     public init(untreatedPassword: String, treatedSalt: EncryptedItem.Salt, iv: EncryptedItem.IV, scheme: EncryptionSerialization.Scheme) throws {
         
         self.scheme = scheme
@@ -127,9 +159,9 @@ public struct EncryptionKey {
         self.salt = treatedSalt
         self.initializationVector = iv
         
-        self.keyData = EncryptionSerialization.deriveKey(password: treatedPassword,
-                                                         salt: salt,
-                                                         scheme: scheme)
+        self.keyData = EncryptionSerialization.keyData(from: treatedPassword,
+                                                       salt: salt,
+                                                       using: scheme)
     }
     
     /// Attempts to create a semantic `EncryptionKey` from raw data.
@@ -199,10 +231,20 @@ public struct EncryptionKey {
     
     // MARK: - Errors
     
+    /// Indicates that data or value input was of an incorrect size or format to derive an
+    /// `EncryptionKey`.
     enum ImproperKey: Error {
+        
+        /// The data input was incorrectly formatted for deriving an `EncryptionKey`.
         case malformattedData
+        
+        /// The initialization vector was of the wrong size for the given scheme.
         case initializationVectorSize(expectation: Int, reality: Int)
+        
+        /// The salt was of the wrong size for the given scheme.
         case saltSize(expectation: Int, reality: Int)
+        
+        /// The seed was of the wrong size for the given scheme.
         case seedSize(expectation: Int, reality: Int)
     }
     
