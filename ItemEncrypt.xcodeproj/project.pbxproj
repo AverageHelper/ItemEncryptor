@@ -33,9 +33,9 @@
 		85581DA62298C317001DA6CE /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA42298C317001DA6CE /* Screenshot.png */; };
 		85581DA72298C317001DA6CE /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA42298C317001DA6CE /* Screenshot.png */; };
 		85581DA82298C317001DA6CE /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA42298C317001DA6CE /* Screenshot.png */; };
-		85581DA92298C317001DA6CE /* Receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.png */; };
-		85581DAA2298C317001DA6CE /* Receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.png */; };
-		85581DAB2298C317001DA6CE /* Receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.png */; };
+		85581DA92298C317001DA6CE /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.jpeg */; };
+		85581DAA2298C317001DA6CE /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.jpeg */; };
+		85581DAB2298C317001DA6CE /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.jpeg */; };
 		857360F92298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
 		857360FA2298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
 		857360FB2298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
@@ -128,9 +128,9 @@
 		854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptingSwiftTypes.swift; sourceTree = "<group>"; };
 		854226D02296F48F00B8CA33 /* EncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedItem.swift; sourceTree = "<group>"; };
 		854226D522977BDB00B8CA33 /* Scheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheme.swift; sourceTree = "<group>"; };
-		85581D9F22985A55001DA6CE /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Scary Puppy.png"; path = "ItemEncryptTests/Assets/Images/Scary Puppy.png"; sourceTree = SOURCE_ROOT; };
-		85581DA42298C317001DA6CE /* Screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot.png; sourceTree = "<group>"; };
-		85581DA52298C317001DA6CE /* Receipt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Receipt.png; sourceTree = "<group>"; };
+		85581D9F22985A55001DA6CE /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Scary Puppy.png"; path = "../../Scary Puppy.png"; sourceTree = SOURCE_ROOT; };
+		85581DA42298C317001DA6CE /* Screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Screenshot.png; path = /Users/jamesrobinson/Desktop/Screenshot.png; sourceTree = "<absolute>"; };
+		85581DA52298C317001DA6CE /* Receipt.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Receipt.jpeg; path = /Users/jamesrobinson/Desktop/Receipt.jpeg; sourceTree = "<absolute>"; };
 		8565D4A922A46B0A00564DD8 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		856650AB228D24F800F9A409 /* EncryptionEncoder-JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EncryptionEncoder-JSON.swift"; sourceTree = "<group>"; };
 		857360F82298E5130011B32B /* KeychainHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHandle.swift; sourceTree = "<group>"; };
@@ -142,7 +142,7 @@
 		85AC667B229BA81D00C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		85AC667D229C490400C1C110 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		85AC667E229C490400C1C110 /* ItemEncrypt.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = ItemEncrypt.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		85AC667F229C490500C1C110 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		85AC667F229C490500C1C110 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		85AC6680229C490500C1C110 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		85AC6686229C496200C1C110 /* ItemEncrypt-tvOSHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ItemEncrypt-tvOSHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85AC6688229C496300C1C110 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -338,7 +338,7 @@
 		85C4864422964ECF00E1EFA5 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				85581DA52298C317001DA6CE /* Receipt.png */,
+				85581DA52298C317001DA6CE /* Receipt.jpeg */,
 				85581D9F22985A55001DA6CE /* Scary Puppy.png */,
 				85581DA42298C317001DA6CE /* Screenshot.png */,
 			);
@@ -634,6 +634,7 @@
 				85CA186B228A64BE00159C0A /* Sources */,
 				85CA186C228A64BE00159C0A /* Frameworks */,
 				85CA186D228A64BE00159C0A /* Resources */,
+				854168AC232C18C400BC13D8 /* Prepare Codesign */,
 			);
 			buildRules = (
 			);
@@ -821,7 +822,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85581DA62298C317001DA6CE /* Screenshot.png in Resources */,
-				85581DA92298C317001DA6CE /* Receipt.png in Resources */,
+				85581DA92298C317001DA6CE /* Receipt.jpeg in Resources */,
 				85581DA122985A6E001DA6CE /* Scary Puppy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -838,7 +839,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85581DA72298C317001DA6CE /* Screenshot.png in Resources */,
-				85581DAA2298C317001DA6CE /* Receipt.png in Resources */,
+				85581DAA2298C317001DA6CE /* Receipt.jpeg in Resources */,
 				85581DA222985A6F001DA6CE /* Scary Puppy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -855,7 +856,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85581DA82298C317001DA6CE /* Screenshot.png in Resources */,
-				85581DAB2298C317001DA6CE /* Receipt.png in Resources */,
+				85581DAB2298C317001DA6CE /* Receipt.jpeg in Resources */,
 				85581DA322985A70001DA6CE /* Scary Puppy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1011,6 +1012,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		854168AC232C18C400BC13D8 /* Prepare Codesign */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Prepare Codesign";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nxattr -cr $BUILT_PRODUCTS_DIR/*.xctest\n\n";
 		};
 		85CA4CA22295023900CE0EFB /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;

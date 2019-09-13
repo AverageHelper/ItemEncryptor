@@ -7,7 +7,7 @@ target 'ItemEncrypt-iOS' do
   use_frameworks!
 
   # Pods for ItemEncrypt-iOS
-  pod 'IDZSwiftCommonCrypto', '~> 0.12.0'
+  pod 'IDZSwiftCommonCrypto', '~> 0.13.0'
 
   target 'ItemEncrypt-iOSTests' do
     inherit! :search_paths
@@ -22,7 +22,7 @@ target 'ItemEncrypt-Mac' do
   platform :osx, '10.13'
 
   # Pods for ItemEncrypt-Mac
-  pod 'IDZSwiftCommonCrypto', '~> 0.12.0'
+  pod 'IDZSwiftCommonCrypto', '~> 0.13.0'
 
   target 'ItemEncrypt-MacTests' do
     inherit! :search_paths
@@ -37,7 +37,7 @@ target 'ItemEncrypt-tvOS' do
   platform :tvos, '9.0'
 
   # Pods for ItemEncrypt-tvOS
-  pod 'IDZSwiftCommonCrypto', '~> 0.12.0'
+  pod 'IDZSwiftCommonCrypto', '~> 0.13.0'
 
   target 'ItemEncrypt-tvOSTests' do
     inherit! :search_paths
@@ -52,6 +52,6 @@ target 'ItemEncrypt-watchOS' do
   platform :watchos, '5.1'
 
   # Pods for ItemEncrypt-watchOS
-  pod 'IDZSwiftCommonCrypto', '~> 0.12.0'
+  pod 'IDZSwiftCommonCrypto', '~> 0.13.0'
 
 end
