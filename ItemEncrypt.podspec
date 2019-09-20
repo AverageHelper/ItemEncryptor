@@ -24,5 +24,5 @@ Pod::Spec.new do |spec|
 
   spec.frameworks  = "Security", "Foundation", "IDZSwiftCommonCrypto"
   spec.requires_arc = true
-  spec.dependency "IDZSwiftCommonCrypto", "~> 0.12.0"
+  spec.dependency "IDZSwiftCommonCrypto", "~> 0.13.0"
 end
