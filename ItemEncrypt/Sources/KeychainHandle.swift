@@ -223,8 +223,8 @@ public class KeychainHandle {
         case errSecSuccess:      break
         case errSecAllocate:     throw StorageError.memoryError(reason: "Failed to allocate memory.")
         case errSecBadReq:       throw StorageError.badRequest
-        case errSecDiskFull, errSecDskFull: throw StorageError.diskFull
-        case errSecDuplicateItem:           throw StorageError.duplicateItem
+        case errSecDiskFull:     throw StorageError.diskFull
+        case errSecDuplicateItem: throw StorageError.duplicateItem
         case errSecItemNotFound: throw StorageError.itemNotFound
         case errSecIO:           throw StorageError.ioError
         case errSecInvalidValue: throw StorageError.invalidValueDetected

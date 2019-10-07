@@ -1466,7 +1466,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.iOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
@@ -1499,7 +1499,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.iOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
@@ -1577,7 +1577,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.macOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
@@ -1610,7 +1610,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.macOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
@@ -1688,7 +1688,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.tvOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
@@ -1719,7 +1719,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.tvOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
@@ -1797,7 +1797,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.watchOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
@@ -1829,7 +1829,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.leaddevcreations.framework.watchOS.ItemEncrypt;
 				PRODUCT_MODULE_NAME = ItemEncrypt;
 				PRODUCT_NAME = ItemEncrypt;
