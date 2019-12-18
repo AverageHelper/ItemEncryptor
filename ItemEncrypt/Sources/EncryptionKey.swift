@@ -11,7 +11,7 @@ import IDZSwiftCommonCrypto
 
 /// A semantic representation of a symmetric key that can be used to encrypt and decrypt
 /// arbitrary data.
-public struct EncryptionKey {
+public final class EncryptionKey {
     
     /// A block of data that represents the key itself.
     public typealias KeyData = [UInt8]
@@ -22,7 +22,7 @@ public struct EncryptionKey {
     public let scheme: EncryptionSerialization.Scheme
     
     /// The key itself.
-    public let keyData: KeyData
+    public private(set) var keyData: KeyData
     
     /// The initialization vector used to derive this key.
     public let initializationVector: EncryptedItem.IV
@@ -46,6 +46,12 @@ public struct EncryptionKey {
         return Data(res)
     }
     
+    deinit {
+        keyData.withUnsafeMutableBufferPointer { (buffer: inout UnsafeMutableBufferPointer<UInt8>) in
+            buffer.assign(repeating: 0)
+        }
+    }
+    
     // MARK: - Constructing an Encryption Key
     
     /// Derives a new random encryption key from the given password string and any
@@ -63,7 +69,7 @@ public struct EncryptionKey {
     ///     key.
     /// - parameter scheme: The encryption scheme (algorithm and configuration) to use to
     ///     derive the key.
-    public init(randomKeyFromPassword password: String, additionalKeywords: [String] = [], scheme: EncryptionSerialization.Scheme) {
+    public convenience init(randomKeyFromPassword password: String, additionalKeywords: [String] = [], scheme: EncryptionSerialization.Scheme) {
         
         let seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
         let iv = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
@@ -98,7 +104,7 @@ public struct EncryptionKey {
     ///
     /// - throws: An `ImproperKey` error if the seed or IV are the wrong size for the given
     ///     scheme. Inspect `scheme` for proper sizes.
-    public init(untreatedPassword: String, additionalKeywords: [String] = [], seed: [UInt8], iv: EncryptedItem.IV, scheme: EncryptionSerialization.Scheme) throws {
+    public convenience init(untreatedPassword: String, additionalKeywords: [String] = [], seed: [UInt8], iv: EncryptedItem.IV, scheme: EncryptionSerialization.Scheme) throws {
         
         guard seed.count == scheme.seedSize else {
             NSLog("Incoming seed was the wrong size <\(seed.count)> for the encryption scheme <\(scheme.seedSize)>.")
@@ -250,8 +256,33 @@ public struct EncryptionKey {
     
 }
 
-// MARK: - Equatable and Hashable
+// MARK: - Conformance
 
 extension EncryptionKey: Equatable, Hashable {
-    // implementations are auto-generated from stored properties.
+    public static func == (lhs: EncryptionKey, rhs: EncryptionKey) -> Bool {
+        return
+            (lhs.scheme == rhs.scheme &&
+             lhs.keyData == rhs.keyData &&
+             lhs.initializationVector == rhs.initializationVector &&
+             lhs.salt == rhs.salt &&
+             lhs.context == rhs.context)
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(scheme)
+        hasher.combine(keyData)
+        hasher.combine(initializationVector)
+        hasher.combine(salt)
+        hasher.combine(context)
+    }
+}
+
+extension EncryptionKey: GenericPasswordConvertible {
+    public convenience init<D>(rawRepresentation data: D) throws where D: ContiguousBytes {
+        try self.init(data: data.dataRepresentation)
+    }
+    
+    public var rawRepresentation: Data {
+        rawData
+    }
 }

@@ -101,9 +101,11 @@ class EncryptingiOSTypes: XCTestCase {
     
     func testHugeImageEncryptionWithKey() {
         
-        let imageName = "Receipt" // ~16MB
+        let imageName = "Receipt.jpeg" // ~16MB
         let bundle = Bundle(for: type(of: self))
-        let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
+        guard let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil) else {
+            return XCTFail("No image named '\(imageName)' found in bundle.")
+        }
         let testData = testImage.pngData()!
         
         do {
@@ -123,9 +125,11 @@ class EncryptingiOSTypes: XCTestCase {
     
     func testHugeImageEncryptionPerformance() {
         
-        let imageName = "Receipt" // ~16MB
+        let imageName = "Receipt.jpeg" // ~16MB
         let bundle = Bundle(for: type(of: self))
-        let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
+        guard let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil) else {
+            return XCTFail("No image named '\(imageName)' found in bundle.")
+        }
         let testData = testImage.pngData()!
         
         measure {
@@ -140,9 +144,11 @@ class EncryptingiOSTypes: XCTestCase {
     
     func testHugeImageDecryptionPerformance() {
         
-        let imageName = "Receipt" // ~16MB
+        let imageName = "Receipt.jpeg" // ~16MB
         let bundle = Bundle(for: type(of: self))
-        let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
+        guard let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil) else {
+            return XCTFail("No image named '\(imageName)' found in bundle.")
+        }
         let testData = testImage.pngData()!
         
         let encryptedItem: EncryptedItem
@@ -165,9 +171,11 @@ class EncryptingiOSTypes: XCTestCase {
     
     func testHugeImageEncryptionStreamPerformance() {
         
-        let imageName = "Receipt" // ~16MB
+        let imageName = "Receipt.jpeg" // ~16MB
         let bundle = Bundle(for: type(of: self))
-        let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
+        guard let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil) else {
+            return XCTFail("No image named '\(imageName)' found in bundle.")
+        }
         let testData = testImage.pngData()!
         
         measureMetrics([.wallClockTime], automaticallyStartMeasuring: false) {
@@ -182,9 +190,11 @@ class EncryptingiOSTypes: XCTestCase {
     
     func testHugeImageDecryptionStreamPerformance() {
         
-        let imageName = "Receipt" // ~16MB
+        let imageName = "Receipt.jpeg" // ~16MB
         let bundle = Bundle(for: type(of: self))
-        let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)!
+        guard let testImage = UIImage(named: imageName, in: bundle, compatibleWith: nil) else {
+            return XCTFail("No image named '\(imageName)' found in bundle.")
+        }
         let testData = testImage.pngData()!
         
         let encInput = InputStream(data: testData)

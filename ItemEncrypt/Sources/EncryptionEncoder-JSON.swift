@@ -1031,7 +1031,7 @@ fileprivate class _EncryptionDecoder: Decoder {
     fileprivate let options: EncryptionDecoder._Options
     
     /// The path to the current point in decoding.
-    fileprivate(set) var codingPath: [CodingKey]
+    private(set) var codingPath: [CodingKey]
     
     /// Contextual user-provided information for use during decoding.
     var userInfo: [CodingUserInfoKey: Any] {

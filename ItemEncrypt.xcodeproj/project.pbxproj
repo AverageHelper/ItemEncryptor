@@ -27,15 +27,6 @@
 		854226D722977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
 		854226D822977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
 		854226D922977BDB00B8CA33 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854226D522977BDB00B8CA33 /* Scheme.swift */; };
-		85581DA122985A6E001DA6CE /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581D9F22985A55001DA6CE /* Scary Puppy.png */; };
-		85581DA222985A6F001DA6CE /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581D9F22985A55001DA6CE /* Scary Puppy.png */; };
-		85581DA322985A70001DA6CE /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581D9F22985A55001DA6CE /* Scary Puppy.png */; };
-		85581DA62298C317001DA6CE /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA42298C317001DA6CE /* Screenshot.png */; };
-		85581DA72298C317001DA6CE /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA42298C317001DA6CE /* Screenshot.png */; };
-		85581DA82298C317001DA6CE /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA42298C317001DA6CE /* Screenshot.png */; };
-		85581DA92298C317001DA6CE /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.jpeg */; };
-		85581DAA2298C317001DA6CE /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.jpeg */; };
-		85581DAB2298C317001DA6CE /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85581DA52298C317001DA6CE /* Receipt.jpeg */; };
 		857360F92298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
 		857360FA2298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
 		857360FB2298E5130011B32B /* KeychainHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360F82298E5130011B32B /* KeychainHandle.swift */; };
@@ -44,6 +35,15 @@
 		857360FF2298F0360011B32B /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360FD2298F0360011B32B /* EncryptionKey.swift */; };
 		857361002298F0360011B32B /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360FD2298F0360011B32B /* EncryptionKey.swift */; };
 		857361012298F0360011B32B /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857360FD2298F0360011B32B /* EncryptionKey.swift */; };
+		85899D7323A9B42100706B32 /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7023A9B42000706B32 /* Screenshot.png */; };
+		85899D7423A9B42100706B32 /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7023A9B42000706B32 /* Screenshot.png */; };
+		85899D7523A9B42100706B32 /* Screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7023A9B42000706B32 /* Screenshot.png */; };
+		85899D7723A9B42100706B32 /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7123A9B42100706B32 /* Receipt.jpeg */; };
+		85899D7823A9B42100706B32 /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7123A9B42100706B32 /* Receipt.jpeg */; };
+		85899D7923A9B42100706B32 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7223A9B42100706B32 /* Scary Puppy.png */; };
+		85899D7A23A9B42100706B32 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7223A9B42100706B32 /* Scary Puppy.png */; };
+		85899D7B23A9B42100706B32 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7223A9B42100706B32 /* Scary Puppy.png */; };
+		85899D7C23A9B57900706B32 /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7123A9B42100706B32 /* Receipt.jpeg */; };
 		859C2F902298303100DB9354 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 859C2F8F2298303100DB9354 /* .gitignore */; };
 		85AC6676229BA80B00C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC6675229BA80A00C1C110 /* Security.framework */; };
 		85AC6678229BA81300C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC6677229BA81200C1C110 /* Security.framework */; };
@@ -70,6 +70,10 @@
 		85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
 		85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
 		85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
+		85D44C1823A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */; };
+		85D44C1923A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */; };
+		85D44C1A23A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */; };
+		85D44C1B23A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */; };
 		85F79DB5229A503100D11397 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F79DB4229A503100D11397 /* AppDelegate.swift */; };
 		85F79DB7229A503100D11397 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F79DB6229A503100D11397 /* ViewController.swift */; };
 		85F79DBA229A503200D11397 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85F79DB8229A503200D11397 /* Main.storyboard */; };
@@ -128,13 +132,13 @@
 		854226CC2296F37000B8CA33 /* EncryptingSwiftTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptingSwiftTypes.swift; sourceTree = "<group>"; };
 		854226D02296F48F00B8CA33 /* EncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedItem.swift; sourceTree = "<group>"; };
 		854226D522977BDB00B8CA33 /* Scheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheme.swift; sourceTree = "<group>"; };
-		85581D9F22985A55001DA6CE /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Scary Puppy.png"; path = "../../Scary Puppy.png"; sourceTree = SOURCE_ROOT; };
-		85581DA42298C317001DA6CE /* Screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Screenshot.png; path = /Users/jamesrobinson/Desktop/Screenshot.png; sourceTree = "<absolute>"; };
-		85581DA52298C317001DA6CE /* Receipt.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Receipt.jpeg; path = /Users/jamesrobinson/Desktop/Receipt.jpeg; sourceTree = "<absolute>"; };
 		8565D4A922A46B0A00564DD8 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		856650AB228D24F800F9A409 /* EncryptionEncoder-JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EncryptionEncoder-JSON.swift"; sourceTree = "<group>"; };
 		857360F82298E5130011B32B /* KeychainHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHandle.swift; sourceTree = "<group>"; };
 		857360FD2298F0360011B32B /* EncryptionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKey.swift; sourceTree = "<group>"; };
+		85899D7023A9B42000706B32 /* Screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot.png; sourceTree = "<group>"; };
+		85899D7123A9B42100706B32 /* Receipt.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Receipt.jpeg; sourceTree = "<group>"; };
+		85899D7223A9B42100706B32 /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Scary Puppy.png"; sourceTree = "<group>"; };
 		859C2F8F2298303100DB9354 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		85AC6675229BA80A00C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85AC6677229BA81200C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -169,6 +173,7 @@
 		85CA189F228A64EA00159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA18A2228A64EA00159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85CA4CA12295022400CE0EFB /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
+		85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeychainHandle+CryptoKit.swift"; sourceTree = "<group>"; };
 		85F79DB2229A503100D11397 /* ItemEncrypt-iOSHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ItemEncrypt-iOSHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85F79DB4229A503100D11397 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		85F79DB6229A503100D11397 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -309,6 +314,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		85899D6F23A9B42000706B32 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				85899D7023A9B42000706B32 /* Screenshot.png */,
+				85899D7123A9B42100706B32 /* Receipt.jpeg */,
+				85899D7223A9B42100706B32 /* Scary Puppy.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		85AC6681229C491A00C1C110 /* ItemEncrypt Pod */ = {
 			isa = PBXGroup;
 			children = (
@@ -333,16 +348,6 @@
 				85AC6691229C496600C1C110 /* Info.plist */,
 			);
 			path = "Host App";
-			sourceTree = "<group>";
-		};
-		85C4864422964ECF00E1EFA5 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				85581DA52298C317001DA6CE /* Receipt.jpeg */,
-				85581D9F22985A55001DA6CE /* Scary Puppy.png */,
-				85581DA42298C317001DA6CE /* Screenshot.png */,
-			);
-			path = Images;
 			sourceTree = "<group>";
 		};
 		85CA183C228A631100159C0A = {
@@ -395,6 +400,7 @@
 			isa = PBXGroup;
 			children = (
 				857360F82298E5130011B32B /* KeychainHandle.swift */,
+				85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */,
 				856650AB228D24F800F9A409 /* EncryptionEncoder-JSON.swift */,
 				85AC6696229C5D3400C1C110 /* EncryptionEncoder.swift */,
 				85CA1860228A638700159C0A /* EncryptionSerialization.swift */,
@@ -453,7 +459,7 @@
 		85CA18AF228A660B00159C0A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				85C4864422964ECF00E1EFA5 /* Images */,
+				85899D6F23A9B42000706B32 /* Images */,
 				85CA18B1228A661F00159C0A /* iOS */,
 				85CA18B2228A662A00159C0A /* macOS */,
 				85CA18B4228A664E00159C0A /* tvOS */,
@@ -821,9 +827,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85581DA62298C317001DA6CE /* Screenshot.png in Resources */,
-				85581DA92298C317001DA6CE /* Receipt.jpeg in Resources */,
-				85581DA122985A6E001DA6CE /* Scary Puppy.png in Resources */,
+				85899D7923A9B42100706B32 /* Scary Puppy.png in Resources */,
+				85899D7323A9B42100706B32 /* Screenshot.png in Resources */,
+				85899D7C23A9B57900706B32 /* Receipt.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -838,9 +844,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85581DA72298C317001DA6CE /* Screenshot.png in Resources */,
-				85581DAA2298C317001DA6CE /* Receipt.jpeg in Resources */,
-				85581DA222985A6F001DA6CE /* Scary Puppy.png in Resources */,
+				85899D7A23A9B42100706B32 /* Scary Puppy.png in Resources */,
+				85899D7723A9B42100706B32 /* Receipt.jpeg in Resources */,
+				85899D7423A9B42100706B32 /* Screenshot.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -855,9 +861,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85581DA82298C317001DA6CE /* Screenshot.png in Resources */,
-				85581DAB2298C317001DA6CE /* Receipt.jpeg in Resources */,
-				85581DA322985A70001DA6CE /* Scary Puppy.png in Resources */,
+				85899D7B23A9B42100706B32 /* Scary Puppy.png in Resources */,
+				85899D7823A9B42100706B32 /* Receipt.jpeg in Resources */,
+				85899D7523A9B42100706B32 /* Screenshot.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1146,6 +1152,7 @@
 				854226D622977BDB00B8CA33 /* Scheme.swift in Sources */,
 				854226D12296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				85CA1861228A638700159C0A /* EncryptionSerialization.swift in Sources */,
+				85D44C1823A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */,
 				85AC6697229C5D3400C1C110 /* EncryptionEncoder.swift in Sources */,
 				857360F92298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);
@@ -1169,6 +1176,7 @@
 				854226D722977BDB00B8CA33 /* Scheme.swift in Sources */,
 				85AC6698229C5D4400C1C110 /* EncryptionEncoder.swift in Sources */,
 				85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */,
+				85D44C1923A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */,
 				854226D22296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				857360FA2298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);
@@ -1192,6 +1200,7 @@
 				854226D822977BDB00B8CA33 /* Scheme.swift in Sources */,
 				85AC6699229C5D4500C1C110 /* EncryptionEncoder.swift in Sources */,
 				85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
+				85D44C1A23A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */,
 				854226D32296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				857360FB2298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);
@@ -1215,6 +1224,7 @@
 				854226D922977BDB00B8CA33 /* Scheme.swift in Sources */,
 				85AC669A229C5D4600C1C110 /* EncryptionEncoder.swift in Sources */,
 				85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */,
+				85D44C1B23A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */,
 				854226D42296F48F00B8CA33 /* EncryptedItem.swift in Sources */,
 				857360FC2298E5130011B32B /* KeychainHandle.swift in Sources */,
 			);

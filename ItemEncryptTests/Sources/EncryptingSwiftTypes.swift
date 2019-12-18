@@ -750,9 +750,9 @@ class EncryptingSwiftTypes: XCTestCase {
         }
         
         do {
-            let notThereYet = try storage.key(withTag: tag)
+            let notThereYet: EncryptionKey? = try storage.key(withTag: tag)
             XCTAssertNil(notThereYet, "The key was found in storage!")
-            let keyExists = storage.keyExists(withTag: tag)
+            let keyExists = storage.keyExists(ofType: EncryptionKey.self, withTag: tag)
             XCTAssertFalse(keyExists, "A key was found in storage!")
         } catch {
             XCTFail("Failed to grab nonexistent key: \(error)")
@@ -760,21 +760,21 @@ class EncryptingSwiftTypes: XCTestCase {
         
         do {
             try storage.setKey(encKey, forTag: tag)
-            let storedKey = try storage.key(withTag: tag)
+            let storedKey: EncryptionKey? = try storage.key(withTag: tag)
             XCTAssertNotNil(storedKey, "The item was not retrieved from storage.")
         } catch {
             XCTFail("Failed to store key: \(error)")
         }
         
         do {
-            let goneKey = try storage.deleteKey(withTag: tag)
+            let goneKey: EncryptionKey? = try storage.deleteKey(withTag: tag)
             XCTAssertNotNil(goneKey, "The item was not returned after deletion.")
         } catch {
             XCTFail("Failed to delete key: \(error)")
         }
         
         do {
-            let notThereAnymore = try storage.key(withTag: tag)
+            let notThereAnymore: EncryptionKey? = try storage.key(withTag: tag)
             XCTAssertNil(notThereAnymore)
             
         } catch {
@@ -805,7 +805,7 @@ class EncryptingSwiftTypes: XCTestCase {
         storage[tag] = nil
         
         do {
-            let notThereAnymore = try storage.key(withTag: tag)
+            let notThereAnymore: EncryptionKey? = try storage.key(withTag: tag)
             XCTAssertNil(notThereAnymore)
             
         } catch {
