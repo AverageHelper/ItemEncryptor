@@ -139,6 +139,7 @@
 		85899D7023A9B42000706B32 /* Screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot.png; sourceTree = "<group>"; };
 		85899D7123A9B42100706B32 /* Receipt.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Receipt.jpeg; sourceTree = "<group>"; };
 		85899D7223A9B42100706B32 /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Scary Puppy.png"; sourceTree = "<group>"; };
+		85899D7F23AB275D00706B32 /* ItemEncrypt-tvOSHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ItemEncrypt-tvOSHost.entitlements"; sourceTree = "<group>"; };
 		859C2F8F2298303100DB9354 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		85AC6675229BA80A00C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85AC6677229BA81200C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -353,6 +354,7 @@
 		85CA183C228A631100159C0A = {
 			isa = PBXGroup;
 			children = (
+				85899D7F23AB275D00706B32 /* ItemEncrypt-tvOSHost.entitlements */,
 				85AC6681229C491A00C1C110 /* ItemEncrypt Pod */,
 				85CA1848228A631200159C0A /* ItemEncrypt */,
 				85CA1853228A631200159C0A /* ItemEncryptTests */,
@@ -1297,8 +1299,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
+				CODE_SIGN_ENTITLEMENTS = "ItemEncrypt-tvOSHost.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WS443QRDMF;
 				INFOPLIST_FILE = "ItemEncryptTests/Assets/tvOS/Host App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1318,8 +1321,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
+				CODE_SIGN_ENTITLEMENTS = "ItemEncrypt-tvOSHost.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WS443QRDMF;
 				INFOPLIST_FILE = "ItemEncryptTests/Assets/tvOS/Host App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
