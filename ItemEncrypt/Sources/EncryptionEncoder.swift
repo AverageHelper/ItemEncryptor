@@ -110,7 +110,7 @@ public final class EncryptionDecoder {
         
         // Decrypt the archive
         let data = try EncryptionSerialization.data(fromEncryptedObject: item,
-                                                       password: password)
+                                                    password: password)
         
         do {
             let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)

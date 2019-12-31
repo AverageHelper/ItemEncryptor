@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CryptoKit
 
 /// A semantic representation of encrypted data, encapsulating the encryption scheme format,
 /// the salt and initialization vector (IV) used to encrypt the data, and the encrypted
@@ -25,7 +26,7 @@ public struct EncryptedItem {
     public let version: EncryptionSerialization.Scheme.Format
     
     /// The encrypted data.
-    internal let payload: Data
+    internal let ciphertext: Data
     
     /// Some data salt used to encrypt or decrypt the item.
     public let salt: Salt
@@ -39,7 +40,7 @@ public struct EncryptedItem {
     public var rawData: Data {
         var res = version.rawValue
         res.append(contentsOf: iv)
-        res.append(contentsOf: payload)
+        res.append(contentsOf: ciphertext)
         res.append(contentsOf: salt)
         
         return Data(res)
@@ -52,9 +53,17 @@ public struct EncryptedItem {
                   salt: Salt,
                   iv: IV) {
         self.version = version
-        self.payload = payload
+        self.ciphertext = payload
         self.salt = salt
         self.iv = iv
+    }
+    
+    @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
+    public init(_ sealedBox: ChaChaPoly.SealedBox) throws {
+        self.version = .version2
+        self.ciphertext = sealedBox.ciphertext
+        self.salt = Salt(sealedBox.nonce)
+        self.iv = IV(sealedBox.tag)
     }
     
     public init(_ other: EncryptedItem) {
@@ -76,7 +85,7 @@ public struct EncryptedItem {
                                     resultScheme: &resultScheme)
         
         self.version = resultScheme.version
-        self.payload = resultPayload
+        self.ciphertext = resultPayload
         self.salt = resultSalt
         self.iv = resultIV
     }
@@ -92,16 +101,11 @@ public struct EncryptedItem {
         var mutableData = data
         
         // Find version
-        let expectedVersionSize = EncryptionSerialization.Scheme.Format.dataSize
-        let expectedVersionData = mutableData[mutableData.startIndex..<expectedVersionSize]
-        guard let foundVersion =
-            EncryptionSerialization.Scheme.Format(bytes: [UInt8](expectedVersionData)) else {
-            throw EncryptionSerialization.DecryptionError.badData
-        }
-        let scheme = EncryptionSerialization.Scheme(format: foundVersion)
+        let scheme = try EncryptedItem.scheme(from: mutableData)
+        let versionSize = scheme.version.rawValue.count
         
         // Slice off our version data
-        mutableData = mutableData.subdata(in: expectedVersionSize..<mutableData.endIndex)
+        mutableData = mutableData.subdata(in: versionSize..<mutableData.endIndex)
         
         // Find ID
         let expectedIVSize = scheme.initializationVectorSize
@@ -123,6 +127,16 @@ public struct EncryptedItem {
         resultPayload = mutableData
     }
     
+    private static func scheme(from ciphertext: Data) throws -> EncryptionSerialization.Scheme {
+        let expectedVersionSize = EncryptionSerialization.Scheme.Format.dataSize
+        let expectedVersionData = ciphertext[ciphertext.startIndex..<expectedVersionSize]
+        guard let foundVersion =
+            EncryptionSerialization.Scheme.Format(bytes: [UInt8](expectedVersionData)) else {
+            throw EncryptionSerialization.DecryptionError.badData
+        }
+        return EncryptionSerialization.Scheme(format: foundVersion)
+    }
+    
 }
 
 extension EncryptedItem: Equatable, Hashable {
@@ -133,6 +147,17 @@ extension EncryptedItem: Equatable, Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(rawData)
+    }
+    
+}
+
+@available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
+extension ChaChaPoly.SealedBox {
+    
+    public init(_ encryptedItem: EncryptedItem) throws {
+        try self.init(nonce: ChaChaPoly.Nonce(data: encryptedItem.salt),
+                      ciphertext: encryptedItem.ciphertext,
+                      tag: encryptedItem.iv)
     }
     
 }

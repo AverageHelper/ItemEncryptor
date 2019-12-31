@@ -8,6 +8,7 @@
 
 import Foundation
 import IDZSwiftCommonCrypto
+import CryptoKit
 
 
 // MARK: - EncryptionSerialization
@@ -113,33 +114,44 @@ public enum EncryptionSerialization {
     /// - returns: An `EncryptedItem` representing the encrypted data.
     public static func encryptedItem(with data: Data, key: EncryptionKey) -> EncryptedItem {
         
-        let scheme = key.scheme
-        let keyData = key.keyData
-        let iv = key.initializationVector
-        let salt = key.salt
-        
-        let cryptor = StreamCryptor(operation: .encrypt,
-                                    algorithm: scheme.encryptionAlgorithm,
-                                    mode: scheme.algorithmMode,
-                                    padding: .PKCS7Padding,
-                                    key: keyData,
-                                    iv: iv)
-        
-        let dataStream = InputStream(data: data)
-        let outStream = OutputStream(toMemory: ())
-        let bufferSize = scheme.bufferSize
-        
-        EncryptionSerialization.crypt(using: cryptor,
-                                      inputStream: dataStream,
-                                      outputStream: outStream,
-                                      bufferSize: bufferSize)
-        
-        let encryptedData = outStream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
-        
-        return EncryptedItem(version: scheme.version,
-                             payload: encryptedData,
-                             salt: salt,
-                             iv: iv)
+        switch key.scheme.version {
+        case .version1: // Use IDZSwiftCommonCrypto
+            let scheme = key.scheme
+            let keyData = key.keyData
+            let iv = key.initializationVector
+            let salt = key.salt
+            
+            let cryptor = StreamCryptor(operation: .encrypt,
+                                        algorithm: scheme.encryptionAlgorithm,
+                                        mode: scheme.algorithmMode,
+                                        padding: .PKCS7Padding,
+                                        key: keyData,
+                                        iv: iv)
+            
+            let dataStream = InputStream(data: data)
+            let outStream = OutputStream(toMemory: ())
+            let bufferSize = scheme.bufferSize
+            
+            EncryptionSerialization.crypt(using: cryptor,
+                                          inputStream: dataStream,
+                                          outputStream: outStream,
+                                          bufferSize: bufferSize)
+            
+            let encryptedData = outStream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
+            
+            return EncryptedItem(version: scheme.version,
+                                 payload: encryptedData,
+                                 salt: salt,
+                                 iv: iv)
+            
+        case .version2: // Use CryptoKit
+            guard #available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *) else {
+                fatalError("SANITY ERROR: version2 should only be accessible on newer OS versions.")
+            }
+            let symmetricKey = SymmetricKey(data: key.keyData)
+            let sealedBox = try! ChaChaPoly.seal(data, using: symmetricKey)
+            return try! EncryptedItem(sealedBox)
+        }
     }
     
     /// Encrypts data from an input stream, sending output data to another stream.
@@ -150,6 +162,11 @@ public enum EncryptionSerialization {
     /// - parameter input: The input data stream.
     /// - parameter key: The key with which to encrypt the data.
     /// - parameter output: A stream of encrypted data.
+    @available(iOS, deprecated: 13.0, message: "Stream operations are not supported in data package version 2.")
+    @available(OSX, deprecated: 10.15, message: "Stream operations are not supported in data package version 2.")
+    @available(watchOS, deprecated: 13.0, message: "Stream operations are not supported in data package version 2.")
+    @available(tvOS, deprecated: 13.0, message: "Stream operations are not supported in data package version 2.")
+    @available(*, deprecated, message: "Stream operations are not supported in data package version 2.")
     public static func encryptDataStream(_ input: InputStream, withKey key: EncryptionKey, into output: OutputStream) {
         
         let scheme = key.scheme
@@ -205,31 +222,44 @@ public enum EncryptionSerialization {
     public static func data(fromEncryptedObject object: EncryptedItem,
                             key: EncryptionKey) throws -> Data {
         
-        let scheme = Scheme(format: object.version)
-        guard scheme == key.scheme else {
-            throw DecryptionError.incorrectVersion
+        switch object.version {
+        case .version1: // Use IDZSwiftCommonCrypto
+            let scheme = Scheme(format: object.version)
+            
+            let data = object.ciphertext
+            let iv = key.initializationVector
+            let keyData = key.keyData
+            
+            let cryptor = StreamCryptor(operation: .decrypt,
+                                        algorithm: scheme.encryptionAlgorithm,
+                                        mode: scheme.algorithmMode,
+                                        padding: .PKCS7Padding,
+                                        key: keyData,
+                                        iv: iv)
+            
+            let dataStream = InputStream(data: data)
+            let outStream = OutputStream(toMemory: ())
+            let bufferSize = scheme.bufferSize
+            
+            EncryptionSerialization.crypt(using: cryptor, inputStream: dataStream, outputStream: outStream, bufferSize: bufferSize)
+            
+            let decryptedData = outStream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
+            
+            return decryptedData
+            
+        case .version2: // Use CryptoKit
+            guard #available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *) else {
+                fatalError("SANITY ERROR: version2 should only be accessible on newer OS versions.")
+            }
+            do {
+                let sealedBox = try ChaChaPoly.SealedBox(object)
+                let symmetricKey = SymmetricKey(data: key.keyData)
+                return try ChaChaPoly.open(sealedBox, using: symmetricKey)
+                
+            } catch {
+                throw DecryptionError.badData
+            }
         }
-        
-        let data = object.payload
-        let iv = key.initializationVector
-        let keyData = key.keyData
-        
-        let cryptor = StreamCryptor(operation: .decrypt,
-                                    algorithm: scheme.encryptionAlgorithm,
-                                    mode: scheme.algorithmMode,
-                                    padding: .PKCS7Padding,
-                                    key: keyData,
-                                    iv: iv)
-        
-        let dataStream = InputStream(data: data)
-        let outStream = OutputStream(toMemory: ())
-        let bufferSize = scheme.bufferSize
-        
-        EncryptionSerialization.crypt(using: cryptor, inputStream: dataStream, outputStream: outStream, bufferSize: bufferSize)
-        
-        let decryptedData = outStream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
-        
-        return decryptedData
     }
     
     @available(*, deprecated, renamed: "data(fromEncryptedObject:key:)")
@@ -245,6 +275,11 @@ public enum EncryptionSerialization {
     /// - parameter input: A stream of encrypted data.
     /// - parameter key: The key with which to decrypt the data.
     /// - parameter output: A stream of the decrypted data.
+    @available(iOS, deprecated: 13.0, message: "Stream operations are not supported in data package version 2.")
+    @available(OSX, deprecated: 10.15, message: "Stream operations are not supported in data package version 2.")
+    @available(watchOS, deprecated: 13.0, message: "Stream operations are not supported in data package version 2.")
+    @available(tvOS, deprecated: 13.0, message: "Stream operations are not supported in data package version 2.")
+    @available(*, deprecated, message: "Stream operations are not supported in data package version 2.")
     public static func decryptDataStream(_ input: InputStream,
                                          withKey key: EncryptionKey,
                                          into output: OutputStream) {
@@ -266,7 +301,7 @@ public enum EncryptionSerialization {
     // MARK: - The actual encryption.
     
     /// Uses the IDZSwiftSerialization library to encrypt or decrypt the given data stream.
-    private static func crypt(using: StreamCryptor,
+    private static func crypt(using cryptor: StreamCryptor,
                               inputStream: InputStream,
                               outputStream: OutputStream,
                               bufferSize: Int) {
@@ -280,7 +315,7 @@ public enum EncryptionSerialization {
         while inputStream.hasBytesAvailable {
             
             let bytesRead = inputStream.read(&inputBuffer, maxLength: inputBuffer.count)
-            let status = using.update(bufferIn: inputBuffer, byteCountIn: bytesRead, bufferOut: &outputBuffer, byteCapacityOut: outputBuffer.count, byteCountOut: &cryptedBytes)
+            let status = cryptor.update(bufferIn: inputBuffer, byteCountIn: bytesRead, bufferOut: &outputBuffer, byteCapacityOut: outputBuffer.count, byteCountOut: &cryptedBytes)
             precondition(status == Status.success)
             
             if cryptedBytes > 0 {
@@ -289,7 +324,7 @@ public enum EncryptionSerialization {
             }
         }
         
-        let status = using.final(bufferOut: &outputBuffer, byteCapacityOut: outputBuffer.count, byteCountOut: &cryptedBytes)
+        let status = cryptor.final(bufferOut: &outputBuffer, byteCapacityOut: outputBuffer.count, byteCountOut: &cryptedBytes)
         precondition(status == Status.success)
         
         if cryptedBytes > 0 {

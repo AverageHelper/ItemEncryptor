@@ -1,10 +1,6 @@
-# Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
-
 target 'ItemEncrypt-iOS' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  platform :ios, '12.0'
   use_frameworks!
+  platform :ios, '11.4'
 
   # Pods for ItemEncrypt-iOS
   pod 'IDZSwiftCommonCrypto', '~> 0.13.0'
@@ -17,7 +13,6 @@ target 'ItemEncrypt-iOS' do
 end
 
 target 'ItemEncrypt-Mac' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
   platform :osx, '10.13'
 
@@ -26,15 +21,14 @@ target 'ItemEncrypt-Mac' do
 
   target 'ItemEncrypt-MacTests' do
     inherit! :search_paths
-    # Pods for testing
+    # inherit! :complete
   end
 
 end
 
 target 'ItemEncrypt-tvOS' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-  platform :tvos, '9.0'
+  platform :tvos, '11.4'
 
   # Pods for ItemEncrypt-tvOS
   pod 'IDZSwiftCommonCrypto', '~> 0.13.0'
@@ -47,7 +41,6 @@ target 'ItemEncrypt-tvOS' do
 end
 
 target 'ItemEncrypt-watchOS' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
   platform :watchos, '5.1'
 

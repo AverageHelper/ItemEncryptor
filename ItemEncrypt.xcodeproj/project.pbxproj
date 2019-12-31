@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2CB8AD59F872C8E537B84869 /* Pods_ItemEncrypt_MacTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF04FC7FE0775E6B845D7BA /* Pods_ItemEncrypt_MacTests.framework */; };
 		48588ADAD5A2F615791D9D81 /* Pods_ItemEncrypt_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F7098AFAAFB26918E6695D /* Pods_ItemEncrypt_iOSTests.framework */; };
 		628F68B824736B4FB50FC2A9 /* Pods_ItemEncrypt_watchOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482BD353188E05DB301164F3 /* Pods_ItemEncrypt_watchOS.framework */; };
 		821549B7457C0FC697F3ABCD /* Pods_ItemEncrypt_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D98D71BA3FF81A487F2DB68 /* Pods_ItemEncrypt_tvOS.framework */; };
@@ -44,6 +43,9 @@
 		85899D7A23A9B42100706B32 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7223A9B42100706B32 /* Scary Puppy.png */; };
 		85899D7B23A9B42100706B32 /* Scary Puppy.png in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7223A9B42100706B32 /* Scary Puppy.png */; };
 		85899D7C23A9B57900706B32 /* Receipt.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85899D7123A9B42100706B32 /* Receipt.jpeg */; };
+		85899D8123AB2DEA00706B32 /* Receipt.encdata in Resources */ = {isa = PBXBuildFile; fileRef = 85899D8023AB2DEA00706B32 /* Receipt.encdata */; };
+		85899D8223AB2DEA00706B32 /* Receipt.encdata in Resources */ = {isa = PBXBuildFile; fileRef = 85899D8023AB2DEA00706B32 /* Receipt.encdata */; };
+		85899D8323AB2DEA00706B32 /* Receipt.encdata in Resources */ = {isa = PBXBuildFile; fileRef = 85899D8023AB2DEA00706B32 /* Receipt.encdata */; };
 		859C2F902298303100DB9354 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 859C2F8F2298303100DB9354 /* .gitignore */; };
 		85AC6676229BA80B00C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC6675229BA80A00C1C110 /* Security.framework */; };
 		85AC6678229BA81300C1C110 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AC6677229BA81200C1C110 /* Security.framework */; };
@@ -70,6 +72,11 @@
 		85CA18C4228A69D500159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
 		85CA18C5228A69D600159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
 		85CA18C6228A69D600159C0A /* EncryptionSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CA1860228A638700159C0A /* EncryptionSerialization.swift */; };
+		85CFD9C223AC05C7001FBCBD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CFD9C123AC05C7001FBCBD /* AppDelegate.swift */; };
+		85CFD9C423AC05C7001FBCBD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CFD9C323AC05C7001FBCBD /* ContentView.swift */; };
+		85CFD9C623AC05CC001FBCBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85CFD9C523AC05CC001FBCBD /* Assets.xcassets */; };
+		85CFD9C923AC05CC001FBCBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85CFD9C823AC05CC001FBCBD /* Preview Assets.xcassets */; };
+		85CFD9CC23AC05CC001FBCBD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85CFD9CA23AC05CC001FBCBD /* Main.storyboard */; };
 		85D44C1823A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */; };
 		85D44C1923A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */; };
 		85D44C1A23A7E2AA00018121 /* KeychainHandle+CryptoKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */; };
@@ -82,6 +89,7 @@
 		C0AE09F2DFAD7BD9EF3F4D42 /* Pods_ItemEncrypt_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E79A37807451707EE7E862BB /* Pods_ItemEncrypt_Mac.framework */; };
 		D1D6880F6836F11DF36E8406 /* Pods_ItemEncrypt_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BB5A4A2216AC0C8F937A66A /* Pods_ItemEncrypt_iOS.framework */; };
 		D58EE021E190C2AF249A8706 /* Pods_ItemEncrypt_tvOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1590568838338B180BA549 /* Pods_ItemEncrypt_tvOSTests.framework */; };
+		EEFF9C14E31AE3AF4B42421A /* Pods_ItemEncrypt_MacTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55CA41BE42EA9AA6760B6868 /* Pods_ItemEncrypt_MacTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +114,13 @@
 			remoteGlobalIDString = 85CA1882228A64D800159C0A;
 			remoteInfo = "ItemEncrypt-tvOS";
 		};
+		85CFD9D223AC05F1001FBCBD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 85CA183D228A631100159C0A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 85CFD9BE23AC05C7001FBCBD;
+			remoteInfo = "ItemEncrypt-macOSHost";
+		};
 		85F79DC4229A503D00D11397 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 85CA183D228A631100159C0A /* Project object */;
@@ -124,6 +139,7 @@
 		482BD353188E05DB301164F3 /* Pods_ItemEncrypt_watchOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_watchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BB5A4A2216AC0C8F937A66A /* Pods_ItemEncrypt_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		500A2E7451141306086ED816 /* Pods-ItemEncrypt-watchOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-watchOS.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-watchOS/Pods-ItemEncrypt-watchOS.debug.xcconfig"; sourceTree = "<group>"; };
+		55CA41BE42EA9AA6760B6868 /* Pods_ItemEncrypt_MacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_MacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64F7098AFAAFB26918E6695D /* Pods_ItemEncrypt_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CCBC9AFDF1136A10B40AF80 /* Pods-ItemEncrypt-watchOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-watchOS.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-watchOS/Pods-ItemEncrypt-watchOS.release.xcconfig"; sourceTree = "<group>"; };
 		6D44A50FF5A405AD19153E77 /* Pods-ItemEncrypt-MacTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-MacTests.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-MacTests/Pods-ItemEncrypt-MacTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -140,6 +156,7 @@
 		85899D7123A9B42100706B32 /* Receipt.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Receipt.jpeg; sourceTree = "<group>"; };
 		85899D7223A9B42100706B32 /* Scary Puppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Scary Puppy.png"; sourceTree = "<group>"; };
 		85899D7F23AB275D00706B32 /* ItemEncrypt-tvOSHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ItemEncrypt-tvOSHost.entitlements"; sourceTree = "<group>"; };
+		85899D8023AB2DEA00706B32 /* Receipt.encdata */ = {isa = PBXFileReference; lastKnownFileType = file; path = Receipt.encdata; sourceTree = "<group>"; };
 		859C2F8F2298303100DB9354 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		85AC6675229BA80A00C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85AC6677229BA81200C1C110 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -174,6 +191,14 @@
 		85CA189F228A64EA00159C0A /* ItemEncrypt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ItemEncrypt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85CA18A2228A64EA00159C0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85CA4CA12295022400CE0EFB /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
+		85CFD9BF23AC05C7001FBCBD /* ItemEncrypt-macOSHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ItemEncrypt-macOSHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85CFD9C123AC05C7001FBCBD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		85CFD9C323AC05C7001FBCBD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		85CFD9C523AC05CC001FBCBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		85CFD9C823AC05CC001FBCBD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		85CFD9CB23AC05CC001FBCBD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		85CFD9CD23AC05CC001FBCBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85CFD9CE23AC05CC001FBCBD /* ItemEncrypt_macOSHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ItemEncrypt_macOSHost.entitlements; sourceTree = "<group>"; };
 		85D44C1723A7E2AA00018121 /* KeychainHandle+CryptoKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeychainHandle+CryptoKit.swift"; sourceTree = "<group>"; };
 		85F79DB2229A503100D11397 /* ItemEncrypt-iOSHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ItemEncrypt-iOSHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85F79DB4229A503100D11397 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -184,7 +209,7 @@
 		85F79DC0229A503400D11397 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85F79DC6229A504C00D11397 /* ItemEncrypt-iOSHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ItemEncrypt-iOSHost.entitlements"; sourceTree = "<group>"; };
 		9ABBBDAE15184E0978A68AD2 /* Pods-ItemEncrypt-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-tvOS/Pods-ItemEncrypt-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		9AF04FC7FE0775E6B845D7BA /* Pods_ItemEncrypt_MacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_MacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACB3FE558BE8E01BB1C3EB51 /* Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests/Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B0BAEFFEB80A680891C0FD2C /* Pods-ItemEncrypt-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-tvOSTests/Pods-ItemEncrypt-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		D539200AB674BE531E861286 /* Pods-ItemEncrypt-MacTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-MacTests.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-MacTests/Pods-ItemEncrypt-MacTests.release.xcconfig"; sourceTree = "<group>"; };
 		DA1590568838338B180BA549 /* Pods_ItemEncrypt_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,6 +217,7 @@
 		E79A37807451707EE7E862BB /* Pods_ItemEncrypt_Mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItemEncrypt_Mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBC4EC06E0B9B4FC8B58A053 /* Pods-ItemEncrypt-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-iOSTests/Pods-ItemEncrypt-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		F8DF8DF3140DB041FB15E92C /* Pods-ItemEncrypt-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-iOS/Pods-ItemEncrypt-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		F9698BF96CA7979598D1C87D /* Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests/Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests.release.xcconfig"; sourceTree = "<group>"; };
 		FDF04A69B35D4DC2637FF970 /* Pods-ItemEncrypt-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItemEncrypt-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ItemEncrypt-tvOS/Pods-ItemEncrypt-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -235,7 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85CA1870228A64BE00159C0A /* ItemEncrypt.framework in Frameworks */,
-				2CB8AD59F872C8E537B84869 /* Pods_ItemEncrypt_MacTests.framework in Frameworks */,
+				EEFF9C14E31AE3AF4B42421A /* Pods_ItemEncrypt_MacTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +292,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		85CFD9BC23AC05C7001FBCBD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		85F79DAF229A503100D11397 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -284,12 +317,12 @@
 				85AC6679229BA81800C1C110 /* Security.framework */,
 				85AC667B229BA81D00C1C110 /* Security.framework */,
 				E79A37807451707EE7E862BB /* Pods_ItemEncrypt_Mac.framework */,
-				9AF04FC7FE0775E6B845D7BA /* Pods_ItemEncrypt_MacTests.framework */,
 				4BB5A4A2216AC0C8F937A66A /* Pods_ItemEncrypt_iOS.framework */,
 				64F7098AFAAFB26918E6695D /* Pods_ItemEncrypt_iOSTests.framework */,
 				2D98D71BA3FF81A487F2DB68 /* Pods_ItemEncrypt_tvOS.framework */,
 				DA1590568838338B180BA549 /* Pods_ItemEncrypt_tvOSTests.framework */,
 				482BD353188E05DB301164F3 /* Pods_ItemEncrypt_watchOS.framework */,
+				55CA41BE42EA9AA6760B6868 /* Pods_ItemEncrypt_MacTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -311,6 +344,8 @@
 				B0BAEFFEB80A680891C0FD2C /* Pods-ItemEncrypt-tvOSTests.release.xcconfig */,
 				500A2E7451141306086ED816 /* Pods-ItemEncrypt-watchOS.debug.xcconfig */,
 				6CCBC9AFDF1136A10B40AF80 /* Pods-ItemEncrypt-watchOS.release.xcconfig */,
+				ACB3FE558BE8E01BB1C3EB51 /* Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests.debug.xcconfig */,
+				F9698BF96CA7979598D1C87D /* Pods-ItemEncrypt-Mac-ItemEncrypt-MacTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -318,6 +353,7 @@
 		85899D6F23A9B42000706B32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				85899D8023AB2DEA00706B32 /* Receipt.encdata */,
 				85899D7023A9B42000706B32 /* Screenshot.png */,
 				85899D7123A9B42100706B32 /* Receipt.jpeg */,
 				85899D7223A9B42100706B32 /* Scary Puppy.png */,
@@ -342,6 +378,7 @@
 		85AC6695229C49AE00C1C110 /* Host App */ = {
 			isa = PBXGroup;
 			children = (
+				85899D7F23AB275D00706B32 /* ItemEncrypt-tvOSHost.entitlements */,
 				85AC6688229C496300C1C110 /* AppDelegate.swift */,
 				85AC668A229C496300C1C110 /* ViewController.swift */,
 				85AC668C229C496300C1C110 /* Main.storyboard */,
@@ -354,7 +391,6 @@
 		85CA183C228A631100159C0A = {
 			isa = PBXGroup;
 			children = (
-				85899D7F23AB275D00706B32 /* ItemEncrypt-tvOSHost.entitlements */,
 				85AC6681229C491A00C1C110 /* ItemEncrypt Pod */,
 				85CA1848228A631200159C0A /* ItemEncrypt */,
 				85CA1853228A631200159C0A /* ItemEncryptTests */,
@@ -376,6 +412,7 @@
 				85CA189F228A64EA00159C0A /* ItemEncrypt.framework */,
 				85F79DB2229A503100D11397 /* ItemEncrypt-iOSHost.app */,
 				85AC6686229C496200C1C110 /* ItemEncrypt-tvOSHost.app */,
+				85CFD9BF23AC05C7001FBCBD /* ItemEncrypt-macOSHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -491,6 +528,7 @@
 		85CA18B2228A662A00159C0A /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				85CFD9C023AC05C7001FBCBD /* Host App */,
 				85CA1876228A64BE00159C0A /* Info.plist */,
 			);
 			path = macOS;
@@ -503,6 +541,28 @@
 				85CA1892228A64D800159C0A /* Info.plist */,
 			);
 			path = tvOS;
+			sourceTree = "<group>";
+		};
+		85CFD9C023AC05C7001FBCBD /* Host App */ = {
+			isa = PBXGroup;
+			children = (
+				85CFD9CE23AC05CC001FBCBD /* ItemEncrypt_macOSHost.entitlements */,
+				85CFD9C123AC05C7001FBCBD /* AppDelegate.swift */,
+				85CFD9C323AC05C7001FBCBD /* ContentView.swift */,
+				85CFD9C523AC05CC001FBCBD /* Assets.xcassets */,
+				85CFD9CA23AC05CC001FBCBD /* Main.storyboard */,
+				85CFD9CD23AC05CC001FBCBD /* Info.plist */,
+				85CFD9C723AC05CC001FBCBD /* Preview Content */,
+			);
+			path = "Host App";
+			sourceTree = "<group>";
+		};
+		85CFD9C723AC05CC001FBCBD /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				85CFD9C823AC05CC001FBCBD /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		85F79DC7229A51DC00D11397 /* Host App */ = {
@@ -648,6 +708,7 @@
 			);
 			dependencies = (
 				85CA1872228A64BE00159C0A /* PBXTargetDependency */,
+				85CFD9D323AC05F1001FBCBD /* PBXTargetDependency */,
 			);
 			name = "ItemEncrypt-MacTests";
 			productName = "ItemEncrypt-MacTests";
@@ -713,6 +774,23 @@
 			productReference = 85CA189F228A64EA00159C0A /* ItemEncrypt.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		85CFD9BE23AC05C7001FBCBD /* ItemEncrypt-macOSHost */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85CFD9D123AC05CC001FBCBD /* Build configuration list for PBXNativeTarget "ItemEncrypt-macOSHost" */;
+			buildPhases = (
+				85CFD9BB23AC05C7001FBCBD /* Sources */,
+				85CFD9BC23AC05C7001FBCBD /* Frameworks */,
+				85CFD9BD23AC05C7001FBCBD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ItemEncrypt-macOSHost";
+			productName = "ItemEncrypt-macOSHost";
+			productReference = 85CFD9BF23AC05C7001FBCBD /* ItemEncrypt-macOSHost.app */;
+			productType = "com.apple.product-type.application";
+		};
 		85F79DB1229A503100D11397 /* ItemEncrypt-iOSHost */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85F79DC1229A503400D11397 /* Build configuration list for PBXNativeTarget "ItemEncrypt-iOSHost" */;
@@ -736,7 +814,7 @@
 		85CA183D228A631100159C0A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1020;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "LeadDevCreations, LLC";
 				TargetAttributes = {
@@ -761,6 +839,7 @@
 					};
 					85CA186E228A64BE00159C0A = {
 						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = 85CFD9BE23AC05C7001FBCBD;
 					};
 					85CA1882228A64D800159C0A = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -770,6 +849,9 @@
 					};
 					85CA189E228A64EA00159C0A = {
 						CreatedOnToolsVersion = 10.2.1;
+					};
+					85CFD9BE23AC05C7001FBCBD = {
+						CreatedOnToolsVersion = 11.3;
 					};
 					85F79DB1229A503100D11397 = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -799,6 +881,7 @@
 				85F79DB1229A503100D11397 /* ItemEncrypt-iOSHost */,
 				85CA1866228A64BE00159C0A /* ItemEncrypt-Mac */,
 				85CA186E228A64BE00159C0A /* ItemEncrypt-MacTests */,
+				85CFD9BE23AC05C7001FBCBD /* ItemEncrypt-macOSHost */,
 				85CA1882228A64D800159C0A /* ItemEncrypt-tvOS */,
 				85CA188A228A64D800159C0A /* ItemEncrypt-tvOSTests */,
 				85AC6685229C496200C1C110 /* ItemEncrypt-tvOSHost */,
@@ -830,6 +913,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85899D7923A9B42100706B32 /* Scary Puppy.png in Resources */,
+				85899D8123AB2DEA00706B32 /* Receipt.encdata in Resources */,
 				85899D7323A9B42100706B32 /* Screenshot.png in Resources */,
 				85899D7C23A9B57900706B32 /* Receipt.jpeg in Resources */,
 			);
@@ -847,6 +931,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85899D7A23A9B42100706B32 /* Scary Puppy.png in Resources */,
+				85899D8223AB2DEA00706B32 /* Receipt.encdata in Resources */,
 				85899D7723A9B42100706B32 /* Receipt.jpeg in Resources */,
 				85899D7423A9B42100706B32 /* Screenshot.png in Resources */,
 			);
@@ -864,6 +949,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85899D7B23A9B42100706B32 /* Scary Puppy.png in Resources */,
+				85899D8323AB2DEA00706B32 /* Receipt.encdata in Resources */,
 				85899D7823A9B42100706B32 /* Receipt.jpeg in Resources */,
 				85899D7523A9B42100706B32 /* Screenshot.png in Resources */,
 			);
@@ -873,6 +959,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85CFD9BD23AC05C7001FBCBD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85CFD9CC23AC05CC001FBCBD /* Main.storyboard in Resources */,
+				85CFD9C923AC05CC001FBCBD /* Preview Assets.xcassets in Resources */,
+				85CFD9C623AC05CC001FBCBD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1037,7 +1133,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nxattr -cr $BUILT_PRODUCTS_DIR/*.xctest\n\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nxattr -cr $BUILT_PRODUCTS_DIR/ItemEncrypt-macOSHost.app/Contents/PlugIns/*.xctest\n\n";
 		};
 		85CA4CA22295023900CE0EFB /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1232,6 +1328,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		85CFD9BB23AC05C7001FBCBD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85CFD9C423AC05C7001FBCBD /* ContentView.swift in Sources */,
+				85CFD9C223AC05C7001FBCBD /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		85F79DAE229A503100D11397 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1259,6 +1364,11 @@
 			target = 85CA1882228A64D800159C0A /* ItemEncrypt-tvOS */;
 			targetProxy = 85CA188D228A64D800159C0A /* PBXContainerItemProxy */;
 		};
+		85CFD9D323AC05F1001FBCBD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 85CFD9BE23AC05C7001FBCBD /* ItemEncrypt-macOSHost */;
+			targetProxy = 85CFD9D223AC05F1001FBCBD /* PBXContainerItemProxy */;
+		};
 		85F79DC5229A503D00D11397 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 85F79DB1229A503100D11397 /* ItemEncrypt-iOSHost */;
@@ -1271,6 +1381,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				85AC668D229C496300C1C110 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		85CFD9CA23AC05CC001FBCBD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				85CFD9CB23AC05CC001FBCBD /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1656,6 +1774,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ItemEncrypt-macOSHost.app/Contents/MacOS/ItemEncrypt-macOSHost";
 			};
 			name = Debug;
 		};
@@ -1680,6 +1799,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ItemEncrypt-macOSHost.app/Contents/MacOS/ItemEncrypt-macOSHost";
 			};
 			name = Release;
 		};
@@ -1855,6 +1975,54 @@
 			};
 			name = Release;
 		};
+		85CFD9CF23AC05CC001FBCBD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "ItemEncryptTests/Assets/macOS/Host App/ItemEncrypt_macOSHost.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"ItemEncryptTests/Assets/macOS/Host App/Preview Content\"";
+				DEVELOPMENT_TEAM = WS443QRDMF;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "ItemEncryptTests/Assets/macOS/Host App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "self.jamesrobinson.ItemEncrypt-macOSHost";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		85CFD9D023AC05CC001FBCBD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "ItemEncryptTests/Assets/macOS/Host App/ItemEncrypt_macOSHost.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"ItemEncryptTests/Assets/macOS/Host App/Preview Content\"";
+				DEVELOPMENT_TEAM = WS443QRDMF;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "ItemEncryptTests/Assets/macOS/Host App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "self.jamesrobinson.ItemEncrypt-macOSHost";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		85F79DC2229A503400D11397 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1973,6 +2141,15 @@
 			buildConfigurations = (
 				85CA18A5228A64EA00159C0A /* Debug */,
 				85CA18A6228A64EA00159C0A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85CFD9D123AC05CC001FBCBD /* Build configuration list for PBXNativeTarget "ItemEncrypt-macOSHost" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85CFD9CF23AC05CC001FBCBD /* Debug */,
+				85CFD9D023AC05CC001FBCBD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

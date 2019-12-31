@@ -122,6 +122,32 @@ class EncryptingMacOSTypes: XCTestCase {
         
     }
     
+    @available(OSX 10.15, *)
+    func testDecryptionFromVersion1() {
+        let bundle = Bundle(for: type(of: self))
+        let imageName = NSImage.Name("Receipt") // ~16MB
+        let testImagePath = bundle.pathForImageResource(imageName)!
+        let testImage = NSImage(contentsOfFile: testImagePath)!
+        let testData = testImage.pngRepresentation()
+        
+        guard let filePath = bundle.path(forResource: "Receipt", ofType: "encdata") else {
+            return XCTFail("No path in bundle to item called 'Receipt.encdata'.")
+        }
+        let fileURL = URL(fileURLWithPath: filePath, isDirectory: false)
+        do {
+            let encData = try Data(contentsOf: fileURL)
+            let item = try EncryptedItem(data: encData)
+            
+            let version2 = EncryptionSerialization.Scheme(format: .version2)
+            let decryptor = EncryptionDecoder(configuration: version2)
+            let decryptedData = try decryptor.decode(Data.self, from: item, withPassword: "password")
+            XCTAssertEqual(decryptedData, testData, "Failed to decode data from version1 package.")
+            
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
     func testHugeImageStreamEncryption() {
         
         let imageName = NSImage.Name("Receipt") // ~16MB

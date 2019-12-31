@@ -15,28 +15,39 @@ class EncryptingSwiftTypes: XCTestCase {
     var decryptor: EncryptionDecoder!
     
     let password = "password"
-    var scheme: EncryptionSerialization.Scheme!
+    var schemeV1: EncryptionSerialization.Scheme!
+    var schemeV2: EncryptionSerialization.Scheme?
     var seed: [UInt8]!
     var iv: EncryptedItem.IV!
-    var encKey: EncryptionKey!
+    var encKeyV1: EncryptionKey!
+    var encKeyV2: EncryptionKey?
     
     override func setUp() {
         encryptor = EncryptionEncoder()
         decryptor = EncryptionDecoder()
-        scheme = .default
-        seed = EncryptionSerialization.randomBytes(count: scheme.seedSize)
-        iv = EncryptionSerialization.randomBytes(count: scheme.initializationVectorSize)
-        encKey = try! EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: scheme)
-        encKey.context = "For testing"
+        schemeV1 = .init(format: .version1)
+        seed = EncryptionSerialization.randomBytes(count: schemeV1.seedSize)
+        iv = EncryptionSerialization.randomBytes(count: schemeV1.initializationVectorSize)
+        
+        encKeyV1 = try! EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: schemeV1)
+        encKeyV1.context = "For testing version 1"
+        
+        if #available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *) {
+            schemeV2 = .init(format: .version2)
+            encKeyV2 = try! EncryptionKey(untreatedPassword: password, seed: seed, iv: iv, scheme: schemeV2!)
+            encKeyV2!.context = "For testing version 2"
+        }
     }
-
+    
     override func tearDown() {
         encryptor = nil
         decryptor = nil
-        scheme = nil
+        schemeV1 = nil
+        schemeV2 = nil
         seed = nil
         iv = nil
-        encKey = nil
+        encKeyV1 = nil
+        encKeyV2 = nil
     }
     
     
@@ -57,9 +68,8 @@ class EncryptingSwiftTypes: XCTestCase {
             return
         }
         
-        let decryptedString: String
         do {
-            decryptedString = try decryptor.decode(String.self, from: encryptedItem, withPassword: password)
+            let decryptedString = try decryptor.decode(String.self, from: encryptedItem, withPassword: password)
             XCTAssertEqual(decryptedString, normalString)
             
         } catch {
@@ -82,9 +92,47 @@ class EncryptingSwiftTypes: XCTestCase {
         XCTAssertNotEqual(emptyString, encryptedEmptyString)
         
         do {
-            let decryptedEmpty = try decryptor.decode(String.self, from: encryptedEmpty,
-                                                   withPassword: password)
+            let decryptedEmpty = try decryptor.decode(String.self,
+                                                      from: encryptedEmpty,
+                                                      withPassword: password)
             XCTAssertEqual(decryptedEmpty, emptyString)
+        } catch {
+            XCTFail("\(error)")
+        }
+        
+        // Version 2 Encrypt/Decrypt
+        // Version 1 and 2 should be interchangeable
+        
+        guard let encKeyV2 = self.encKeyV2 else { return }
+        
+        let someString = normalString
+        var encryptedString = try! encryptor.encode(someString, withKey: encKeyV2)
+        let encryptedStringValue = String(data: encryptedString.rawData, encoding: .utf8)
+        XCTAssertNotEqual(someString, encryptedStringValue)
+        do {
+            let decryptedString = try decryptor.decode(String.self, from: encryptedString, withKey: encKeyV2)
+            XCTAssertEqual(decryptedString, someString)
+        } catch {
+            XCTFail("\(error)")
+        }
+        // V1 keys should be compatible with V2 data, since we used the same salt and IV.
+        do {
+            let usedOldKey = try decryptor.decode(String.self, from: encryptedString, withKey: encKeyV1)
+            XCTAssertEqual(usedOldKey, someString, "Decryption results differ.")
+        } catch {
+            XCTFail("\(error)")
+        }
+        
+        encryptedString = try! encryptor.encode(someString, withKey: encKeyV1)
+        do {
+            let usedNewKey = try decryptor.decode(String.self, from: encryptedString, withKey: encKeyV2)
+            XCTAssertEqual(usedNewKey, someString, "Decryption results differ.")
+//            XCTFail("New key should not work on old data.")
+            
+//        } catch let err as EncryptionSerialization.DecryptionError {
+//            guard case .badData = err else {
+//                return XCTFail("\(err)")
+//            }
         } catch {
             XCTFail("\(error)")
         }
@@ -124,8 +172,8 @@ class EncryptingSwiftTypes: XCTestCase {
             // Positive
             
             let testPos: Int = 500_342
-            let encPos = try encryptor.encode(testPos, withKey: encKey)
-            let decPos = try decryptor.decode(Int.self, from: encPos, withKey: encKey)
+            let encPos = try encryptor.encode(testPos, withKey: encKeyV1)
+            let decPos = try decryptor.decode(Int.self, from: encPos, withKey: encKeyV1)
             XCTAssertEqual(decPos, testPos)
             
             // With wrong password, should throw.
@@ -136,67 +184,67 @@ class EncryptingSwiftTypes: XCTestCase {
             // Negative
             
             let testNeg: Int = -451
-            let encNeg = try encryptor.encode(testNeg, withKey: encKey)
-            let decNeg = try decryptor.decode(Int.self, from: encNeg, withKey: encKey)
+            let encNeg = try encryptor.encode(testNeg, withKey: encKeyV1)
+            let decNeg = try decryptor.decode(Int.self, from: encNeg, withKey: encKeyV1)
             XCTAssertEqual(decNeg, testNeg)
             
             // Zero
             
             let testZero: Int = 0
-            let encZero = try encryptor.encode(testZero, withKey: encKey)
-            let decZero = try decryptor.decode(Int.self, from: encZero, withKey: encKey)
+            let encZero = try encryptor.encode(testZero, withKey: encKeyV1)
+            let decZero = try decryptor.decode(Int.self, from: encZero, withKey: encKeyV1)
             XCTAssertEqual(decZero, testZero)
             
             // Signed variants
             
             let testInt8: Int8 = Int8.random(in: Int8.min...Int8.max)
-            let encInt8 = try encryptor.encode(testInt8, withKey: encKey)
-            let decInt8 = try decryptor.decode(Int8.self, from: encInt8, withKey: encKey)
+            let encInt8 = try encryptor.encode(testInt8, withKey: encKeyV1)
+            let decInt8 = try decryptor.decode(Int8.self, from: encInt8, withKey: encKeyV1)
             XCTAssertEqual(decInt8, testInt8)
             
             let testInt16: Int16 = Int16.random(in: Int16.min...Int16.max)
-            let encInt16 = try encryptor.encode(testInt16, withKey: encKey)
-            let decInt16 = try decryptor.decode(Int16.self, from: encInt16, withKey: encKey)
+            let encInt16 = try encryptor.encode(testInt16, withKey: encKeyV1)
+            let decInt16 = try decryptor.decode(Int16.self, from: encInt16, withKey: encKeyV1)
             XCTAssertEqual(decInt16, testInt16)
             
             let testInt32: Int32 = Int32.random(in: Int32.min...Int32.max)
-            let encInt32 = try encryptor.encode(testInt32, withKey: encKey)
-            let decInt32 = try decryptor.decode(Int32.self, from: encInt32, withKey: encKey)
+            let encInt32 = try encryptor.encode(testInt32, withKey: encKeyV1)
+            let decInt32 = try decryptor.decode(Int32.self, from: encInt32, withKey: encKeyV1)
             XCTAssertEqual(decInt32, testInt32)
             
             let testInt64: Int64 = Int64.random(in: Int64.min...Int64.max)
-            let encInt64 = try encryptor.encode(testInt64, withKey: encKey)
-            let decInt64 = try decryptor.decode(Int64.self, from: encInt64, withKey: encKey)
+            let encInt64 = try encryptor.encode(testInt64, withKey: encKeyV1)
+            let decInt64 = try decryptor.decode(Int64.self, from: encInt64, withKey: encKeyV1)
             XCTAssertEqual(decInt64, testInt64)
             
-            let wrongType = try? decryptor.decode(Int8.self, from: encInt64, withKey: encKey)
+            let wrongType = try? decryptor.decode(Int8.self, from: encInt64, withKey: encKeyV1)
             XCTAssertNil(wrongType)
             
             // Unsigned variants
             
             let testUInt: UInt = UInt.random(in: UInt.min...UInt.max)
-            let encUInt = try encryptor.encode(testUInt, withKey: encKey)
-            let decUInt = try decryptor.decode(UInt.self, from: encUInt, withKey: encKey)
+            let encUInt = try encryptor.encode(testUInt, withKey: encKeyV1)
+            let decUInt = try decryptor.decode(UInt.self, from: encUInt, withKey: encKeyV1)
             XCTAssertEqual(decUInt, testUInt)
             
             let testUInt8: UInt8 = UInt8.random(in: UInt8.min...UInt8.max)
-            let encUInt8 = try encryptor.encode(testUInt8, withKey: encKey)
-            let decUInt8 = try decryptor.decode(UInt8.self, from: encUInt8, withKey: encKey)
+            let encUInt8 = try encryptor.encode(testUInt8, withKey: encKeyV1)
+            let decUInt8 = try decryptor.decode(UInt8.self, from: encUInt8, withKey: encKeyV1)
             XCTAssertEqual(decUInt8, testUInt8)
             
             let testUInt16: UInt16 = UInt16.random(in: UInt16.min...UInt16.max)
-            let encUInt16 = try encryptor.encode(testUInt16, withKey: encKey)
-            let decUInt16 = try decryptor.decode(UInt16.self, from: encUInt16, withKey: encKey)
+            let encUInt16 = try encryptor.encode(testUInt16, withKey: encKeyV1)
+            let decUInt16 = try decryptor.decode(UInt16.self, from: encUInt16, withKey: encKeyV1)
             XCTAssertEqual(decUInt16, testUInt16)
             
             let testUInt32: UInt32 = UInt32.random(in: UInt32.min...UInt32.max)
-            let encUInt32 = try encryptor.encode(testUInt32, withKey: encKey)
-            let decUInt32 = try decryptor.decode(UInt32.self, from: encUInt32, withKey: encKey)
+            let encUInt32 = try encryptor.encode(testUInt32, withKey: encKeyV1)
+            let decUInt32 = try decryptor.decode(UInt32.self, from: encUInt32, withKey: encKeyV1)
             XCTAssertEqual(decUInt32, testUInt32)
             
             let testUInt64: UInt64 = UInt64.random(in: UInt64.min...UInt64.max)
-            let encUInt64 = try encryptor.encode(testUInt64, withKey: encKey)
-            let decUInt64 = try decryptor.decode(UInt64.self, from: encUInt64, withKey: encKey)
+            let encUInt64 = try encryptor.encode(testUInt64, withKey: encKeyV1)
+            let decUInt64 = try decryptor.decode(UInt64.self, from: encUInt64, withKey: encKeyV1)
             XCTAssertEqual(decUInt64, testUInt64)
             
         } catch {
@@ -211,13 +259,13 @@ class EncryptingSwiftTypes: XCTestCase {
             // Finite
             
             let testPos: Float = 41.263451812345
-            let encPos = try encryptor.encode(testPos, withKey: encKey)
-            let decPos = try decryptor.decode(Float.self, from: encPos, withKey: encKey)
+            let encPos = try encryptor.encode(testPos, withKey: encKeyV1)
+            let decPos = try decryptor.decode(Float.self, from: encPos, withKey: encKeyV1)
             XCTAssertEqual(decPos, testPos)
             
             let testNeg: Float = -32.34324523549
-            let encNeg = try encryptor.encode(testNeg, withKey: encKey)
-            let decNeg = try decryptor.decode(Float.self, from: encNeg, withKey: encKey)
+            let encNeg = try encryptor.encode(testNeg, withKey: encKeyV1)
+            let decNeg = try decryptor.decode(Float.self, from: encNeg, withKey: encKeyV1)
             XCTAssertEqual(decNeg, testNeg)
             
             // Infinite
@@ -227,25 +275,25 @@ class EncryptingSwiftTypes: XCTestCase {
 //            XCTAssertNil(encInfinityFail)
             
 //            encryptor.nonConformingFloatEncodingStrategy = .convertToString(positiveInfinity: "inf", negativeInfinity: "-inf", nan: "NaN")
-            let encInfinity = try encryptor.encode(testInfinity, withKey: encKey)
+            let encInfinity = try encryptor.encode(testInfinity, withKey: encKeyV1)
             
 //            let decInfinityFail = try? decryptor.decode(Float.self, from: encInfinity, withKey: encKey)
 //            XCTAssertNil(decInfinityFail)
             
 //            decryptor.nonConformingFloatDecodingStrategy = .convertFromString(positiveInfinity: "inf", negativeInfinity: "-inf", nan: "NaN")
-            let decInfinity = try decryptor.decode(Float.self, from: encInfinity, withKey: encKey)
+            let decInfinity = try decryptor.decode(Float.self, from: encInfinity, withKey: encKeyV1)
             XCTAssertEqual(decInfinity, testInfinity)
             
             let testNegInfinity: Float = -Float.infinity
-            let encNegInfinity = try encryptor.encode(testNegInfinity, withKey: encKey)
-            let decNegInfinity = try decryptor.decode(Float.self, from: encNegInfinity, withKey: encKey)
+            let encNegInfinity = try encryptor.encode(testNegInfinity, withKey: encKeyV1)
+            let decNegInfinity = try decryptor.decode(Float.self, from: encNegInfinity, withKey: encKeyV1)
             XCTAssertEqual(decNegInfinity, testNegInfinity)
             
             // Not a number
             
             let testNaN: Float = Float.nan
-            let encNaN = try encryptor.encode(testNaN, withKey: encKey)
-            let decNaN = try decryptor.decode(Float.self, from: encNaN, withKey: encKey)
+            let encNaN = try encryptor.encode(testNaN, withKey: encKeyV1)
+            let decNaN = try decryptor.decode(Float.self, from: encNaN, withKey: encKeyV1)
             XCTAssert(decNaN.isNaN)
             
         } catch {
@@ -260,13 +308,13 @@ class EncryptingSwiftTypes: XCTestCase {
             // Finite
             
             let testPos: Double = 41.263451812345
-            let encPos = try encryptor.encode(testPos, withKey: encKey)
-            let decPos = try decryptor.decode(Double.self, from: encPos, withKey: encKey)
+            let encPos = try encryptor.encode(testPos, withKey: encKeyV1)
+            let decPos = try decryptor.decode(Double.self, from: encPos, withKey: encKeyV1)
             XCTAssertEqual(decPos, testPos)
             
             let testNeg: Double = -32.34324523549
-            let encNeg = try encryptor.encode(testNeg, withKey: encKey)
-            let decNeg = try decryptor.decode(Double.self, from: encNeg, withKey: encKey)
+            let encNeg = try encryptor.encode(testNeg, withKey: encKeyV1)
+            let decNeg = try decryptor.decode(Double.self, from: encNeg, withKey: encKeyV1)
             XCTAssertEqual(decNeg, testNeg)
             
             // Infinite
@@ -276,25 +324,25 @@ class EncryptingSwiftTypes: XCTestCase {
 //            XCTAssertNil(encInfinityFail)
             
 //            encryptor.nonConformingFloatEncodingStrategy = .convertToString(positiveInfinity: "inf", negativeInfinity: "-inf", nan: "NaN")
-            let encInfinity = try encryptor.encode(testInfinity, withKey: encKey)
+            let encInfinity = try encryptor.encode(testInfinity, withKey: encKeyV1)
             
 //            let decInfinityFail = try? decryptor.decode(Double.self, from: encInfinity, withKey: encKey)
 //            XCTAssertNil(decInfinityFail)
             
 //            decryptor.nonConformingFloatDecodingStrategy = .convertFromString(positiveInfinity: "inf", negativeInfinity: "-inf", nan: "NaN")
-            let decInfinity = try decryptor.decode(Double.self, from: encInfinity, withKey: encKey)
+            let decInfinity = try decryptor.decode(Double.self, from: encInfinity, withKey: encKeyV1)
             XCTAssertEqual(decInfinity, testInfinity)
             
             let testNegInfinity: Double = -Double.infinity
-            let encNegInfinity = try encryptor.encode(testNegInfinity, withKey: encKey)
-            let decNegInfinity = try decryptor.decode(Double.self, from: encNegInfinity, withKey: encKey)
+            let encNegInfinity = try encryptor.encode(testNegInfinity, withKey: encKeyV1)
+            let decNegInfinity = try decryptor.decode(Double.self, from: encNegInfinity, withKey: encKeyV1)
             XCTAssertEqual(decNegInfinity, testNegInfinity)
             
             // Not a number
             
             let testNaN: Double = Double.nan
-            let encNaN = try encryptor.encode(testNaN, withKey: encKey)
-            let decNaN = try decryptor.decode(Double.self, from: encNaN, withKey: encKey)
+            let encNaN = try encryptor.encode(testNaN, withKey: encKeyV1)
+            let decNaN = try decryptor.decode(Double.self, from: encNaN, withKey: encKeyV1)
             XCTAssert(decNaN.isNaN)
             
         } catch {
@@ -307,18 +355,18 @@ class EncryptingSwiftTypes: XCTestCase {
         
         do {
             let testNow = Date()
-            let encNow = try encryptor.encode(testNow, withKey: encKey)
-            let decNow = try decryptor.decode(Date.self, from: encNow, withKey: encKey)
+            let encNow = try encryptor.encode(testNow, withKey: encKeyV1)
+            let decNow = try decryptor.decode(Date.self, from: encNow, withKey: encKeyV1)
             XCTAssertEqual(decNow, testNow)
             
             let testDistantFuture = Date.distantFuture
-            let encFuture = try encryptor.encode(testDistantFuture, withKey: encKey)
-            let decFuture = try decryptor.decode(Date.self, from: encFuture, withKey: encKey)
+            let encFuture = try encryptor.encode(testDistantFuture, withKey: encKeyV1)
+            let decFuture = try decryptor.decode(Date.self, from: encFuture, withKey: encKeyV1)
             XCTAssertEqual(decFuture, testDistantFuture)
             
             let testDistantPast = Date.distantPast
-            let encPast = try encryptor.encode(testDistantPast, withKey: encKey)
-            let decPast = try decryptor.decode(Date.self, from: encPast, withKey: encKey)
+            let encPast = try encryptor.encode(testDistantPast, withKey: encKeyV1)
+            let decPast = try decryptor.decode(Date.self, from: encPast, withKey: encKeyV1)
             XCTAssertEqual(decPast, testDistantPast)
             
             // ISO-8601
@@ -327,8 +375,8 @@ class EncryptingSwiftTypes: XCTestCase {
             
 //            encryptor.dateEncodingStrategy = .iso8601
 //            decryptor.dateDecodingStrategy = .iso8601
-            let encIsoDate = try encryptor.encode(isoDate, withKey: encKey)
-            let decIsoDate = try decryptor.decode(Date.self, from: encIsoDate, withKey: encKey)
+            let encIsoDate = try encryptor.encode(isoDate, withKey: encKeyV1)
+            let decIsoDate = try decryptor.decode(Date.self, from: encIsoDate, withKey: encKeyV1)
             // We cannot guarantee exact equality here, so we compare the integer of their reference intervals.
             XCTAssertEqual(Int(decIsoDate.timeIntervalSinceReferenceDate),
                            Int(isoDate.timeIntervalSinceReferenceDate))
@@ -339,8 +387,8 @@ class EncryptingSwiftTypes: XCTestCase {
             
 //            encryptor.dateEncodingStrategy = .secondsSince1970
 //            decryptor.dateDecodingStrategy = .secondsSince1970
-            let encSecondsDate = try encryptor.encode(secondsDate, withKey: encKey)
-            let decSecondsDate = try decryptor.decode(Date.self, from: encSecondsDate, withKey: encKey)
+            let encSecondsDate = try encryptor.encode(secondsDate, withKey: encKeyV1)
+            let decSecondsDate = try decryptor.decode(Date.self, from: encSecondsDate, withKey: encKeyV1)
             // We cannot guarantee exact equality here, so we compare the integer of their reference intervals.
             XCTAssertEqual(Int(decSecondsDate.timeIntervalSinceReferenceDate),
                            Int(secondsDate.timeIntervalSinceReferenceDate))
@@ -349,8 +397,8 @@ class EncryptingSwiftTypes: XCTestCase {
             
 //            encryptor.dateEncodingStrategy = .millisecondsSince1970
 //            decryptor.dateDecodingStrategy = .millisecondsSince1970
-            let encMilliDate = try encryptor.encode(millisecondsDate, withKey: encKey)
-            let decMilliDate = try decryptor.decode(Date.self, from: encMilliDate, withKey: encKey)
+            let encMilliDate = try encryptor.encode(millisecondsDate, withKey: encKeyV1)
+            let decMilliDate = try decryptor.decode(Date.self, from: encMilliDate, withKey: encKeyV1)
             // We cannot guarantee exact equality here, so we compare the integer of their reference intervals.
             XCTAssertEqual(Int(decMilliDate.timeIntervalSinceReferenceDate),
                            Int(millisecondsDate.timeIntervalSinceReferenceDate))
@@ -366,8 +414,8 @@ class EncryptingSwiftTypes: XCTestCase {
             
 //            encryptor.dataEncodingStratety = .raw
 //            decryptor.dataDecodingStrategy = .raw
-            let encRawData = try encryptor.encode(testData, withKey: encKey)
-            let decRawData = try decryptor.decode(Data.self, from: encRawData, withKey: encKey)
+            let encRawData = try encryptor.encode(testData, withKey: encKeyV1)
+            let decRawData = try decryptor.decode(Data.self, from: encRawData, withKey: encKeyV1)
             XCTAssertEqual(decRawData, testData)
             
 //            encryptor.dataEncodingStratety = .base64
@@ -390,8 +438,8 @@ class EncryptingSwiftTypes: XCTestCase {
         let testCodable = EncodableThing()
         
         do {
-            let encCodable = try encryptor.encode(testCodable, withKey: encKey)
-            let decCodable = try decryptor.decode(EncodableThing.self, from: encCodable, withKey: encKey)
+            let encCodable = try encryptor.encode(testCodable, withKey: encKeyV1)
+            let decCodable = try decryptor.decode(EncodableThing.self, from: encCodable, withKey: encKeyV1)
             XCTAssertEqual(decCodable, testCodable)
             
         } catch {
@@ -406,8 +454,8 @@ class EncryptingSwiftTypes: XCTestCase {
                             EncodableThing()]
         
         do {
-            let encCodables = try encryptor.encode(testCodables, withKey: encKey)
-            let decCodables = try decryptor.decode([EncodableThing].self, from: encCodables, withKey: encKey)
+            let encCodables = try encryptor.encode(testCodables, withKey: encKeyV1)
+            let decCodables = try decryptor.decode([EncodableThing].self, from: encCodables, withKey: encKeyV1)
             XCTAssertEqual(decCodables, testCodables)
             
         } catch {
@@ -434,8 +482,8 @@ class EncryptingSwiftTypes: XCTestCase {
         do {
             let plistData = try plistEncoder.encode(testData)
             
-            let encPlist = try encryptor.encode(plistData, withKey: encKey)
-            let decPlist = try decryptor.decode(Data.self, from: encPlist, withKey: encKey)
+            let encPlist = try encryptor.encode(plistData, withKey: encKeyV1)
+            let decPlist = try decryptor.decode(Data.self, from: encPlist, withKey: encKeyV1)
             XCTAssertEqual(decPlist, plistData)
             
         } catch {
@@ -759,7 +807,7 @@ class EncryptingSwiftTypes: XCTestCase {
         }
         
         do {
-            try storage.setKey(encKey, forTag: tag)
+            try storage.setKey(encKeyV1, forTag: tag)
             let storedKey: EncryptionKey? = try storage.key(withTag: tag)
             XCTAssertNotNil(storedKey, "The item was not retrieved from storage.")
         } catch {
@@ -797,7 +845,7 @@ class EncryptingSwiftTypes: XCTestCase {
         let notThereYet = storage[tag]
         XCTAssertNil(notThereYet, "The key was found in storage!")
         
-        storage[tag] = encKey
+        storage[tag] = encKeyV1
         
         let storedKey = storage[tag]
         XCTAssertNotNil(storedKey, "The item was not retrieved from storage.")
@@ -909,7 +957,7 @@ class EncryptingSwiftTypes: XCTestCase {
 //        encryptor.dataEncodingStratety = .base64
         measure {
             do {
-                _ = try encryptor.encode(base64Data, withKey: encKey)
+                _ = try encryptor.encode(base64Data, withKey: encKeyV1)
             } catch {
                 XCTFail("\(error)")
             }
@@ -926,7 +974,7 @@ class EncryptingSwiftTypes: XCTestCase {
 //        decryptor.dataDecodingStrategy = .base64
         let encData: EncryptedItem
         do {
-            encData = try encryptor.encode(base64Data, withKey: encKey)
+            encData = try encryptor.encode(base64Data, withKey: encKeyV1)
         } catch {
             XCTFail("\(error)")
             return
@@ -934,7 +982,7 @@ class EncryptingSwiftTypes: XCTestCase {
         
         measure {
             do {
-                _ = try decryptor.decode(String.self, from: encData, withKey: encKey)
+                _ = try decryptor.decode(String.self, from: encData, withKey: encKeyV1)
             } catch {
                 XCTFail("\(error)")
             }
@@ -949,7 +997,7 @@ class EncryptingSwiftTypes: XCTestCase {
 //        encryptor.dataEncodingStratety = .raw
         measure {
             do {
-                _ = try encryptor.encode(testData, withKey: encKey)
+                _ = try encryptor.encode(testData, withKey: encKeyV1)
             } catch {
                 XCTFail("\(error)")
             }
@@ -966,7 +1014,7 @@ class EncryptingSwiftTypes: XCTestCase {
         
         let encData: EncryptedItem
         do {
-            encData = try encryptor.encode(testData, withKey: encKey)
+            encData = try encryptor.encode(testData, withKey: encKeyV1)
         } catch {
             XCTFail("\(error)")
             return
@@ -974,7 +1022,7 @@ class EncryptingSwiftTypes: XCTestCase {
         
         measure {
             do {
-                _ = try decryptor.decode(Data.self, from: encData, withKey: encKey)
+                _ = try decryptor.decode(Data.self, from: encData, withKey: encKeyV1)
             } catch {
                 XCTFail("\(error)")
             }
