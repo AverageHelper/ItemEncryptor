@@ -11,13 +11,14 @@ import Security
 
 
 /// A simple interface for storing semantic `EncryptionKey`s in the Keychain.
-public class KeychainHandle {
+@available(*, deprecated, message: "Use another package, like kishikawakatsumi's KeychainAccess, instead.")
+public final class KeychainHandle {
     // MARK: Properties
     
     /// A brief string used to describe your application's access to the Keychain. This
     /// string may be presented to the user when an application is trying to access our key
     /// data, such as from Keychain Access in macOS, or by some other means.
-    var description: String
+    public var description: String
     
     // MARK: - Constructing a Keychain Handle
     

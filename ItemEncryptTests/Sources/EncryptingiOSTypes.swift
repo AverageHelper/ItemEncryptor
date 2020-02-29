@@ -6,10 +6,12 @@
 //  Copyright © 2019 LeadDevCreations, LLC. All rights reserved.
 //
 
+#if canImport(UIKit)
 import XCTest
+import UIKit
 import ItemEncrypt
 
-class EncryptingiOSTypes: XCTestCase {
+final class EncryptingiOSTypes: XCTestCase {
     
     var encryptor: EncryptionEncoder!
     var decryptor: EncryptionDecoder!
@@ -229,3 +231,4 @@ extension UIImage {
     }
 
 }
+#endif

@@ -39,7 +39,8 @@ opt_in_rules:  # I really want these
 
 excluded:  # paths to ignore during linting.
   - ItemEncryptTests/
-  - Pods/
+  - Package.swift
+  - ./.build
 
 included:
   - ~/Desktop/XCode/HandyHelpers/HandyHelpers/CoreHelper/Core/CoreDataStack.swift

@@ -6,10 +6,12 @@
 //  Copyright © 2019 LeadDevCreations, LLC. All rights reserved.
 //
 
+#if canImport(AppKit)
 import XCTest
+import AppKit
 import ItemEncrypt
 
-class EncryptingMacOSTypes: XCTestCase {
+final class EncryptingMacOSTypes: XCTestCase {
     
     var encryptor: EncryptionEncoder!
     var decryptor: EncryptionDecoder!
@@ -281,3 +283,4 @@ extension NSImage {
     }
 
 }
+#endif

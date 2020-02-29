@@ -9,7 +9,7 @@
 import XCTest
 import ItemEncrypt
 
-class EncryptingSwiftTypes: XCTestCase {
+final class EncryptingSwiftTypes: XCTestCase {
     
     var encryptor: EncryptionEncoder!
     var decryptor: EncryptionDecoder!
