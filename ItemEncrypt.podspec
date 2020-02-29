@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "ItemEncrypt"
-  spec.version      = "0.3.5"
+  spec.version      = "0.3.6"
   spec.summary      = "A Swift API for encrypting arbitrary data and data types."
   spec.description  = <<-DESC
     A Swift API for encrypting arbitrary data and data types.
