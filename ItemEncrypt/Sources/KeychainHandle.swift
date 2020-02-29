@@ -477,7 +477,13 @@ extension KeychainHandle {
         case errSecUserCanceled: throw StorageError.cancelled
             
         default: // Throw the error
-            let explanation = SecCopyErrorMessageString(status, nil) ?? "Unknown reason." as CFString
+            let explanation: CFString
+            if #available(iOS 11.3, *) {
+                explanation = SecCopyErrorMessageString(status, nil) ?? "Unknown reason." as CFString
+            } else {
+                // Fallback on earlier versions
+                explanation = "Unknown reason." as CFString
+            }
             throw StorageError.unknown(reason: explanation as String)
         }
     }
