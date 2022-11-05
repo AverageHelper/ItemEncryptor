@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
 
   spec.homepage = "https://github.com/AverageHelper/ItemEncryptor"
   spec.license = { :type => "MIT", :file => "LICENSE" }
-  spec.authors = { "AverageHelper" => "jnrobinson016@gmail.com" }
+  spec.author = "AverageHelper"
 
   spec.ios.deployment_target = "11.4"
   spec.osx.deployment_target = "10.13"
