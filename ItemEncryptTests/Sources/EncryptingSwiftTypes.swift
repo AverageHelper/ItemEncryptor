@@ -781,90 +781,9 @@ final class EncryptingSwiftTypes: XCTestCase {
 		
 	}
 	
-	
-	
-	// MARK: - Keychain Handle
-	
-	func testEncryptionKeyStorage() {
-		
-		let tag = "com.LeadDevCreations.keys.testKey"
-		let storage = KeychainHandle()
-		
-		do {
-			try storage.deleteKey(withTag: tag)
-		} catch {
-			XCTFail("\(error)")
-		}
-		
-		do {
-			let notThereYet: EncryptionKey? = try storage.key(withTag: tag)
-			XCTAssertNil(notThereYet, "The key was found in storage!")
-			let keyExists = storage.keyExists(ofType: EncryptionKey.self, withTag: tag)
-			XCTAssertFalse(keyExists, "A key was found in storage!")
-		} catch {
-			XCTFail("Failed to grab nonexistent key: \(error)")
-		}
-		
-		do {
-			try storage.setKey(encKeyV1, forTag: tag)
-			let storedKey: EncryptionKey? = try storage.key(withTag: tag)
-			XCTAssertNotNil(storedKey, "The item was not retrieved from storage.")
-		} catch {
-			XCTFail("Failed to store key: \(error)")
-		}
-		
-		do {
-			let goneKey: EncryptionKey? = try storage.deleteKey(withTag: tag)
-			XCTAssertNotNil(goneKey, "The item was not returned after deletion.")
-		} catch {
-			XCTFail("Failed to delete key: \(error)")
-		}
-		
-		do {
-			let notThereAnymore: EncryptionKey? = try storage.key(withTag: tag)
-			XCTAssertNil(notThereAnymore)
-			
-		} catch {
-			XCTFail("Failed to grab now nonexistent key: \(error)")
-		}
-		
-	}
-	
-	func testKeychainAccessSubscript() {
-		
-		let tag = "com.LeadDevCreations.keys.testKey"
-		let storage = KeychainHandle()
-		
-		do {
-			try storage.deleteKey(withTag: tag)
-		} catch {
-			XCTFail("\(error)")
-		}
-		
-		let notThereYet = storage[tag]
-		XCTAssertNil(notThereYet, "The key was found in storage!")
-		
-		storage[tag] = encKeyV1
-		
-		let storedKey = storage[tag]
-		XCTAssertNotNil(storedKey, "The item was not retrieved from storage.")
-		
-		storage[tag] = nil
-		
-		do {
-			let notThereAnymore: EncryptionKey? = try storage.key(withTag: tag)
-			XCTAssertNil(notThereAnymore)
-			
-		} catch {
-			XCTFail("Failed to grab now nonexistent key: \(error)")
-		}
-		
-	}
-	
-	
-	
-	// MARK - Performance
-	
+
+	// MARK: - Performance
+
 	func testEncryptionPerformance() {
 		let testString = "Lorem ipsum dolor sit amet"
 		

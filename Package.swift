@@ -14,7 +14,7 @@ let package = Package(
 	],
 	dependencies: [
 		// IDZSwiftCommonCrypto
-		.package(url: "git@github.com:AverageHelper/IDZSwiftCommonCrypto.git", .upToNextMinor(from: "0.13.2")),
+		.package(url: "git@github.com:iosdevzone/IDZSwiftCommonCrypto.git", .upToNextMinor(from: "0.16.1")),
 	],
 	targets: [
 		.target(

@@ -47,7 +47,7 @@ public final class EncryptionKey {
 
 	deinit {
 		keyData.withUnsafeMutableBufferPointer { (buffer: inout UnsafeMutableBufferPointer<UInt8>) in
-			buffer.assign(repeating: 0)
+			buffer.update(repeating: 0)
 		}
 	}
 
@@ -259,12 +259,11 @@ public final class EncryptionKey {
 
 extension EncryptionKey: Equatable, Hashable {
 	public static func == (lhs: EncryptionKey, rhs: EncryptionKey) -> Bool {
-		return
-		(lhs.scheme == rhs.scheme &&
-		 lhs.keyData == rhs.keyData &&
-		 lhs.initializationVector == rhs.initializationVector &&
-		 lhs.salt == rhs.salt &&
-		 lhs.context == rhs.context)
+		return (lhs.scheme == rhs.scheme &&
+						lhs.keyData == rhs.keyData &&
+						lhs.initializationVector == rhs.initializationVector &&
+						lhs.salt == rhs.salt &&
+						lhs.context == rhs.context)
 	}
 
 	public func hash(into hasher: inout Hasher) {

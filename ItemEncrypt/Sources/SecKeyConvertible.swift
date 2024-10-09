@@ -8,7 +8,7 @@
 //  https://developer.apple.com/documentation/cryptokit/storing_cryptokit_keys_in_the_keychain
 //
 
-import Foundation
+import Foundation.NSData
 import CryptoKit
 
 public protocol SecKeyConvertible: CustomStringConvertible {
@@ -84,27 +84,27 @@ extension ContiguousBytes {
 // MARK: - NIST Keys
 
 @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-extension P256.Signing.PrivateKey: SecKeyConvertible {}
+extension P256.Signing.PrivateKey: SecKeyConvertible, @retroactive CustomStringConvertible {}
 @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-extension P256.KeyAgreement.PrivateKey: SecKeyConvertible {}
+extension P256.KeyAgreement.PrivateKey: SecKeyConvertible, @retroactive CustomStringConvertible {}
 @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-extension P384.Signing.PrivateKey: SecKeyConvertible {}
+extension P384.Signing.PrivateKey: SecKeyConvertible, @retroactive CustomStringConvertible {}
 @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-extension P384.KeyAgreement.PrivateKey: SecKeyConvertible {}
+extension P384.KeyAgreement.PrivateKey: SecKeyConvertible, @retroactive CustomStringConvertible {}
 @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-extension P521.Signing.PrivateKey: SecKeyConvertible {}
+extension P521.Signing.PrivateKey: SecKeyConvertible, @retroactive CustomStringConvertible {}
 @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-extension P521.KeyAgreement.PrivateKey: SecKeyConvertible {}
+extension P521.KeyAgreement.PrivateKey: SecKeyConvertible, @retroactive CustomStringConvertible {}
 
 // MARK: - Other Key Types
 
 @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-extension Curve25519.KeyAgreement.PrivateKey: GenericPasswordConvertible {}
+extension Curve25519.KeyAgreement.PrivateKey: GenericPasswordConvertible, @retroactive CustomStringConvertible {}
 @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-extension Curve25519.Signing.PrivateKey: GenericPasswordConvertible {}
+extension Curve25519.Signing.PrivateKey: GenericPasswordConvertible, @retroactive CustomStringConvertible {}
 
 @available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-extension SymmetricKey: GenericPasswordConvertible {
+extension SymmetricKey: GenericPasswordConvertible, @retroactive CustomStringConvertible {
 	public init<D>(rawRepresentation data: D) throws where D: ContiguousBytes {
 		self.init(data: data)
 	}
@@ -113,14 +113,3 @@ extension SymmetricKey: GenericPasswordConvertible {
 		return dataRepresentation  // Contiguous bytes repackaged as a Data instance.
 	}
 }
-
-//@available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13.0, *)
-//extension SecureEnclave.P256.Signing.PrivateKey: GenericPasswordConvertible {
-//	public init<D>(rawRepresentation data: D) throws where D: ContiguousBytes {
-//		try self.init(dataRepresentation: data.dataRepresentation)
-//	}
-//
-//	public var rawRepresentation: Data {
-//		return dataRepresentation  // Contiguous bytes repackaged as a Data instance.
-//	}
-//}
