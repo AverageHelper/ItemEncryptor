@@ -2,8 +2,7 @@
 //  Scheme.swift
 //  ItemEncrypt
 //
-//  Created by James Robinson on 5/23/19.
-//  Copyright © 2019 LeadDevCreations, LLC. All rights reserved.
+//  Created on 5/23/19.
 //
 
 import Foundation

@@ -2,8 +2,7 @@
 //  ContentView.swift
 //  ItemEncrypt-macOSHost
 //
-//  Created by James Robinson on 12/19/19.
-//  Copyright © 2019 LeadDevCreations, LLC. All rights reserved.
+//  Created on 12/19/19.
 //
 
 import SwiftUI

@@ -2,8 +2,7 @@
 //  KeychainHandle+CryptoKit.swift
 //  ItemEncrypt
 //
-//  Created by James Robinson on 12/16/19.
-//  Copyright © 2019 LeadDevCreations, LLC. All rights reserved.
+//  Created on 12/16/19.
 //
 //  Using pointers from
 //  https://developer.apple.com/documentation/cryptokit/storing_cryptokit_keys_in_the_keychain

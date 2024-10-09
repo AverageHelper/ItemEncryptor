@@ -8,7 +8,7 @@
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)self.jamesrobinson.ItemEncrypt-macOSHost</string>
+		<string>$(AppIdentifierPrefix)-macOSHost</string>
 	</array>
 </dict>
 </plist>

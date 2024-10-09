@@ -2,8 +2,7 @@
 //  ItemEncrypt.h
 //  ItemEncrypt
 //
-//  Created by James Robinson on 5/13/19.
-//  Copyright © 2019 LeadDevCreations, LLC. All rights reserved.
+//  Created on 5/13/19.
 //
 
 #import <Foundation/Foundation.h>

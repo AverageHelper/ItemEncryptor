@@ -4,7 +4,7 @@
 <dict>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)self.jamesrobinson.ItemEncrypt-tvOSHost</string>
+		<string>$(AppIdentifierPrefix)-tvOSHost</string>
 	</array>
 </dict>
 </plist>
